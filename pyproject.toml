@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "qdsv-bridge"
+version = "0.1.0"
+description = "Lightweight Python client for QDSV Bridge, a controlled semantic-to-IR/oracle/circuit compiler."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+  { name = "QDSV / Qruba" }
+]
+keywords = ["qdsv", "semantic-computation", "quantum", "circuit", "qasm", "sdk"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+  "requests>=2.31",
+]
+
+[project.urls]
+Homepage = "https://qdsv.cloud"
+Documentation = "https://qdsv.cloud/#bridge"
+Source = "https://github.com/qdsvquantum-afk/qdsv-bridge"
+
+[project.scripts]
+qdsv-bridge = "qdsv_bridge.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qdsv_bridge"]
