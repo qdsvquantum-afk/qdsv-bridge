@@ -217,11 +217,14 @@ client = QDSVBridgeClient.local()
 
 Developer Preview families:
 
+- `bounded_semantic_marking`
 - `semantic_signal_classification`
 - `predicate_marking`
 - `state_similarity`
 - `combinatorial_relation`
 - `distribution_sampling`
+
+`bounded_semantic_marking` is the controlled fallback family. Use it when the problem is finite, bounded and semantic, but no specialized Bridge family exists yet. It is not a universal free-form mode: it still requires a bounded state space, declared goal, limits, excluded patterns and preservation reporting.
 
 Each family has:
 
@@ -233,6 +236,38 @@ Each family has:
 - public limits;
 - export targets;
 - evidence / digest contract.
+
+### Fallback family example
+
+```python
+spec = {
+    "family": "bounded_semantic_marking",
+    "state_space": {
+        "kind": "finite_candidates",
+        "candidate_count": 128,
+        "candidate_id": "candidate",
+    },
+    "signals": ["risk_score", "value_score", "eligibility_score"],
+    "goal": {
+        "kind": "marking",
+        "predicate": "eligible_candidate",
+    },
+    "target": {
+        "format": "qasm3",
+        "backend_family": "qiskit",
+    },
+    "limits": {
+        "max_qubits": 8,
+        "max_depth": 250,
+    },
+}
+
+result = client.build(spec)
+
+print(result["family"])          # bounded_semantic_marking
+print(result["circuit_origin"])  # qdsv_derived
+print(result["warnings"])        # includes fallback-family guidance
+```
 
 ## What It Exports
 
