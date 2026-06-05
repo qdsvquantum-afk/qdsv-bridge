@@ -4,6 +4,8 @@ Lightweight Python SDK for **QDSV Bridge**, a controlled semantic compiler built
 
 QDSV Bridge is not a template selector and not a free arbitrary circuit generator. It is a restricted semantic-to-circuit bridge for supported problem families. Its core rule is simple: **do not force the problem into a prefabricated circuit; derive the circuit or construction inputs from the semantic problem specification.**
 
+QDSV Bridge does not force a problem into a prebuilt circuit template. It derives circuital artifacts from the semantic structure of the problem.
+
 ```text
 problem family spec
 -> family ontology validation
@@ -45,12 +47,12 @@ forced reduction -> angle encoding -> fixed ansatz -> fixed measurement
 
 QDSV Bridge is one SDK with multiple output depths. The modes do not change the core principle: the circuit, when delivered, is derived from the semantic problem specification.
 
-| Mode | Intended user | What Bridge returns | Message |
-| --- | --- | --- | --- |
-| `use` | Basic user who wants to solve without designing circuits | A new problem-derived circuit artifact, simple explanation, information-loss risk, usage recommendation and ready-to-run example | No need to design the circuit; Bridge generates it from your problem. |
-| `build` | Intermediate user who understands Qiskit, QASM or quantum workflows | A new problem-derived circuit artifact plus QASM/Qiskit, oracle spec, IR summary, preservation report, estimated qubits/depth and digests | Take this circuit generated from semantics and adjust or integrate it into your stack. |
-| `expert_prepare` | Expert constructor who wants to design a custom circuit | Validated family, ProblemSpec/IR, oracle spec, predicates, target state/goal, constraints, relevant variables, information-loss risk, encoding/measurement suggestions, estimated limits and evidence. It does not force a final circuit. | We give you the right inputs to design a circuit faithful to the problem. |
-| `expert_evaluate` | Expert evaluator who wants to compare QDSV materializations | Suggested QDSV circuit artifact, materialization variants, comparison and preservation report | Compare QDSV materializations and decide which one preserves the problem best. |
+| API | Commercial name | Intended user | What Bridge returns | Message |
+| --- | --- | --- | --- | --- |
+| `generate()` / `use` | Bridge Use | Basic user who wants to solve without designing circuits | A new problem-derived circuit artifact, simple explanation, information-loss risk, usage recommendation and ready-to-run example | No need to design the circuit; Bridge generates it from your problem. |
+| `build()` / `build` | Bridge Build | Intermediate user who understands Qiskit, QASM or quantum workflows | A new problem-derived circuit artifact plus QASM/Qiskit, oracle spec, IR summary, preservation report, estimated qubits/depth and digests | Take this circuit generated from semantics and adjust or integrate it into your stack. |
+| `prepare()` / `expert_prepare` | Bridge Expert Prepare | Expert constructor who wants to design a custom circuit | Validated family, ProblemSpec/IR, oracle spec, predicates, target state/goal, constraints, relevant variables, information-loss risk, encoding/measurement suggestions, estimated limits and evidence. It does not force a final circuit. | We give you the right inputs to design a circuit faithful to the problem. |
+| `evaluate()` / `expert_evaluate` | Bridge Expert Evaluate | Expert evaluator who wants to compare QDSV materializations | Suggested QDSV circuit artifact, materialization variants, comparison and preservation report | Compare QDSV materializations and decide which one preserves the problem best. |
 
 Python helpers:
 
@@ -138,6 +140,55 @@ For the local/private Docker demo, use:
 
 ```python
 client = QDSVBridgeClient.local()
+```
+
+
+## Examples by User Type
+
+### Bridge Use: problem to generated circuit
+
+```python
+result = client.generate(spec)
+
+print(result["circuit_origin"])      # qdsv_derived
+print(result["circuit"]["status"])   # generated_from_semantic_spec
+print(result["ready_to_run_example"]["kind"])
+```
+
+### Bridge Build: problem to QASM/Qiskit/oracle/IR
+
+```python
+result = client.build(spec)
+
+print(result["artifact"]["format"])
+print(result["editable_artifacts"]["oracle_spec"])
+print(result["editable_artifacts"]["ir_summary"])
+print(result["digests"])
+```
+
+### Bridge Expert: construction inputs and materialization comparison
+
+```python
+inputs = client.prepare(spec)
+print(inputs["expert_inputs"]["encoding_suggestions"])
+print(inputs["expert_inputs"]["measurement_suggestions"])
+
+comparison = client.evaluate(spec)
+print(comparison["materialization_variants"])
+print(comparison["comparison"])
+```
+
+Every export response includes minimum traceability metadata:
+
+```json
+{
+  "mode": "use | build | expert_prepare | expert_evaluate",
+  "artifact_type": "qasm3",
+  "circuit_origin": "qdsv_derived",
+  "semantic_preservation": {"status": "accepted", "score": 1.0},
+  "warnings": [],
+  "digests": {}
+}
 ```
 
 ## Public Endpoints
