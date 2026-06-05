@@ -94,3 +94,52 @@ def test_http_error_is_not_hidden(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert exc.value.status_code == 400
     assert exc.value.payload["detail"]["error_code"] == "E_BRIDGE_UNSUPPORTED_FAMILY"
+
+
+
+def test_export_accepts_mode_argument(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = {}
+
+    class FakeResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"status": "SUCCESS", "bridge_mode": "use"}
+
+    def fake_request(method, url, **kwargs):
+        calls["kwargs"] = kwargs
+        return FakeResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+    result = QDSVBridgeClient().export({"family": "semantic_signal_classification"}, mode="use")
+
+    assert result["bridge_mode"] == "use"
+    assert calls["kwargs"]["json"]["spec"]["bridge_mode"] == "use"
+
+
+def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPatch) -> None:
+    modes = []
+
+    class FakeResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"status": "SUCCESS"}
+
+    def fake_request(method, url, **kwargs):
+        modes.append(kwargs["json"]["spec"]["bridge_mode"])
+        return FakeResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+    client = QDSVBridgeClient()
+    spec = {"family": "semantic_signal_classification"}
+    client.generate(spec)
+    client.build(spec)
+    client.prepare(spec)
+    client.evaluate(spec)
+
+    assert modes == ["use", "build", "expert_prepare", "expert_evaluate"]

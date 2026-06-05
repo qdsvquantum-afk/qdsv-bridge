@@ -25,8 +25,10 @@ spec = {
 
 
 client = QDSVBridgeClient()
-result = client.export(spec)
+result = client.build(spec)
 
 print(result["status"])
+print(result["bridge_mode"])
+print(result["circuit"])
 print(result["semantic_preservation_report"])
 print(result["artifact"]["content"])

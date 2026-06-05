@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "qdsv-bridge"
-version = "0.1.0"
-description = "Lightweight Python client for QDSV Bridge, a controlled semantic-to-IR/oracle/circuit compiler."
+version = "0.1.1"
+description = "Lightweight Python client for QDSV Bridge, a controlled semantic-to-circuit compiler with use/build/expert modes."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"

@@ -68,6 +68,13 @@ class QDSVBridgeClient:
             headers["x-license-key"] = self.license_key
         return headers
 
+    @staticmethod
+    def _spec_with_mode(spec: Mapping[str, Any], mode: str | None = None) -> dict[str, Any]:
+        payload = dict(spec)
+        if mode:
+            payload["bridge_mode"] = mode
+        return payload
+
     def _request(self, method: str, path: str, *, json: Mapping[str, Any] | None = None) -> dict[str, Any]:
         url = f"{self.api_url}{path}"
         kwargs: dict[str, Any] = {"headers": self._headers(), "timeout": self.timeout}
@@ -92,14 +99,34 @@ class QDSVBridgeClient:
     def families(self) -> dict[str, Any]:
         return self._request("GET", "/bridge/families")
 
-    def validate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        return self._request("POST", "/bridge/validate", json={"spec": dict(spec)})
+    def validate(self, spec: Mapping[str, Any], *, mode: str | None = None) -> dict[str, Any]:
+        return self._request("POST", "/bridge/validate", json={"spec": self._spec_with_mode(spec, mode)})
 
-    def compile(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        return self._request("POST", "/bridge/compile", json={"spec": dict(spec)})
+    def compile(self, spec: Mapping[str, Any], *, mode: str | None = None) -> dict[str, Any]:
+        return self._request("POST", "/bridge/compile", json={"spec": self._spec_with_mode(spec, mode)})
 
-    def explain(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        return self._request("POST", "/bridge/explain", json={"spec": dict(spec)})
+    def explain(self, spec: Mapping[str, Any], *, mode: str | None = None) -> dict[str, Any]:
+        return self._request("POST", "/bridge/explain", json={"spec": self._spec_with_mode(spec, mode)})
 
-    def export(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        return self._request("POST", "/bridge/export", json={"spec": dict(spec)})
+    def export(self, spec: Mapping[str, Any], *, mode: str | None = None) -> dict[str, Any]:
+        return self._request("POST", "/bridge/export", json={"spec": self._spec_with_mode(spec, mode)})
+
+    def generate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
+        """Basic-user mode: generate a new circuit package from the problem."""
+
+        return self.export(spec, mode="use")
+
+    def build(self, spec: Mapping[str, Any]) -> dict[str, Any]:
+        """Intermediate mode: generated circuit plus editable QASM/Qiskit/IR artifacts."""
+
+        return self.export(spec, mode="build")
+
+    def prepare(self, spec: Mapping[str, Any]) -> dict[str, Any]:
+        """Expert-constructor mode: semantic inputs for designing a custom circuit."""
+
+        return self.export(spec, mode="expert_prepare")
+
+    def evaluate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
+        """Expert-evaluator mode: suggested QDSV materialization and variants."""
+
+        return self.export(spec, mode="expert_evaluate")

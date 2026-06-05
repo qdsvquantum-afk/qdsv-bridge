@@ -13,6 +13,12 @@ def main() -> None:
     parser.add_argument("spec", nargs="?", help="Path to a Semantic Circuit Spec JSON file.")
     parser.add_argument("--api-url", default=None)
     parser.add_argument("--local", action="store_true", help="Use http://localhost:18080/api")
+    parser.add_argument(
+        "--mode",
+        choices=["use", "build", "expert_prepare", "expert_evaluate"],
+        default=None,
+        help="Bridge output depth: basic use, intermediate build, expert construction inputs, or expert evaluation.",
+    )
     args = parser.parse_args()
 
     client = QDSVBridgeClient.local() if args.local else QDSVBridgeClient(api_url=args.api_url)
@@ -22,7 +28,11 @@ def main() -> None:
     if not args.spec:
         parser.error("spec JSON file is required for this command")
     spec = json.loads(Path(args.spec).read_text(encoding="utf-8"))
-    result = getattr(client, args.command)(spec)
+    method = getattr(client, args.command)
+    if args.command in {"validate", "compile", "explain", "export"}:
+        result = method(spec, mode=args.mode)
+    else:
+        result = method(spec)
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
