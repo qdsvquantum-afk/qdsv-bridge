@@ -3,8 +3,13 @@ from __future__ import annotations
 import pytest
 import requests
 
+import qdsv_bridge
 from qdsv_bridge import QDSVBridgeClient
 from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
+
+
+def test_package_version_is_current() -> None:
+    assert qdsv_bridge.__version__ == "0.1.3"
 
 
 def test_normalizes_api_url() -> None:

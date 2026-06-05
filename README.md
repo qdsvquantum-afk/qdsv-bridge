@@ -1,5 +1,7 @@
 # QDSV Bridge Developer Preview
 
+Current package version: `0.1.3`.
+
 Lightweight Python SDK for **QDSV Bridge**, a controlled semantic compiler built on **QDSV (Quantum Declarative Semantic Value)** that turns supported problem-family specifications into problem-derived circuit materializations, QDSV IR, oracle specs, QASM/Qiskit artifacts, or expert construction inputs.
 
 QDSV Bridge is not a template selector and not a free arbitrary circuit generator. It is a restricted semantic-to-circuit bridge for supported problem families. Its core rule is simple: **do not force the problem into a prefabricated circuit; derive the circuit or construction inputs from the semantic problem specification.**
@@ -215,6 +217,8 @@ client = QDSVBridgeClient.local()
 
 ## Resource and Multi-User Limits
 
+QDSV Bridge accepts compact semantic problem specifications, not raw datasets.
+
 QDSV Bridge is not a bulk data processing SDK. It is designed to receive a bounded semantic specification of the problem and return circuit-oriented artifacts or expert construction inputs.
 
 Do not send:
@@ -241,6 +245,9 @@ Public API minimum limits:
 | Limit | Default |
 | --- | --- |
 | Max spec payload | 64 KB |
+| Max QASM / circuit artifact payload | 256 KB |
+| Max compile time | 5 seconds |
+| Max export time | 10 seconds |
 | Raw data payloads | Not allowed |
 | Hardware execution | Not available from Bridge SDK |
 | `bounded_semantic_marking` | 1024 candidates / 24 signals |
@@ -258,7 +265,23 @@ Default API rate limits may be configured by the QDSV deployment:
 - `explain`: 20/minute
 - `export`: 10/minute
 
+Rate limits use `Authorization`, `x-api-key` or `x-license-key` when present; otherwise they fall back to IP plus SDK name. In the current public deployment, rate limiting is in-memory per API instance. If Cloud Run scales to multiple instances, the effective limit may multiply until a distributed rate-limit store is enabled.
+
 The SDK itself is stateless and does not block multiple users. Multi-user control, quotas, API keys, license checks and history belong to the QDSV/Qruba API deployment, not to the local Python package.
+
+Raw dataset payloads are rejected. Example:
+
+```json
+{
+  "detail": {
+    "error_code": "E_BRIDGE_RAW_DATA_NOT_ALLOWED",
+    "message": "Raw datasets are not allowed in Bridge specs. Provide semantic signals, predicates, candidates, or summarized problem structure instead.",
+    "detail": {
+      "forbidden_fields": ["rows"]
+    }
+  }
+}
+```
 
 ## Supported Families
 
