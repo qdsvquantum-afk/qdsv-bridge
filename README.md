@@ -213,6 +213,53 @@ Local/private Docker endpoint:
 client = QDSVBridgeClient.local()
 ```
 
+## Resource and Multi-User Limits
+
+QDSV Bridge is not a bulk data processing SDK. It is designed to receive a bounded semantic specification of the problem and return circuit-oriented artifacts or expert construction inputs.
+
+Do not send:
+
+- full CSV files;
+- raw datasets;
+- thousands of rows;
+- sensitive records;
+- training data;
+- hardware execution requests.
+
+Send:
+
+- problem family;
+- finite state-space size;
+- prepared signal or variable names;
+- goal / predicate / ranking intent;
+- target format;
+- qubit/depth limits;
+- materialization policy.
+
+Public API minimum limits:
+
+| Limit | Default |
+| --- | --- |
+| Max spec payload | 64 KB |
+| Raw data payloads | Not allowed |
+| Hardware execution | Not available from Bridge SDK |
+| `bounded_semantic_marking` | 1024 candidates / 24 signals |
+| `semantic_signal_classification` | 1024 candidates / 32 signals |
+| `predicate_marking` | 2048 candidates / 8 signals |
+| `state_similarity` | 1024 candidates / 64 signals |
+| `combinatorial_relation` | 4096 candidates / 16 signals |
+| `distribution_sampling` | 2048 candidates / 16 signals |
+
+Default API rate limits may be configured by the QDSV deployment:
+
+- `families`: 60/minute
+- `validate`: 30/minute
+- `compile`: 20/minute
+- `explain`: 20/minute
+- `export`: 10/minute
+
+The SDK itself is stateless and does not block multiple users. Multi-user control, quotas, API keys, license checks and history belong to the QDSV/Qruba API deployment, not to the local Python package.
+
 ## Supported Families
 
 Developer Preview families:
