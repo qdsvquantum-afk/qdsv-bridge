@@ -1,87 +1,32 @@
 # QDSV Bridge Developer Preview
 
+[![PyPI](https://img.shields.io/pypi/v/qdsv-bridge.svg)](https://pypi.org/project/qdsv-bridge/)
+[![Python](https://img.shields.io/pypi/pyversions/qdsv-bridge.svg)](https://pypi.org/project/qdsv-bridge/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
+
 Current package version: `0.1.3`.
 
-Lightweight Python SDK for **QDSV Bridge**, a controlled semantic compiler built on **QDSV (Quantum Declarative Semantic Value)** that turns supported problem-family specifications into problem-derived circuit materializations, QDSV IR, oracle specs, QASM/Qiskit artifacts, or expert construction inputs.
+QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circuit bridge built on **QDSV - Quantum Declarative Semantic Value**.
 
-QDSV Bridge is not a template selector and not a free arbitrary circuit generator. It is a restricted semantic-to-circuit bridge for supported problem families. Its core rule is simple: **do not force the problem into a prefabricated circuit; derive the circuit or construction inputs from the semantic problem specification.**
+It turns supported problem-family specifications into problem-derived circuit materializations, QDSV IR, oracle specs, QASM/Qiskit artifacts or expert construction inputs.
 
-QDSV Bridge does not force a problem into a prebuilt circuit template. It derives circuital artifacts from the semantic structure of the problem.
+QDSV Bridge is not a template selector and not a free arbitrary circuit generator. Its core rule is:
 
 ```text
-problem family spec
--> family ontology validation
--> semantic ProblemSpec / IR
--> oracle specification
--> materialization policy
--> generated circuit artifact or expert construction inputs
+do not force the problem into a prefabricated circuit;
+derive the circuit or construction inputs from the semantic problem specification.
 ```
 
-The SDK is a client only. It does not include the private QDSV Runtime, CAP, backend selector, lowering internals, QuEST/Aer/IBM adapters, or advanced orchestration.
+## 5 Minute Quickstart
+
+Install the SDK:
 
 ```bash
 pip install qdsv-bridge
 ```
 
-## Why This Exists
-
-Traditional quantum workflows often start by asking users to choose a circuit, encoding, ansatz, or measurement pattern. That can force the data to adapt to a circuit.
-
-QDSV Bridge starts from a controlled semantic family. The family defines what kind of problem is allowed, what concepts belong to it, what patterns are excluded, and what evidence must be produced. For users who need circuit ecosystems, Bridge derives a new circuit artifact from that semantic specification instead of asking the user to adapt the problem to a ready-made template. For expert constructors, Bridge can also return the key semantic inputs needed to design a custom circuit without forcing a final circuit.
-
-For example, in signal classification:
-
-```text
-prepared signals
--> semantic_signal_classification
--> preserve signal geometry
--> oracle / IR / QASM blueprint
-```
-
-This is designed to avoid a fixed pattern such as:
-
-```text
-forced reduction -> angle encoding -> fixed ansatz -> fixed measurement
-```
-
-
-## Bridge Modes
-
-QDSV Bridge is one SDK with multiple output depths. The modes do not change the core principle: the circuit, when delivered, is derived from the semantic problem specification.
-
-| API | Commercial name | Intended user | What Bridge returns | Message |
-| --- | --- | --- | --- | --- |
-| `generate()` / `use` | Bridge Use | Basic user who wants to solve without designing circuits | A new problem-derived circuit artifact, simple explanation, information-loss risk, usage recommendation and ready-to-run example | No need to design the circuit; Bridge generates it from your problem. |
-| `build()` / `build` | Bridge Build | Intermediate user who understands Qiskit, QASM or quantum workflows | A new problem-derived circuit artifact plus QASM/Qiskit, oracle spec, IR summary, preservation report, estimated qubits/depth and digests | Take this circuit generated from semantics and adjust or integrate it into your stack. |
-| `prepare()` / `expert_prepare` | Bridge Expert Prepare | Expert constructor who wants to design a custom circuit | Validated family, ProblemSpec/IR, oracle spec, predicates, target state/goal, constraints, relevant variables, information-loss risk, encoding/measurement suggestions, estimated limits and evidence. It does not force a final circuit. | We give you the right inputs to design a circuit faithful to the problem. |
-| `evaluate()` / `expert_evaluate` | Bridge Expert Evaluate | Expert evaluator who wants to compare QDSV materializations | Suggested QDSV circuit artifact, materialization variants, comparison and preservation report | Compare QDSV materializations and decide which one preserves the problem best. |
-
-Python helpers:
-
-```python
-client.generate(spec)  # mode="use"
-client.build(spec)     # mode="build"
-client.prepare(spec)   # mode="expert_prepare"
-client.evaluate(spec)  # mode="expert_evaluate"
-```
-
-Or pass the mode explicitly:
-
-```python
-client.export(spec, mode="build")
-client.explain(spec, mode="expert_prepare")
-```
-
-CLI:
-
-```bash
-qdsv-bridge export spec.json --mode use
-qdsv-bridge export spec.json --mode build
-qdsv-bridge export spec.json --mode expert_prepare
-qdsv-bridge export spec.json --mode expert_evaluate
-```
-
-## Quick Start
+Build a circuit-oriented artifact from a compact semantic spec:
 
 ```python
 from qdsv_bridge import QDSVBridgeClient
@@ -127,60 +72,94 @@ result = client.build(spec)
 
 print(result["status"])
 print(result["bridge_mode"])
-print(result["circuit"])
-print(result["semantic_preservation_report"])
-print(result["artifact"]["content"])
+print(result["circuit_origin"])
+print(result["artifact"]["format"])
 ```
 
-By default, `QDSVBridgeClient()` points to the public cloud API:
+Default cloud endpoint:
 
 ```text
 https://api.qdsv.cloud/api
 ```
 
-For the local/private Docker demo, use:
+Private/local Docker endpoint:
 
 ```python
 client = QDSVBridgeClient.local()
 ```
 
+## What This Is
 
-## Examples by User Type
+- A client SDK for QDSV Bridge.
+- A controlled semantic-to-circuit export interface.
+- A way to request QDSV IR, oracle specs, QASM/Qiskit artifacts or expert construction inputs.
+- A bridge for users who need circuit ecosystems but do not want to start from prebuilt templates.
 
-### Bridge Use: problem to generated circuit
+## What This Is Not
 
-```python
-result = client.generate(spec)
+- It is not the private QDSV Runtime.
+- It is not a bulk data processing SDK.
+- It is not a hardware execution SDK.
+- It is not an arbitrary circuit generator.
+- It is not a selector of prefabricated circuit templates.
+- It does not expose CAP, backend selection heuristics, private lowering internals, QuEST/Aer/IBM adapters, secrets or production configuration.
 
-print(result["circuit_origin"])      # qdsv_derived
-print(result["circuit"]["status"])   # generated_from_semantic_spec
-print(result["ready_to_run_example"]["kind"])
+## Why This Exists
+
+Traditional quantum workflows often start by asking users to choose a circuit, encoding, ansatz or measurement pattern. That can force the data to adapt to a circuit.
+
+QDSV Bridge starts from a controlled semantic family. The family defines what kind of problem is allowed, what concepts belong to it, what patterns are excluded and what evidence must be produced.
+
+```text
+problem family spec
+-> family ontology validation
+-> semantic ProblemSpec / IR
+-> oracle specification
+-> materialization policy
+-> generated circuit artifact or expert construction inputs
 ```
 
-### Bridge Build: problem to QASM/Qiskit/oracle/IR
+For users who need circuit ecosystems, Bridge derives a new circuit artifact from that semantic specification instead of asking the user to adapt the problem to a ready-made template.
+
+For expert constructors, Bridge can also return the key semantic inputs needed to design a custom circuit without forcing a final circuit.
+
+## Bridge Modes
+
+QDSV Bridge is one SDK with multiple output depths. The modes do not change the core principle: the circuit, when delivered, is derived from the semantic problem specification.
+
+| API | Commercial name | Intended user | What Bridge returns |
+|---|---|---|---|
+| `generate()` / `use` | Bridge Use | Basic user who wants to solve without designing circuits. | A new problem-derived circuit artifact, simple explanation, information-loss risk, usage recommendation and ready-to-run example. |
+| `build()` / `build` | Bridge Build | Intermediate user who understands Qiskit, QASM or quantum workflows. | A new problem-derived circuit artifact plus QASM/Qiskit, oracle spec, IR summary, preservation report, estimated qubits/depth and digests. |
+| `prepare()` / `expert_prepare` | Bridge Expert Prepare | Expert constructor who wants to design a custom circuit. | Validated family, ProblemSpec/IR, oracle spec, predicates, target state/goal, constraints, variables, information-loss risk, encoding/measurement suggestions, estimated limits and evidence. It does not force a final circuit. |
+| `evaluate()` / `expert_evaluate` | Bridge Expert Evaluate | Expert evaluator who wants to compare QDSV materializations. | Suggested QDSV circuit artifact, materialization variants, comparison and preservation report. |
+
+Python helpers:
 
 ```python
-result = client.build(spec)
-
-print(result["artifact"]["format"])
-print(result["editable_artifacts"]["oracle_spec"])
-print(result["editable_artifacts"]["ir_summary"])
-print(result["digests"])
+client.generate(spec)  # mode="use"
+client.build(spec)     # mode="build"
+client.prepare(spec)   # mode="expert_prepare"
+client.evaluate(spec)  # mode="expert_evaluate"
 ```
 
-### Bridge Expert: construction inputs and materialization comparison
+Explicit mode:
 
 ```python
-inputs = client.prepare(spec)
-print(inputs["expert_inputs"]["encoding_suggestions"])
-print(inputs["expert_inputs"]["measurement_suggestions"])
-
-comparison = client.evaluate(spec)
-print(comparison["materialization_variants"])
-print(comparison["comparison"])
+client.export(spec, mode="build")
+client.explain(spec, mode="expert_prepare")
 ```
 
-Every export response includes minimum traceability metadata:
+CLI:
+
+```bash
+qdsv-bridge export spec.json --mode use
+qdsv-bridge export spec.json --mode build
+qdsv-bridge export spec.json --mode expert_prepare
+qdsv-bridge export spec.json --mode expert_evaluate
+```
+
+Every export response should include traceability metadata:
 
 ```json
 {
@@ -193,94 +172,41 @@ Every export response includes minimum traceability metadata:
 }
 ```
 
-## Public Endpoints
+## Examples By User Type
 
-The SDK calls the QDSV API:
-
-- `GET /api/bridge/families`
-- `POST /api/bridge/validate`
-- `POST /api/bridge/compile`
-- `POST /api/bridge/explain`
-- `POST /api/bridge/export`
-
-Default cloud endpoint:
+Basic user:
 
 ```python
-client = QDSVBridgeClient(api_url="https://api.qdsv.cloud/api")
+result = client.generate(spec)
+print(result["circuit_origin"])          # qdsv_derived
+print(result["circuit"]["status"])       # generated_from_semantic_spec
+print(result["ready_to_run_example"])
 ```
 
-Local/private Docker endpoint:
+Intermediate developer:
 
 ```python
-client = QDSVBridgeClient.local()
+result = client.build(spec)
+print(result["artifact"]["format"])
+print(result["editable_artifacts"]["oracle_spec"])
+print(result["editable_artifacts"]["ir_summary"])
+print(result["digests"])
 ```
 
-## Resource and Multi-User Limits
+Expert constructor:
 
-QDSV Bridge accepts compact semantic problem specifications, not raw datasets.
+```python
+inputs = client.prepare(spec)
+print(inputs["expert_inputs"]["encoding_suggestions"])
+print(inputs["expert_inputs"]["measurement_suggestions"])
+```
 
-QDSV Bridge is not a bulk data processing SDK. It is designed to receive a bounded semantic specification of the problem and return circuit-oriented artifacts or expert construction inputs.
+Expert evaluator:
 
-Do not send:
-
-- full CSV files;
-- raw datasets;
-- thousands of rows;
-- sensitive records;
-- training data;
-- hardware execution requests.
-
-Send:
-
-- problem family;
-- finite state-space size;
-- prepared signal or variable names;
-- goal / predicate / ranking intent;
-- target format;
-- qubit/depth limits;
-- materialization policy.
-
-Public API minimum limits:
-
-| Limit | Default |
-| --- | --- |
-| Max spec payload | 64 KB |
-| Max QASM / circuit artifact payload | 256 KB |
-| Max compile time | 5 seconds |
-| Max export time | 10 seconds |
-| Raw data payloads | Not allowed |
-| Hardware execution | Not available from Bridge SDK |
-| `bounded_semantic_marking` | 1024 candidates / 24 signals |
-| `semantic_signal_classification` | 1024 candidates / 32 signals |
-| `predicate_marking` | 2048 candidates / 8 signals |
-| `state_similarity` | 1024 candidates / 64 signals |
-| `combinatorial_relation` | 4096 candidates / 16 signals |
-| `distribution_sampling` | 2048 candidates / 16 signals |
-
-Default API rate limits may be configured by the QDSV deployment:
-
-- `families`: 60/minute
-- `validate`: 30/minute
-- `compile`: 20/minute
-- `explain`: 20/minute
-- `export`: 10/minute
-
-Rate limits use `Authorization`, `x-api-key` or `x-license-key` when present; otherwise they fall back to IP plus SDK name. In the current public deployment, rate limiting is in-memory per API instance. If Cloud Run scales to multiple instances, the effective limit may multiply until a distributed rate-limit store is enabled.
-
-The SDK itself is stateless and does not block multiple users. Multi-user control, quotas, API keys, license checks and history belong to the QDSV/Qruba API deployment, not to the local Python package.
-
-Raw dataset payloads are rejected. Example:
-
-```json
-{
-  "detail": {
-    "error_code": "E_BRIDGE_RAW_DATA_NOT_ALLOWED",
-    "message": "Raw datasets are not allowed in Bridge specs. Provide semantic signals, predicates, candidates, or summarized problem structure instead.",
-    "detail": {
-      "forbidden_fields": ["rows"]
-    }
-  }
-}
+```python
+comparison = client.evaluate(spec)
+print(comparison["materialization_variants"])
+print(comparison["comparison"])
 ```
 
 ## Supported Families
@@ -294,7 +220,9 @@ Developer Preview families:
 - `combinatorial_relation`
 - `distribution_sampling`
 
-`bounded_semantic_marking` is the controlled fallback family. Use it when the problem is finite, bounded and semantic, but no specialized Bridge family exists yet. It is not a universal free-form mode: it still requires a bounded state space, declared goal, limits, excluded patterns and preservation reporting.
+`bounded_semantic_marking` is the controlled fallback family. Use it when the problem is finite, bounded and semantic, but no specialized Bridge family exists yet.
+
+It is not a universal free-form mode: it still requires a bounded state space, declared goal, limits, excluded patterns and preservation reporting.
 
 Each family has:
 
@@ -307,7 +235,7 @@ Each family has:
 - export targets;
 - evidence / digest contract.
 
-### Fallback family example
+Fallback example:
 
 ```python
 spec = {
@@ -333,10 +261,9 @@ spec = {
 }
 
 result = client.build(spec)
-
-print(result["family"])          # bounded_semantic_marking
-print(result["circuit_origin"])  # qdsv_derived
-print(result["warnings"])        # includes fallback-family guidance
+print(result["family"])
+print(result["circuit_origin"])
+print(result["warnings"])
 ```
 
 ## What It Exports
@@ -350,9 +277,109 @@ Depending on `target.format`, QDSV Bridge can export:
 - `qasm3`
 - `qiskit_blueprint`
 
-For `use` and `build`, circuit-oriented targets return a circuit artifact derived from the semantic spec, with explicit QDSV oracle/digest information and preservation metadata. In Developer Preview, some targets are returned as integration blueprints with semantic oracle insertion points so external platforms can inspect, execute, optimize or complete the materialization safely.
+For `use` and `build`, circuit-oriented targets return a circuit artifact derived from the semantic spec, with explicit QDSV oracle/digest information and preservation metadata.
+
+In Developer Preview, some targets are returned as integration blueprints with semantic oracle insertion points so external platforms can inspect, execute, optimize or complete the materialization safely.
 
 For `expert_prepare`, Bridge may intentionally return construction inputs instead of forcing a final circuit. This is useful when an expert wants to design a custom circuit with the correct semantic ingredients.
+
+## Public Endpoints
+
+The SDK calls the QDSV API:
+
+- `GET /api/bridge/families`
+- `POST /api/bridge/validate`
+- `POST /api/bridge/compile`
+- `POST /api/bridge/explain`
+- `POST /api/bridge/export`
+
+Default cloud endpoint:
+
+```python
+client = QDSVBridgeClient(api_url="https://api.qdsv.cloud/api")
+```
+
+Local/private Docker endpoint:
+
+```python
+client = QDSVBridgeClient.local()
+```
+
+## Resource And Multi-User Limits
+
+QDSV Bridge accepts compact semantic problem specifications, not raw datasets.
+
+Do not send:
+
+- full CSV files;
+- raw datasets;
+- thousands of rows;
+- sensitive records;
+- training data;
+- hardware execution requests.
+
+Send:
+
+- problem family;
+- finite state-space size;
+- prepared signal or variable names;
+- goal / predicate / ranking intent;
+- target format;
+- qubit/depth limits;
+- materialization policy.
+
+Public API minimum limits:
+
+| Limit | Default |
+|---|---:|
+| Max spec payload | 64 KB |
+| Max QASM / circuit artifact payload | 256 KB |
+| Max compile time | 5 seconds |
+| Max export time | 10 seconds |
+| Raw data payloads | Not allowed |
+| Hardware execution | Not available from Bridge SDK |
+| `bounded_semantic_marking` | 1024 candidates / 24 signals |
+| `semantic_signal_classification` | 1024 candidates / 32 signals |
+| `predicate_marking` | 2048 candidates / 8 signals |
+| `state_similarity` | 1024 candidates / 64 signals |
+| `combinatorial_relation` | 4096 candidates / 16 signals |
+| `distribution_sampling` | 2048 candidates / 16 signals |
+
+Default API rate limits may be configured by the QDSV deployment:
+
+- `families`: 60/minute
+- `validate`: 30/minute
+- `compile`: 20/minute
+- `explain`: 20/minute
+- `export`: 10/minute
+
+Rate limits use `Authorization`, `x-api-key` or `x-license-key` when present. Otherwise they fall back to IP plus SDK name.
+
+In the current public deployment, rate limiting is in-memory per API instance. If Cloud Run scales to multiple instances, the effective limit may multiply until a distributed rate-limit store is enabled.
+
+The SDK itself is stateless and does not block multiple users. Multi-user control, quotas, API keys, license checks and history belong to the QDSV/Qruba API deployment, not to the local Python package.
+
+Raw dataset payloads are rejected:
+
+```json
+{
+  "detail": {
+    "error_code": "E_BRIDGE_RAW_DATA_NOT_ALLOWED",
+    "message": "Raw datasets are not allowed in Bridge specs. Provide semantic signals, predicates, candidates, or summarized problem structure instead.",
+    "detail": {
+      "forbidden_fields": ["rows"]
+    }
+  }
+}
+```
+
+## Examples And Roadmap
+
+- [Examples](examples/)
+- [Roadmap](ROADMAP.md)
+- [QDSV model site](https://qdsv.cloud/)
+- [Qruba Cloud](https://cloud.qruba.site/)
+- [PyPI](https://pypi.org/project/qdsv-bridge/)
 
 ## Important Boundaries
 
@@ -368,7 +395,7 @@ QDSV Bridge does not expose:
 - prefabricated circuit selection as the main product;
 - user-supplied free circuits as family contracts.
 
-The product principle is:
+Product principle:
 
 ```text
 controlled semantic family
@@ -379,15 +406,14 @@ controlled semantic family
 Not:
 
 ```text
-any input
--> arbitrary circuit
+any input -> arbitrary circuit
 ```
 
 ## Open SDK, Private Runtime
 
 This repository is open-core:
 
-- **Open under MIT:** Python client SDK, examples, docs and tests.
-- **Not included:** QDSV Runtime, ontology compiler internals, CAP, lowering, advanced materialization, backend adapters, private endpoints, secrets or production configuration.
+- Open under MIT: Python client SDK, examples, docs and tests.
+- Not included: QDSV Runtime, ontology compiler internals, CAP, lowering, advanced materialization, backend adapters, private endpoints, secrets or production configuration.
 
 QDSV, QIntent and Qruba names and marks are project marks of their respective owners. The MIT License for this repository does not grant trademark rights.
