@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 
-Current package version: `0.1.3`.
+Current package version: `0.1.4`.
 
 QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circuit bridge built on **QDSV - Quantum Declarative Semantic Value**.
 
@@ -31,7 +31,7 @@ Build a circuit-oriented artifact from a compact semantic spec:
 ```python
 from qdsv_bridge import QDSVBridgeClient
 
-client = QDSVBridgeClient()
+client = QDSVBridgeClient(api_key="YOUR_QDSV_API_KEY")
 
 spec = {
     "family": "semantic_signal_classification",
@@ -153,10 +153,10 @@ client.explain(spec, mode="expert_prepare")
 CLI:
 
 ```bash
-qdsv-bridge export spec.json --mode use
-qdsv-bridge export spec.json --mode build
-qdsv-bridge export spec.json --mode expert_prepare
-qdsv-bridge export spec.json --mode expert_evaluate
+qdsv-bridge export spec.json --mode use --api-key YOUR_QDSV_API_KEY
+qdsv-bridge export spec.json --mode build --api-key YOUR_QDSV_API_KEY
+qdsv-bridge export spec.json --mode expert_prepare --api-key YOUR_QDSV_API_KEY
+qdsv-bridge export spec.json --mode expert_evaluate --api-key YOUR_QDSV_API_KEY
 ```
 
 Every export response should include traceability metadata:
@@ -305,6 +305,8 @@ Local/private Docker endpoint:
 client = QDSVBridgeClient.local()
 ```
 
+Public informational endpoints such as `families()` are open. Value-producing compilation/export operations require an SDK API key.
+
 ## Resource And Multi-User Limits
 
 QDSV Bridge accepts compact semantic problem specifications, not raw datasets.
@@ -336,6 +338,8 @@ Public API minimum limits:
 | Max QASM / circuit artifact payload | 256 KB |
 | Max compile time | 5 seconds |
 | Max export time | 10 seconds |
+| API key required for | `compile`, `export`, `generate`, `build`, `prepare`, `evaluate` |
+| Monthly demo quota | 5 compilations/exports per API key |
 | Raw data payloads | Not allowed |
 | Hardware execution | Not available from Bridge SDK |
 | `bounded_semantic_marking` | 1024 candidates / 24 signals |

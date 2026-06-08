@@ -9,7 +9,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.1.3"
+    assert qdsv_bridge.__version__ == "0.1.4"
 
 
 def test_normalizes_api_url() -> None:
@@ -68,6 +68,30 @@ def test_export_posts_spec(monkeypatch: pytest.MonkeyPatch) -> None:
     assert calls["method"] == "POST"
     assert calls["url"].endswith("/bridge/export")
     assert calls["kwargs"]["json"]["spec"]["family"] == "semantic_signal_classification"
+
+
+def test_api_key_is_sent_as_header_and_bearer(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = {}
+
+    class FakeResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"status": "SUCCESS", "families": {}}
+
+    def fake_request(method, url, **kwargs):
+        calls["kwargs"] = kwargs
+        return FakeResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+
+    QDSVBridgeClient(api_key="qdsvb_demo_key").families()
+
+    headers = calls["kwargs"]["headers"]
+    assert headers["x-api-key"] == "qdsvb_demo_key"
+    assert headers["Authorization"] == "Bearer qdsvb_demo_key"
 
 
 def test_private_node_transport_error_is_user_friendly(monkeypatch: pytest.MonkeyPatch) -> None:

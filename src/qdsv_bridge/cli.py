@@ -12,6 +12,8 @@ def main() -> None:
     parser.add_argument("command", choices=["families", "validate", "compile", "explain", "export"])
     parser.add_argument("spec", nargs="?", help="Path to a Semantic Circuit Spec JSON file.")
     parser.add_argument("--api-url", default=None)
+    parser.add_argument("--api-key", default=None, help="Optional QDSV Bridge API key")
+    parser.add_argument("--license-key", default=None, help="Optional QDSV/Qruba license key")
     parser.add_argument("--local", action="store_true", help="Use http://localhost:18080/api")
     parser.add_argument(
         "--mode",
@@ -21,7 +23,11 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    client = QDSVBridgeClient.local() if args.local else QDSVBridgeClient(api_url=args.api_url)
+    client = (
+        QDSVBridgeClient.local(api_key=args.api_key, license_key=args.license_key)
+        if args.local
+        else QDSVBridgeClient(api_url=args.api_url, api_key=args.api_key, license_key=args.license_key)
+    )
     if args.command == "families":
         print(json.dumps(client.families(), indent=2, ensure_ascii=False))
         return
