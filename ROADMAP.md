@@ -7,6 +7,7 @@ QDSV Bridge is in Developer Preview. The SDK is a public client; the private QDS
 - Public Python SDK on PyPI.
 - Public Bridge API client.
 - Family-based validation, compile, explain and export.
+- Bridge Report generation in JSON, Markdown and HTML.
 - Output modes: `use`, `build`, `expert_prepare`, `expert_evaluate`.
 - Controlled fallback family: `bounded_semantic_marking`.
 - Resource limits and raw-data rejection.
@@ -20,11 +21,14 @@ QDSV Bridge is in Developer Preview. The SDK is a public client; the private QDS
 - Better examples for basic, intermediate and expert users.
 - More diagnostics for unsupported specs.
 - Notebooks that compare prebuilt-template workflows vs problem-derived Bridge outputs.
+- Recipes for current public families: semantic candidate marking, signal classification, predicate/oracle marking, state similarity, combinatorial relations and distribution sampling.
 
 ## Later
 
 - More specialized Bridge families.
 - More export target variants.
+- PennyLane, Braket, Azure Quantum/Q#, Cirq and VS Code integrations as planned integrations, not current public capabilities.
+- Packaged NISQ workflow examples such as QUBO/QAOA/VQE/Grover as recipes built on top of Bridge artifacts.
 - TypeScript client preview.
 - Stronger public examples for Qiskit/PennyLane/Braket users.
 - GitHub Discussions after initial technical feedback.

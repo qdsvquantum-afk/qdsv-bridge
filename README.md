@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 
-Current package version: `0.1.4`.
+Current package version: `0.1.5`.
 
 QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circuit bridge built on **QDSV - Quantum Declarative Semantic Value**.
 
@@ -76,6 +76,22 @@ print(result["circuit_origin"])
 print(result["artifact"]["format"])
 ```
 
+## Colab Notebooks
+
+Use these notebooks when you want to try Bridge without setting up a local project:
+
+| Notebook | Flow |
+|---|---|
+| [Open 01 Semantic Candidate Marking](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/01_semantic_candidate_marking.ipynb) | `bounded_semantic_marking` -> QASM3 artifact -> Bridge Report |
+| [Open 02 Predicate Oracle Marking](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/02_predicate_oracle_marking.ipynb) | `predicate_marking` -> Qiskit blueprint -> Bridge Report |
+| [Open 03 Semantic Signal Classification](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/03_semantic_signal_classification.ipynb) | `semantic_signal_classification` -> QASM3 artifact -> Bridge Report |
+
+Each notebook follows the same route:
+
+```text
+problem spec -> Bridge artifact -> shareable report
+```
+
 Default cloud endpoint:
 
 ```text
@@ -93,6 +109,7 @@ client = QDSVBridgeClient.local()
 - A client SDK for QDSV Bridge.
 - A controlled semantic-to-circuit export interface.
 - A way to request QDSV IR, oracle specs, QASM/Qiskit artifacts or expert construction inputs.
+- A way to generate shareable Bridge Reports in JSON, Markdown or HTML.
 - A bridge for users who need circuit ecosystems but do not want to start from prebuilt templates.
 
 ## What This Is Not
@@ -153,10 +170,11 @@ client.explain(spec, mode="expert_prepare")
 CLI:
 
 ```bash
-qdsv-bridge export spec.json --mode use --api-key YOUR_QDSV_API_KEY
-qdsv-bridge export spec.json --mode build --api-key YOUR_QDSV_API_KEY
-qdsv-bridge export spec.json --mode expert_prepare --api-key YOUR_QDSV_API_KEY
-qdsv-bridge export spec.json --mode expert_evaluate --api-key YOUR_QDSV_API_KEY
+qdsv-bridge export spec.json --mode use
+qdsv-bridge export spec.json --mode build
+qdsv-bridge export spec.json --mode expert_prepare
+qdsv-bridge export spec.json --mode expert_evaluate
+qdsv-bridge report spec.json --mode build --format markdown --output bridge_report.md
 ```
 
 Every export response should include traceability metadata:
@@ -277,6 +295,44 @@ Depending on `target.format`, QDSV Bridge can export:
 - `qasm3`
 - `qiskit_blueprint`
 
+## Bridge Report
+
+Bridge Report turns the same auditable export package into a document users can share, attach to technical notes or keep as reproducibility evidence.
+
+Supported report formats:
+
+- `json`
+- `markdown`
+- `html`
+
+Python:
+
+```python
+report = client.report(spec, mode="build", format="markdown")
+print(report["content"])
+```
+
+CLI:
+
+```bash
+qdsv-bridge report spec.json --mode build --format markdown --output bridge_report.md
+qdsv-bridge report spec.json --mode build --format html --output bridge_report.html
+qdsv-bridge report spec.json --mode build --format json --output bridge_report.json
+```
+
+Each Bridge Report includes:
+
+1. Problem and deliverable contract.
+2. Family and mode used.
+3. Validations and semantic preservation evidence.
+4. Generated artifact summary and QASM/Qiskit blueprint content when requested.
+5. Circuit policy and template-use status.
+6. Digests.
+7. Resource limits and warnings.
+8. Reproducibility metadata.
+
+Bridge Report is the public trust document for Bridge: it makes clear what was derived, what was preserved, what was warned about and which digests identify the exported artifacts.
+
 For `use` and `build`, circuit-oriented targets return a circuit artifact derived from the semantic spec, with explicit QDSV oracle/digest information and preservation metadata.
 
 In Developer Preview, some targets are returned as integration blueprints with semantic oracle insertion points so external platforms can inspect, execute, optimize or complete the materialization safely.
@@ -292,6 +348,7 @@ The SDK calls the QDSV API:
 - `POST /api/bridge/compile`
 - `POST /api/bridge/explain`
 - `POST /api/bridge/export`
+- `POST /api/bridge/report`
 
 Default cloud endpoint:
 
@@ -305,7 +362,7 @@ Local/private Docker endpoint:
 client = QDSVBridgeClient.local()
 ```
 
-Public informational endpoints such as `families()` are open. Value-producing compilation/export operations require an SDK API key.
+Public informational endpoints such as `families()` are open. Developer Preview value-producing operations can be used without an API key and are limited by rate limits, payload limits and a demo quota per caller bucket. Deployments can optionally enable API-key-only access for partners, pilots or private environments.
 
 ## Resource And Multi-User Limits
 
@@ -338,8 +395,8 @@ Public API minimum limits:
 | Max QASM / circuit artifact payload | 256 KB |
 | Max compile time | 5 seconds |
 | Max export time | 10 seconds |
-| API key required for | `compile`, `export`, `generate`, `build`, `prepare`, `evaluate` |
-| Monthly demo quota | 5 compilations/exports per API key |
+| API key required for | Not required by default in Developer Preview |
+| Monthly demo quota | 5 compilations/exports/reports per caller bucket |
 | Raw data payloads | Not allowed |
 | Hardware execution | Not available from Bridge SDK |
 | `bounded_semantic_marking` | 1024 candidates / 24 signals |
@@ -356,12 +413,15 @@ Default API rate limits may be configured by the QDSV deployment:
 - `compile`: 20/minute
 - `explain`: 20/minute
 - `export`: 10/minute
+- `report`: 10/minute
 
 Rate limits use `Authorization`, `x-api-key` or `x-license-key` when present. Otherwise they fall back to IP plus SDK name.
 
+API keys are optional for the open Developer Preview path. They become useful for higher quotas, partner access, private pilots, usage attribution or deployments configured with `QDSV_BRIDGE_API_KEY_REQUIRED=true`.
+
 In the current public deployment, rate limiting is in-memory per API instance. If Cloud Run scales to multiple instances, the effective limit may multiply until a distributed rate-limit store is enabled.
 
-The SDK itself is stateless and does not block multiple users. Multi-user control, quotas, API keys, license checks and history belong to the QDSV/Qruba API deployment, not to the local Python package.
+The SDK itself is stateless and does not block multiple users. Multi-user control, quotas, optional API keys, license checks and history belong to the QDSV/Qruba API deployment, not to the local Python package.
 
 Raw dataset payloads are rejected:
 
@@ -384,6 +444,10 @@ Raw dataset payloads are rejected:
 - [QDSV model site](https://qdsv.cloud/)
 - [Qruba Cloud](https://cloud.qruba.site/)
 - [PyPI](https://pypi.org/project/qdsv-bridge/)
+
+Current public artifact targets are `problem_spec`, `ir`, `oracle_spec`, `qasm2`, `qasm3` and `qiskit_blueprint`.
+
+PennyLane, Amazon Braket, Azure Quantum/Q#, Cirq, VS Code, TypeScript clients and packaged NISQ recipes such as QUBO/QAOA/VQE/Grover are planned integrations or higher-level examples. They should not be described as current public Bridge capabilities.
 
 ## Important Boundaries
 

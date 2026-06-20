@@ -9,7 +9,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.1.4"
+    assert qdsv_bridge.__version__ == "0.1.5"
 
 
 def test_normalizes_api_url() -> None:
@@ -146,6 +146,33 @@ def test_export_accepts_mode_argument(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert result["bridge_mode"] == "use"
     assert calls["kwargs"]["json"]["spec"]["bridge_mode"] == "use"
+
+
+def test_report_posts_spec_format_and_mode(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = {}
+
+    class FakeResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"status": "SUCCESS", "report_format": "markdown", "content": "# QDSV Bridge Report\n"}
+
+    def fake_request(method, url, **kwargs):
+        calls["method"] = method
+        calls["url"] = url
+        calls["kwargs"] = kwargs
+        return FakeResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+    result = QDSVBridgeClient().report({"family": "semantic_signal_classification"}, mode="build", format="markdown")
+
+    assert result["report_format"] == "markdown"
+    assert calls["method"] == "POST"
+    assert calls["url"].endswith("/bridge/report")
+    assert calls["kwargs"]["json"]["format"] == "markdown"
+    assert calls["kwargs"]["json"]["spec"]["bridge_mode"] == "build"
 
 
 def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPatch) -> None:

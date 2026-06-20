@@ -9,7 +9,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.1.4"
+SDK_VERSION = "0.1.5"
 PRIVATE_NODE_UNAVAILABLE_MESSAGE = (
     "Private QDSV node temporarily unavailable. It may be offline, reserved for "
     "private processing, or busy. Try again later or use QDSVBridgeClient() for "
@@ -116,6 +116,15 @@ class QDSVBridgeClient:
 
     def export(self, spec: Mapping[str, Any], *, mode: str | None = None) -> dict[str, Any]:
         return self._request("POST", "/bridge/export", json={"spec": self._spec_with_mode(spec, mode)})
+
+    def report(self, spec: Mapping[str, Any], *, mode: str | None = None, format: str = "markdown") -> dict[str, Any]:
+        """Generate a shareable Bridge Report in markdown, html or json format."""
+
+        return self._request(
+            "POST",
+            "/bridge/report",
+            json={"spec": self._spec_with_mode(spec, mode), "format": format},
+        )
 
     def generate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
         """Basic-user mode: generate a new circuit package from the problem."""
