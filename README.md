@@ -86,6 +86,7 @@ Use these notebooks when you want to try Bridge without setting up a local proje
 | [Open 02 Predicate Oracle Marking](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/02_predicate_oracle_marking.ipynb) | `predicate_marking` -> Qiskit blueprint -> Bridge Report |
 | [Open 03 Semantic Signal Classification](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/03_semantic_signal_classification.ipynb) | `semantic_signal_classification` -> QASM3 artifact -> Bridge Report |
 | [Open 04 IBM/Qiskit Artifact Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/04_ibm_qiskit_bridge_demo.ipynb) | Problem-first spec -> QASM3 artifact -> Qiskit inspection/simulation -> Bridge Report |
+| [Open 05 AWS Braket OpenQASM Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/05_aws_braket_openqasm_demo.ipynb) | Problem-first spec -> OpenQASM artifact -> Braket LocalSimulator -> Bridge Report |
 
 Each notebook follows the same route:
 
@@ -99,6 +100,15 @@ For Qiskit-oriented users, see the public integration guide:
 
 - [QDSV Bridge for IBM/Qiskit Workflows](docs/integrations/ibm_quantum.md)
 - [Open 04 IBM/Qiskit Artifact Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/04_ibm_qiskit_bridge_demo.ipynb)
+
+## Amazon Braket OpenQASM Workflow
+
+For Braket-oriented users, see the public OpenQASM integration guide:
+
+- [QDSV Bridge for Amazon Braket OpenQASM Workflows](docs/integrations/aws_braket.md)
+- [Open 05 AWS Braket OpenQASM Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/05_aws_braket_openqasm_demo.ipynb)
+
+QDSV Bridge exports OpenQASM artifacts that can be inspected and executed in Braket-oriented workflows using the Amazon Braket SDK and `LocalSimulator`. This is not an official Amazon Braket integration and does not include managed AWS hardware execution.
 
 Default cloud endpoint:
 
@@ -455,7 +465,7 @@ Raw dataset payloads are rejected:
 
 Current public artifact targets are `problem_spec`, `ir`, `oracle_spec`, `qasm2`, `qasm3` and `qiskit_blueprint`.
 
-PennyLane, Amazon Braket, Azure Quantum/Q#, Cirq, VS Code, TypeScript clients and packaged NISQ recipes such as QUBO/QAOA/VQE/Grover are planned integrations or higher-level examples. They should not be described as current public Bridge capabilities.
+PennyLane, Azure Quantum/Q#, Cirq, VS Code, TypeScript clients, Amazon Braket managed hardware execution and packaged NISQ recipes such as QUBO/QAOA/VQE/Grover are planned integrations or higher-level examples. They should not be described as current public Bridge capabilities.
 
 ## Important Boundaries
 
