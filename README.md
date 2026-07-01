@@ -85,12 +85,20 @@ Use these notebooks when you want to try Bridge without setting up a local proje
 | [Open 01 Semantic Candidate Marking](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/01_semantic_candidate_marking.ipynb) | `bounded_semantic_marking` -> QASM3 artifact -> Bridge Report |
 | [Open 02 Predicate Oracle Marking](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/02_predicate_oracle_marking.ipynb) | `predicate_marking` -> Qiskit blueprint -> Bridge Report |
 | [Open 03 Semantic Signal Classification](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/03_semantic_signal_classification.ipynb) | `semantic_signal_classification` -> QASM3 artifact -> Bridge Report |
+| [Open 04 IBM/Qiskit Artifact Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/04_ibm_qiskit_bridge_demo.ipynb) | Problem-first spec -> QASM3 artifact -> Qiskit inspection/simulation -> Bridge Report |
 
 Each notebook follows the same route:
 
 ```text
 problem spec -> Bridge artifact -> shareable report
 ```
+
+## IBM/Qiskit Workflow
+
+For Qiskit-oriented users, see the public integration guide:
+
+- [QDSV Bridge for IBM/Qiskit Workflows](docs/integrations/ibm_quantum.md)
+- [Open 04 IBM/Qiskit Artifact Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/04_ibm_qiskit_bridge_demo.ipynb)
 
 Default cloud endpoint:
 
