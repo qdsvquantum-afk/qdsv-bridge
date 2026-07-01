@@ -110,6 +110,14 @@ For Braket-oriented users, see the public OpenQASM integration guide:
 
 QDSV Bridge exports OpenQASM artifacts that can be inspected and executed in Braket-oriented workflows using the Amazon Braket SDK and `LocalSimulator`. This is not an official Amazon Braket integration and does not include managed AWS hardware execution.
 
+## OpenQASM-First Interoperability
+
+For a provider-neutral view of the Bridge artifact handoff, see:
+
+- [QDSV Bridge OpenQASM-First Interoperability](docs/integrations/openqasm.md)
+
+Bridge uses OpenQASM as a public artifact boundary between controlled semantic problem specifications and framework-specific workflows such as Qiskit or Amazon Braket.
+
 Default cloud endpoint:
 
 ```text
