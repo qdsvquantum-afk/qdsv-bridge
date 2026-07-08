@@ -1,5 +1,3 @@
-import os
-
 from qdsv_bridge import QDSVBridgeClient
 
 
@@ -26,7 +24,7 @@ spec = {
 }
 
 
-client = QDSVBridgeClient(api_key=os.getenv("QDSV_BRIDGE_API_KEY") or "YOUR_QDSV_API_KEY")
+client = QDSVBridgeClient()
 result = client.build(spec)
 
 print(result["status"])

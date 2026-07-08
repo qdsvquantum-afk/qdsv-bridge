@@ -32,7 +32,7 @@ Build a circuit-oriented artifact from a compact semantic spec:
 ```python
 from qdsv_bridge import QDSVBridgeClient
 
-client = QDSVBridgeClient(api_key="YOUR_QDSV_API_KEY")
+client = QDSVBridgeClient()
 
 spec = {
     "family": "semantic_signal_classification",
@@ -107,6 +107,7 @@ For Qiskit-oriented users, see the public integration guide:
 For Braket-oriented users, see the public OpenQASM integration guide:
 
 - [QDSV Bridge for Amazon Braket OpenQASM Workflows](docs/integrations/aws_braket.md)
+- [Amazon Braket Community Submission Path](docs/integrations/aws_braket_community_path.md)
 - [Open 05 AWS Braket OpenQASM Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/05_aws_braket_openqasm_demo.ipynb)
 
 QDSV Bridge exports OpenQASM artifacts that can be inspected and executed in Braket-oriented workflows using the Amazon Braket SDK and `LocalSimulator`. This is not an official Amazon Braket integration and does not include managed AWS hardware execution.
