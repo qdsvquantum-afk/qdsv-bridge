@@ -15,7 +15,7 @@ from pathlib import Path
 from qdsv_bridge import QDSVBridgeClient
 
 
-API_URL = os.getenv("QDSV_BRIDGE_API_URL", "https://qdsv-api-568788785178.us-central1.run.app/api")
+API_URL = os.getenv("QDSV_BRIDGE_API_URL") or None
 API_KEY = os.getenv("QDSV_BRIDGE_API_KEY") or None
 
 

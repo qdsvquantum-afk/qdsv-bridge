@@ -424,7 +424,7 @@ Public API minimum limits:
 | Max compile time | 5 seconds |
 | Max export time | 10 seconds |
 | API key required for | Not required by default in Developer Preview |
-| Monthly demo quota | 5 compilations/exports/reports per caller bucket |
+| Monthly demo quota | 100 compilations/exports/reports per caller bucket |
 | Raw data payloads | Not allowed |
 | Hardware execution | Not available from Bridge SDK |
 | `bounded_semantic_marking` | 1024 candidates / 24 signals |
