@@ -12,11 +12,48 @@ QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circ
 
 It turns supported problem-family specifications into problem-derived circuit materializations, QDSV IR, oracle specs, QASM/Qiskit artifacts or expert construction inputs.
 
+The public developer preview is available without an API key:
+
+```python
+from qdsv_bridge import QDSVBridgeClient
+
+client = QDSVBridgeClient()  # Uses https://api.qdsv.cloud/api
+```
+
+Use a private/local Docker node only when you are running QDSV privately:
+
+```python
+client = QDSVBridgeClient.local()  # Uses http://localhost:18080/api
+```
+
 QDSV Bridge is not a template selector and not a free arbitrary circuit generator. Its core rule is:
 
 ```text
 do not force the problem into a prefabricated circuit;
 derive the circuit or construction inputs from the semantic problem specification.
+```
+
+## Choose A Mode
+
+Bridge has one SDK with different output depths:
+
+| If you are... | Use | Python helper | Main output |
+|---|---|---|---|
+| A basic user who wants a ready artifact | Bridge Use | `client.generate(spec)` | Simple generated artifact, guidance and ready-to-run example |
+| A Qiskit/QASM/OpenQASM user | Bridge Build | `client.build(spec)` | QASM/Qiskit-oriented artifact, oracle spec, IR summary, digests and preservation report |
+| An expert circuit constructor | Bridge Expert Prepare | `client.prepare(spec)` | Semantic construction inputs without forcing a final circuit |
+| An expert evaluating materializations | Bridge Expert Evaluate | `client.evaluate(spec)` | Suggested materialization variants and comparison evidence |
+
+If you are not sure where to start, use:
+
+```python
+result = client.generate(spec)  # basic
+```
+
+If you want to inspect or route the artifact into Qiskit, Braket or another OpenQASM-oriented workflow, use:
+
+```python
+result = client.build(spec)  # intermediate/developer
 ```
 
 ## 5 Minute Quickstart
@@ -27,7 +64,7 @@ Install the SDK:
 pip install qdsv-bridge
 ```
 
-Build a circuit-oriented artifact from a compact semantic spec:
+Build a QASM3 artifact from a compact semantic spec. No key is required in the public preview:
 
 ```python
 from qdsv_bridge import QDSVBridgeClient
@@ -35,46 +72,43 @@ from qdsv_bridge import QDSVBridgeClient
 client = QDSVBridgeClient()
 
 spec = {
-    "family": "semantic_signal_classification",
+    "family": "bounded_semantic_marking",
     "state_space": {
         "kind": "finite_candidates",
-        "candidate_count": 300,
-        "candidate_id": "eeg_window",
+        "candidate_count": 8,
+        "candidate_id": "candidate",
     },
-    "signals": [
-        "dwt_cD3_std_score",
-        "std_score",
-        "activity_score",
-        "energy_score",
-        "dwt_cD2_std_score",
-        "complexity_score",
-    ],
+    "signals": ["eligibility_score", "risk_score"],
     "goal": {
-        "kind": "binary_marking",
-        "positive_state": "ictal",
-    },
-    "materialization_policy": {
-        "preserve_signal_geometry": True,
-        "avoid_fixed_ansatz": True,
-        "avoid_forced_dimensionality_reduction": True,
-        "report_information_loss": True,
+        "kind": "marking",
+        "predicate": "eligible_candidate",
     },
     "target": {
         "format": "qasm3",
         "backend_family": "qiskit",
     },
     "limits": {
-        "max_qubits": 10,
-        "max_depth": 300,
+        "max_qubits": 5,
+        "max_depth": 160,
     },
 }
 
-result = client.build(spec)
+result = client.generate(spec)  # basic-user mode
 
 print(result["status"])
 print(result["bridge_mode"])
 print(result["circuit_origin"])
 print(result["artifact"]["format"])
+```
+
+For a developer-oriented package with oracle spec, IR summary, digests and preservation evidence:
+
+```python
+result = client.build(spec)
+
+print(result["editable_artifacts"]["oracle_spec"])
+print(result["editable_artifacts"]["ir_summary"])
+print(result["digests"])
 ```
 
 ## Colab Notebooks
@@ -259,12 +293,14 @@ print(comparison["comparison"])
 
 Developer Preview families:
 
-- `bounded_semantic_marking`
-- `semantic_signal_classification`
-- `predicate_marking`
-- `state_similarity`
-- `combinatorial_relation`
-- `distribution_sampling`
+| Family | Status | Use it for |
+|---|---|---|
+| `bounded_semantic_marking` | Generic fallback, developer preview | Finite, bounded semantic marking/ranking/constraint problems that do not yet fit a specialized family. This is the safest generic starting point. |
+| `semantic_signal_classification` | Developer preview | Classification, marking or ranking from prepared numeric signals such as scores, risk indicators, eligibility signals or scientific features. |
+| `predicate_marking` | Developer preview | Marking finite candidates that satisfy a bounded predicate such as threshold, range or set membership. |
+| `state_similarity` | Developer preview | Similarity, overlap or fidelity-style relations over prepared numeric states or vectors. |
+| `combinatorial_relation` | Developer preview | Bounded relations over finite domains, assignments or constraint-satisfaction structures. |
+| `distribution_sampling` | Specified experimental | Distribution inspection or sampling over finite state spaces. Do not use it for production randomness or cryptographic claims. |
 
 `bounded_semantic_marking` is the controlled fallback family. Use it when the problem is finite, bounded and semantic, but no specialized Bridge family exists yet.
 
