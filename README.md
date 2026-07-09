@@ -8,6 +8,8 @@
 
 Current package version: `0.1.5`.
 
+Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
+
 QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circuit bridge built on **QDSV - Quantum Declarative Semantic Value**.
 
 It turns supported problem-family specifications into problem-derived circuit materializations, QDSV IR, oracle specs, QASM/Qiskit artifacts or expert construction inputs.

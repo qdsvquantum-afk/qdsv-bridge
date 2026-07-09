@@ -36,7 +36,7 @@ docs = [
 
 [project.urls]
 Homepage = "https://qdsv.cloud"
-Documentation = "https://qdsv.cloud/#bridge"
+Documentation = "https://qdsvquantum-afk.github.io/qdsv-bridge/"
 Source = "https://github.com/qdsvquantum-afk/qdsv-bridge"
 
 [project.scripts]
