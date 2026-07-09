@@ -27,7 +27,7 @@ This makes the handoff explicit. The user can see what Bridge generated, which s
 
 Bridge currently emits OpenQASM 3-oriented artifacts for circuit targets:
 
-```openqasm
+```text
 OPENQASM 3.0;
 include "stdgates.inc";
 // QDSV Bridge family: bounded_semantic_marking

@@ -27,6 +27,13 @@ dependencies = [
   "requests>=2.31",
 ]
 
+[project.optional-dependencies]
+docs = [
+  "myst-parser>=2.0",
+  "qiskit-sphinx-theme>=2.0",
+  "sphinx>=7.0",
+]
+
 [project.urls]
 Homepage = "https://qdsv.cloud"
 Documentation = "https://qdsv.cloud/#bridge"
