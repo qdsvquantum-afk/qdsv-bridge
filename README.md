@@ -33,16 +33,18 @@ do not force the problem into a prefabricated circuit;
 derive the circuit or construction inputs from the semantic problem specification.
 ```
 
-## Choose A Mode
+## Choose A Delivery Mode
 
-Bridge has one SDK with different output depths:
+Bridge has one SDK with four delivery modes. Choose the mode by the output you need, not by creating a different kind of project.
 
-| If you are... | Use | Python helper | Main output |
+First choose the problem family in `spec["family"]`, then choose how much control you want over the returned artifact:
+
+| If you need... | Use | Python helper | Main output |
 |---|---|---|---|
-| A basic user who wants a ready artifact | Bridge Use | `client.generate(spec)` | Simple generated artifact, guidance and ready-to-run example |
-| A Qiskit/QASM/OpenQASM user | Bridge Build | `client.build(spec)` | QASM/Qiskit-oriented artifact, oracle spec, IR summary, digests and preservation report |
-| An expert circuit constructor | Bridge Expert Prepare | `client.prepare(spec)` | Semantic construction inputs without forcing a final circuit |
-| An expert evaluating materializations | Bridge Expert Evaluate | `client.evaluate(spec)` | Suggested materialization variants and comparison evidence |
+| A simpler starting point without designing circuits | Bridge Use | `client.generate(spec)` | Problem-derived circuit artifact, inspection-ready output, guidance and ready-to-run example |
+| An inspectable OpenQASM/Qiskit/Braket-oriented artifact | Bridge Build | `client.build(spec)` | QASM/Qiskit-oriented artifact, oracle spec, IR summary, digests and preservation report |
+| Expert construction inputs before final circuit materialization | Bridge Expert Prepare | `client.prepare(spec)` | Semantic construction inputs without forcing a final circuit |
+| Expert comparison of possible materializations | Bridge Expert Evaluate | `client.evaluate(spec)` | Suggested materialization variants and comparison evidence |
 
 If you are not sure where to start, use:
 
@@ -55,6 +57,8 @@ If you want to inspect or route the artifact into Qiskit, Braket or another Open
 ```python
 result = client.build(spec)  # intermediate/developer
 ```
+
+Expert users have two separate routes: `prepare` when they want semantic construction ingredients, and `evaluate` when they want to compare possible materializations.
 
 ## 5 Minute Quickstart
 
@@ -198,7 +202,7 @@ problem family spec
 -> generated circuit artifact or expert construction inputs
 ```
 
-For users who need circuit ecosystems, Bridge derives a new circuit artifact from that semantic specification instead of asking the user to adapt the problem to a ready-made template.
+For users who want a simpler starting point, Bridge can generate problem-derived circuit artifacts and inspection-ready outputs from the semantic specification, instead of asking the user to adapt the problem to a ready-made template.
 
 For expert constructors, Bridge can also return the key semantic inputs needed to design a custom circuit without forcing a final circuit.
 
