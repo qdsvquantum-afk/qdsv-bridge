@@ -22,8 +22,11 @@ problem intent
 Install the public SDK:
 
 ```bash
-pip install qdsv-bridge
+pip install "qdsv-bridge[qiskit]"
 ```
+
+The optional Qiskit extra is version-capped to the current supported major series
+(`qiskit>=2,<3`) to follow Qiskit Ecosystem compatibility guidance.
 
 Minimal build flow:
 

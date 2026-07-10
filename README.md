@@ -70,6 +70,14 @@ Install the SDK:
 pip install qdsv-bridge
 ```
 
+For the optional Qiskit artifact inspection path:
+
+```bash
+pip install "qdsv-bridge[qiskit]"
+```
+
+The Qiskit extra is intentionally version-capped to the current supported major series (`qiskit>=2,<3`) to follow Qiskit Ecosystem compatibility guidance.
+
 Build a QASM3 artifact from a compact semantic spec. No key is required in the public preview:
 
 ```python

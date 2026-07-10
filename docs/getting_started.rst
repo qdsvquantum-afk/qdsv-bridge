@@ -10,6 +10,15 @@ Install QDSV Bridge from PyPI:
 
    pip install qdsv-bridge
 
+For optional Qiskit artifact inspection:
+
+.. code-block:: bash
+
+   pip install "qdsv-bridge[qiskit]"
+
+The Qiskit extra is version-capped to the current supported major series
+(``qiskit>=2,<3``) to follow Qiskit Ecosystem compatibility guidance.
+
 Create a client for the public developer preview:
 
 .. code-block:: python

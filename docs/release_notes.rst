@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+0.1.6
+-----
+
+* Adds the optional ``qiskit`` extra with an explicit ``qiskit>=2,<3`` compatibility cap.
+* Updates Qiskit-oriented installation examples to use ``qdsv-bridge[qiskit]``.
+* Keeps the base Bridge SDK lightweight: Qiskit remains optional, not a required runtime dependency.
+
 0.1.5
 -----
 
