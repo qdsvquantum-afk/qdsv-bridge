@@ -1,6 +1,15 @@
 Release Notes
 =============
 
+0.1.7
+-----
+
+* Removes the placeholder semantic-oracle circuit generator.
+* Routes circuit exports through canonical QDSV ProblemSpec/IR materialization.
+* Adds compact prepared-signal inputs and structured coherent-score goals.
+* Adds formula, precomputation, reversibility, QASM and actual-resource evidence.
+* Rejects incomplete circuit claims instead of returning a uniform-superposition scaffold.
+
 0.1.6
 -----
 

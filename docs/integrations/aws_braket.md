@@ -4,14 +4,14 @@ Status: public developer preview.
 
 QDSV Bridge is a problem-first specification layer for quantum-oriented workflows. It helps users declare a controlled semantic problem specification before exporting inspectable OpenQASM artifacts that can be used in Braket-oriented workflows with the Amazon Braket SDK and `LocalSimulator`.
 
-Bridge does not replace Amazon Braket and is not an official Amazon Braket integration. It prepares OpenQASM-oriented artifacts, preservation metadata and reproducibility reports that Braket users can inspect, adapt, simulate locally, or route toward managed Braket workflows when appropriate.
+Bridge does not replace Amazon Braket and is not an official Amazon Braket integration. It prepares canonically materialized OpenQASM artifacts, materialization evidence and reproducibility reports for Braket-oriented workflows.
 
 ## Current Public Flow
 
 ```text
 problem intent
 -> controlled semantic specification
--> Bridge validation/build
+-> Bridge validation and canonical QDSV materialization
 -> OpenQASM 3 artifact
 -> Braket-compatible OpenQASM view
 -> Amazon Braket LocalSimulator
@@ -38,20 +38,27 @@ spec = {
     "bridge_mode": "build",
     "state_space": {
         "kind": "finite_candidates",
-        "candidate_count": 8,
+        "candidate_count": 2,
         "candidate_id": "candidate",
     },
-    "signals": ["eligibility_score", "risk_score"],
+    "signals": ["eligibility_score"],
+    "prepared_candidates": [
+        {"eligibility_score": 0},
+        {"eligibility_score": 1},
+    ],
     "goal": {
         "kind": "marking",
-        "predicate": "eligible_candidate",
+        "threshold": 1,
+        "criteria": [
+            {"signal": "eligibility_score", "influence": 1, "priority": 1}
+        ],
     },
     "target": {
         "format": "qasm3",
         "backend_family": "braket",
     },
     "limits": {
-        "max_qubits": 5,
+        "max_qubits": 8,
         "max_depth": 160,
     },
 }
@@ -60,17 +67,26 @@ artifact_package = client.build(spec)
 qasm3_source = artifact_package["artifact"]["content"]
 ```
 
-Amazon Braket documents OpenQASM examples with the `OPENQASM 3;` header and without `stdgates.inc`. Bridge's current public artifact is intentionally OpenQASM/Qiskit-oriented, so the Braket demo creates a small compatibility view before submitting it to Braket:
+Bridge's canonical artifact uses Qiskit's OpenQASM 3 standard-gate include. The Braket demo therefore creates an explicit compatibility view: it removes that include, defines the four gates used by the lowered circuit, and renames Qiskit's `cx` instruction to Braket's `cnot` spelling.
 
 ```python
 def to_braket_openqasm(source: str) -> str:
     lines = []
+    gate_definitions = [
+        "gate x a { U(pi, 0, pi) a; }",
+        "gate h a { U(pi/2, 0, pi) a; }",
+        "gate rz(lambda) a { gphase(-lambda/2); U(0, 0, lambda) a; }",
+        "gate cnot a, b { ctrl @ x a, b; }",
+    ]
     for line in source.splitlines():
         stripped = line.strip()
         if stripped == "OPENQASM 3.0;":
             lines.append("OPENQASM 3;")
+            lines.extend(gate_definitions)
         elif stripped == 'include "stdgates.inc";':
             continue
+        elif stripped.startswith("cx "):
+            lines.append(line.replace("cx ", "cnot ", 1))
         else:
             lines.append(line)
     return "\n".join(lines) + "\n"
@@ -118,7 +134,7 @@ The notebook demonstrates:
 This demo was tested with:
 
 - Python 3.11;
-- `qdsv-bridge` 0.1.5;
+- `qdsv-bridge` 0.1.7;
 - Amazon Braket SDK;
 - Amazon Braket `LocalSimulator`.
 
@@ -132,6 +148,7 @@ The current public role of Bridge is upstream of managed execution:
 
 ```text
 preserve problem intent
+-> materialize an executable circuit through canonical ProblemSpec/IR
 -> derive an auditable OpenQASM artifact
 -> provide metadata and warnings
 -> let the Braket user inspect and control the execution workflow
@@ -146,7 +163,7 @@ For Braket users, the practical benefit is traceability before simulation or tas
 - what problem was declared;
 - what state-space role was used;
 - what OpenQASM artifact was generated;
-- what semantic preservation evidence was reported;
+- what canonical materialization evidence was reported;
 - what compatibility adjustments were made for Braket;
 - what warnings or limits should be inspected before execution.
 

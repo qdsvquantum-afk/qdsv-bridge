@@ -5,8 +5,9 @@ Problem-first Boundary
 ----------------------
 
 Bridge starts from controlled semantic problem specifications rather than
-from handwritten circuit templates. The public artifact boundary is
-OpenQASM/Qiskit-oriented output plus reproducibility evidence.
+from handwritten circuit templates. The public artifact boundary is canonical
+QDSV ProblemSpec/IR followed by executable OpenQASM/Qiskit output plus
+reproducibility evidence.
 
 Public SDK, Private Runtime
 ---------------------------
@@ -21,8 +22,13 @@ Delivery Model
 
 Bridge supports different delivery modes for different users:
 
-* Basic users can request problem-derived circuit artifacts and
-  ready-to-use outputs.
-* Intermediate users can inspect OpenQASM/Qiskit/Braket-oriented artifacts.
+* Basic users can request canonically materialized circuits and ready-to-run
+  outputs when their specification contains computable semantics.
+* Intermediate users can inspect executable OpenQASM/Qiskit artifacts and
+  the evidence proving how they were materialized.
 * Expert users can request semantic construction inputs or compare possible
   materializations.
+
+Bridge does not label uniform-superposition scaffolds as completed semantic
+circuits. Specifications without prepared numeric signals or canonical
+predicate IR remain expert inputs.

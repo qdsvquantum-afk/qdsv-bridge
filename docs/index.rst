@@ -2,7 +2,7 @@ QDSV Bridge Documentation
 =========================
 
 QDSV Bridge is a Python SDK for moving from controlled problem-first
-semantic specifications toward inspectable quantum-oriented artifacts,
+semantic specifications through canonical QDSV ProblemSpec/IR toward executable quantum-oriented artifacts,
 including OpenQASM/Qiskit workflows, Braket-oriented workflows and
 reproducibility reports.
 
@@ -27,10 +27,10 @@ Start Here
 
 * Install the SDK from PyPI: ``pip install qdsv-bridge``.
 * Use ``QDSVBridgeClient()`` for the public developer preview.
-* Start with ``client.generate(spec)`` when you want ready-to-use,
-  problem-derived circuit artifacts.
-* Use ``client.build(spec)`` when you want inspectable OpenQASM/Qiskit
-  artifacts, IR summaries, oracle specs, digests and reports.
+* Start with ``client.generate(spec)`` when you want a canonically materialized,
+  ready-to-run circuit.
+* Use ``client.build(spec)`` when you want executable OpenQASM/Qiskit
+  artifacts, canonical IR summaries, oracle specs, actual metrics, digests and reports.
 
 Current Public Role
 -------------------
@@ -38,3 +38,4 @@ Current Public Role
 Bridge is a developer-preview interoperability layer. It does not expose
 the private QDSV Runtime, production lowering internals, backend-routing
 heuristics, private adapters, secrets or production configuration.
+It does not export placeholder oracle scaffolds as completed circuits.

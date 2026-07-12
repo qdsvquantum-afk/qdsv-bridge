@@ -4,14 +4,14 @@ Status: public developer preview.
 
 QDSV Bridge is a problem-first specification layer for quantum-oriented workflows. It helps users declare a controlled semantic problem specification before exporting inspectable artifacts for circuit ecosystems such as Qiskit.
 
-Bridge does not replace Qiskit. It prepares QASM/Qiskit-oriented artifacts, preservation metadata and reproducibility reports that Qiskit users can inspect, modify, simulate or route toward IBM Quantum workflows when appropriate.
+Bridge does not replace Qiskit. It uses canonical QDSV ProblemSpec/IR materialization to prepare executable QASM/Qiskit artifacts, materialization evidence and reproducibility reports.
 
 ## Current Public Flow
 
 ```text
 problem intent
 -> controlled semantic specification
--> Bridge validation/build
+-> Bridge validation and canonical QDSV materialization
 -> QASM3 or Qiskit-oriented artifact
 -> Qiskit inspection or local simulation
 -> Bridge Report
@@ -40,20 +40,27 @@ spec = {
     "bridge_mode": "build",
     "state_space": {
         "kind": "finite_candidates",
-        "candidate_count": 8,
+        "candidate_count": 2,
         "candidate_id": "candidate",
     },
-    "signals": ["eligibility_score", "risk_score"],
+    "signals": ["eligibility_score"],
+    "prepared_candidates": [
+        {"eligibility_score": 0},
+        {"eligibility_score": 1},
+    ],
     "goal": {
         "kind": "marking",
-        "predicate": "eligible_candidate",
+        "threshold": 1,
+        "criteria": [
+            {"signal": "eligibility_score", "influence": 1, "priority": 1}
+        ],
     },
     "target": {
         "format": "qasm3",
         "backend_family": "qiskit",
     },
     "limits": {
-        "max_qubits": 5,
+        "max_qubits": 8,
         "max_depth": 160,
     },
 }
@@ -62,7 +69,7 @@ artifact_package = client.build(spec)
 qasm3_source = artifact_package["artifact"]["content"]
 
 print(qasm3_source)
-print(artifact_package["semantic_preservation"])
+print(artifact_package["materialization_evidence"])
 print(artifact_package["digests"])
 ```
 
@@ -106,7 +113,8 @@ The current public role of Bridge is upstream of execution:
 
 ```text
 preserve problem intent
--> derive an auditable artifact
+-> materialize the formula/oracle through canonical ProblemSpec/IR
+-> derive an executable auditable artifact
 -> provide metadata and warnings
 -> let the Qiskit user inspect and control the circuit workflow
 ```
@@ -120,7 +128,8 @@ For Qiskit users, the practical benefit is not loss of control. The benefit is t
 - what problem was declared;
 - what state-space role was used;
 - what artifact was generated;
-- what semantic preservation evidence was reported;
+- whether the formula was evaluated in the circuit or lowered as a finite-domain oracle;
+- whether candidates or result tables were precomputed;
 - what warnings or limits should be inspected before execution.
 
 ## Public Links

@@ -25,25 +25,26 @@ This makes the handoff explicit. The user can see what Bridge generated, which s
 
 ## Current Public Artifact
 
-Bridge currently emits OpenQASM 3-oriented artifacts for circuit targets:
+Bridge emits complete OpenQASM 3 artifacts converted from the canonical QDSV QASM2 materialization. A coherent score circuit includes candidate, signal, score, comparator and predicate registers, for example:
 
 ```text
 OPENQASM 3.0;
 include "stdgates.inc";
-// QDSV Bridge family: bounded_semantic_marking
-// QDSV oracle_digest: sha256:...
-// Blueprint: semantic oracle materialization point is intentionally explicit.
-qubit[3] q;
-bit[3] c;
-h q[0];
-h q[1];
-h q[2];
-// qdsv_semantic_oracle(q) would be inserted here by the target integration.
-// Optional amplitude amplification can be inserted here when supported.
-c = measure q;
+bit[2] c_result;
+qubit[1] candidate;
+qubit[1] signal_0;
+qubit[1] score_sum;
+qubit[1] score_accept;
+qubit[1] candidate_valid;
+qubit[1] selected;
+h candidate[0];
+cx candidate[0], signal_0[0];
+// reversible score, threshold, phase marking, uncompute and diffusion gates
+c_result[0] = measure candidate[0];
+c_result[1] = measure selected[0];
 ```
 
-The artifact is intentionally inspectable. In Developer Preview, some semantic oracle materialization points remain explicit so downstream users can inspect, complete, replace or adapt the target-specific realization.
+The complete artifact is inspectable and executable. Bridge no longer emits an empty semantic-oracle insertion point as a completed circuit. If canonical materialization is not possible, circuit export fails explicitly and the user can request expert semantic inputs instead.
 
 ## Framework Handoff Pattern
 
@@ -52,7 +53,8 @@ Bridge should be understood as upstream of the execution framework:
 ```text
 Bridge
   declares and validates the problem-level structure
-  exports OpenQASM and reproducibility metadata
+  materializes through canonical ProblemSpec/IR
+  exports executable OpenQASM and reproducibility metadata
 
 Framework
   imports or adapts the OpenQASM artifact
@@ -61,7 +63,7 @@ Framework
 
 This keeps the roles separated:
 
-- Bridge preserves problem intent and generates auditable artifacts.
+- Bridge records problem intent and generates auditable artifacts through the canonical QDSV materializer.
 - Qiskit, Braket or another framework controls framework-specific simulation, transpilation and execution.
 
 ## Qiskit Path
@@ -82,17 +84,26 @@ See:
 
 ## Amazon Braket Path
 
-Amazon Braket documents OpenQASM examples with the `OPENQASM 3;` header and without `stdgates.inc`. The Braket demo therefore creates a small compatibility view before passing the source to the Amazon Braket SDK:
+The Braket demo creates an executable compatibility view by defining the lowered gate set and mapping Qiskit's `cx` spelling to Braket's `cnot` spelling:
 
 ```python
 def to_braket_openqasm(source: str) -> str:
     lines = []
+    gate_definitions = [
+        "gate x a { U(pi, 0, pi) a; }",
+        "gate h a { U(pi/2, 0, pi) a; }",
+        "gate rz(lambda) a { gphase(-lambda/2); U(0, 0, lambda) a; }",
+        "gate cnot a, b { ctrl @ x a, b; }",
+    ]
     for line in source.splitlines():
         stripped = line.strip()
         if stripped == "OPENQASM 3.0;":
             lines.append("OPENQASM 3;")
+            lines.extend(gate_definitions)
         elif stripped == 'include "stdgates.inc";':
             continue
+        elif stripped.startswith("cx "):
+            lines.append(line.replace("cx ", "cnot ", 1))
         else:
             lines.append(line)
     return "\n".join(lines) + "\n"
@@ -120,7 +131,7 @@ Every Bridge Report records:
 
 - the problem and deliverable contract;
 - family and mode used;
-- semantic preservation evidence;
+- canonical materialization evidence, including formula location and precomputation flags;
 - generated artifact content;
 - warnings and limits;
 - artifact, IR, oracle, materialization and problem-spec digests.
@@ -137,7 +148,8 @@ The current public role of Bridge is:
 
 ```text
 controlled semantic spec
--> auditable OpenQASM artifact
+-> canonical QDSV ProblemSpec / IR
+-> executable auditable OpenQASM artifact
 -> framework-specific workflow
 -> reproducibility report
 ```

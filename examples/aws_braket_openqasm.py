@@ -12,26 +12,11 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from qdsv_bridge import QDSVBridgeClient
+from qdsv_bridge import QDSVBridgeClient, to_braket_openqasm
 
 
 API_URL = os.getenv("QDSV_BRIDGE_API_URL") or None
 API_KEY = os.getenv("QDSV_BRIDGE_API_KEY") or None
-
-
-def to_braket_openqasm(source: str) -> str:
-    """Create a small Braket-compatible OpenQASM view of the Bridge artifact."""
-
-    lines: list[str] = []
-    for line in source.splitlines():
-        stripped = line.strip()
-        if stripped == "OPENQASM 3.0;":
-            lines.append("OPENQASM 3;")
-        elif stripped == 'include "stdgates.inc";':
-            continue
-        else:
-            lines.append(line)
-    return "\n".join(lines) + "\n"
 
 
 def main() -> None:
@@ -42,20 +27,27 @@ def main() -> None:
         "bridge_mode": "build",
         "state_space": {
             "kind": "finite_candidates",
-            "candidate_count": 8,
+            "candidate_count": 2,
             "candidate_id": "candidate",
         },
-        "signals": ["eligibility_score", "risk_score"],
+        "signals": ["eligibility_score"],
+        "prepared_candidates": [
+            {"eligibility_score": 0},
+            {"eligibility_score": 1},
+        ],
         "goal": {
             "kind": "marking",
-            "predicate": "eligible_candidate",
+            "threshold": 1,
+            "criteria": [
+                {"signal": "eligibility_score", "influence": 1, "priority": 1}
+            ],
         },
         "target": {
             "format": "qasm3",
             "backend_family": "braket",
         },
         "limits": {
-            "max_qubits": 5,
+            "max_qubits": 8,
             "max_depth": 160,
         },
     }

@@ -11,7 +11,7 @@ QDSV Bridge is in Developer Preview. The SDK is a public client; the private QDS
 - Output modes: `use`, `build`, `expert_prepare`, `expert_evaluate`.
 - Controlled fallback family: `bounded_semantic_marking`.
 - Resource limits and raw-data rejection.
-- Circuit-origin metadata: `qdsv_derived`.
+- Circuit-origin metadata: `qdsv_canonical_problem_ir_materializer`.
 
 ## Next
 

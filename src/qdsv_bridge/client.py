@@ -9,7 +9,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.1.5"
+SDK_VERSION = "0.1.7"
 PRIVATE_NODE_UNAVAILABLE_MESSAGE = (
     "Private QDSV node temporarily unavailable. It may be offline, reserved for "
     "private processing, or busy. Try again later or use QDSVBridgeClient() for "
@@ -127,12 +127,12 @@ class QDSVBridgeClient:
         )
 
     def generate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        """Basic-user mode: generate a new circuit package from the problem."""
+        """Generate a circuit only through canonical QDSV ProblemSpec/IR materialization."""
 
         return self.export(spec, mode="use")
 
     def build(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        """Intermediate mode: generated circuit plus editable QASM/Qiskit/IR artifacts."""
+        """Return a canonical circuit plus editable QASM/Qiskit/IR artifacts."""
 
         return self.export(spec, mode="build")
 
