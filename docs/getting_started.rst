@@ -41,7 +41,6 @@ Use ``generate`` for the simplest delivery mode:
 .. code-block:: python
 
    spec = {
-       "family": "bounded_semantic_marking",
        "state_space": {
            "kind": "finite_candidates",
            "candidate_count": 2,
@@ -87,3 +86,7 @@ Bridge has one SDK with four delivery modes:
 
 ``generate`` and ``build`` reject incomplete circuit specifications. They never
 replace the semantic oracle with a placeholder scaffold.
+
+Materialization is capability-driven. The optional legacy ``family`` field is
+only a descriptive compatibility label. Use ``client.capabilities()`` to inspect
+the operation-level compiler boundary.

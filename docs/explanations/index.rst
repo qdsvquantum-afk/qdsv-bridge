@@ -6,8 +6,16 @@ Problem-first Boundary
 
 Bridge starts from controlled semantic problem specifications rather than
 from handwritten circuit templates. The public artifact boundary is canonical
-QDSV ProblemSpec/IR followed by executable OpenQASM/Qiskit output plus
-reproducibility evidence.
+QDSV ProblemSpec/IR, a typed operation graph and backend-neutral reversible IR,
+followed by executable OpenQASM/Qiskit output plus reproducibility evidence.
+
+Operation Compiler Boundary
+---------------------------
+
+Problem-family labels do not select a circuit implementation. The QDSV
+Operation Compiler checks every graph node and only declares a circuit ready
+when the complete graph has a certified reversible lowering. Otherwise Bridge
+returns construction inputs and the exact missing capabilities.
 
 Public SDK, Private Runtime
 ---------------------------

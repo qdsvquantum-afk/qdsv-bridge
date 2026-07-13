@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "qdsv-bridge"
-version = "0.1.7"
-description = "Lightweight Python client for QDSV Bridge, a controlled semantic-to-circuit compiler with family-based export modes."
+version = "0.2.0"
+description = "Lightweight Python client for capability-driven QDSV semantic-to-circuit compilation."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
@@ -49,3 +49,9 @@ qdsv-bridge = "qdsv_bridge.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/qdsv_bridge"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/submissions",
+  "/docs/_build",
+]

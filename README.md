@@ -6,13 +6,13 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Current package version: `0.1.7`.
+Current package version: `0.2.0`.
 
 Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 
 QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circuit bridge built on **QDSV - Quantum Declarative Semantic Value**.
 
-It turns supported problem-family specifications into canonical QDSV ProblemSpec/IR, executable QASM/Qiskit circuit materializations, oracle specs or expert construction inputs.
+It turns supported semantic problem specifications into typed QDSV operation graphs, reversible IR, executable QASM/Qiskit circuit materializations, oracle specs or expert construction inputs.
 
 Bridge never labels a scaffold as a completed circuit. Circuit exports are produced through the same canonical QDSV materializer used by the Aer and IBM hardware routes. A circuit request must provide computable semantics through compact `prepared_candidates` plus a structured threshold, or through a canonical `goal.predicate_ir`. Otherwise Bridge returns expert semantic inputs or rejects the circuit export explicitly.
 
@@ -41,7 +41,7 @@ derive the circuit or construction inputs from the semantic problem specificatio
 
 Bridge has one SDK with four delivery modes. Choose the mode by the output you need, not by creating a different kind of project.
 
-First choose the problem family in `spec["family"]`, then choose how much control you want over the returned artifact:
+Choose how much control you want over the returned artifact. A legacy `family` value may be retained as a descriptive label, but operation capabilities determine whether a circuit can be generated:
 
 | If you need... | Use | Python helper | Main output |
 |---|---|---|---|
@@ -88,7 +88,6 @@ from qdsv_bridge import QDSVBridgeClient
 client = QDSVBridgeClient()
 
 spec = {
-    "family": "bounded_semantic_marking",
     "state_space": {
         "kind": "finite_candidates",
         "candidate_count": 2,
@@ -194,7 +193,7 @@ client = QDSVBridgeClient.local()
 ## What This Is
 
 - A client SDK for QDSV Bridge.
-- A controlled interface to the canonical QDSV ProblemSpec/IR circuit materializer.
+- A controlled interface to the QDSV Operation Compiler and canonical circuit materializer.
 - A way to request QDSV IR, oracle specs, QASM/Qiskit artifacts or expert construction inputs.
 - A way to generate shareable Bridge Reports in JSON, Markdown or HTML.
 - A bridge for users who need circuit ecosystems but do not want to start from prebuilt templates.
@@ -212,12 +211,12 @@ client = QDSVBridgeClient.local()
 
 Traditional quantum workflows often start by asking users to choose a circuit, encoding, ansatz or measurement pattern. That can force the data to adapt to a circuit.
 
-QDSV Bridge starts from a controlled semantic family. The family defines what kind of problem is allowed, what concepts belong to it, what patterns are excluded and what evidence must be produced.
+QDSV Bridge starts from a bounded semantic problem. The QDSV Operation Compiler builds a typed operation graph and checks every required operation before any circuit is claimed.
 
 ```text
-problem family spec
--> family ontology validation
--> semantic ProblemSpec / IR
+semantic problem spec
+-> typed operation graph
+-> reversible IR and capability validation
 -> oracle specification
 -> materialization policy
 -> generated circuit artifact or expert construction inputs
@@ -320,42 +319,29 @@ print(comparison["materialization_variants"])
 print(comparison["comparison"])
 ```
 
-## Supported Families
+## Operation Capabilities
 
-Developer Preview families:
+Materialization is selected from the typed operation graph, not from a problem-family name. Query the current catalog with:
 
-| Family | Status | Use it for |
-|---|---|---|
-| `bounded_semantic_marking` | Generic fallback, developer preview | Finite, bounded semantic marking/ranking/constraint problems that do not yet fit a specialized family. This is the safest generic starting point. |
-| `semantic_signal_classification` | Developer preview | Classification, marking or ranking from prepared numeric signals such as scores, risk indicators, eligibility signals or scientific features. |
-| `predicate_marking` | Developer preview | Marking finite candidates that satisfy a bounded predicate such as threshold, range or set membership. |
-| `state_similarity` | Developer preview | Similarity, overlap or fidelity-style relations over prepared numeric states or vectors. |
-| `combinatorial_relation` | Developer preview | Bounded relations over finite domains, assignments or constraint-satisfaction structures. |
-| `distribution_sampling` | Specified experimental | Distribution inspection or sampling over finite state spaces. Do not use it for production randomness or cryptographic claims. |
+```python
+catalog = client.capabilities()
+print(catalog["operation_capabilities"])
+```
 
-`bounded_semantic_marking` is the controlled fallback family. Use it when the problem is finite, bounded and semantic, but no specialized Bridge family exists yet.
+The compiler v1 executable slice supports bounded prepared integer data and predicates composed from:
 
-It is not a universal free-form mode: it still requires a bounded state space, declared goal, limits, excluded patterns and preservation reporting.
+- fields and constants;
+- addition and subtraction;
+- multiplication by a constant;
+- division by a non-zero constant;
+- `gte` or `gt` as the root decision;
+- flat or hierarchical ScoreModel expressions that desugar to the same affine representation.
 
-Current executable-circuit boundary:
+Other Problem IR operations can still be represented semantically. If any graph node lacks a certified recursive lowering, Bridge returns exact `missing_capabilities` for expert construction instead of claiming a circuit.
 
-- `bounded_semantic_marking`, `semantic_signal_classification` and `predicate_marking` can use the coherent formula route when supplied with compact `prepared_candidates` and a structured threshold;
-- bounded families can use the canonical finite-domain route when supplied with `goal.predicate_ir`;
-- other family/mode combinations remain expert semantic inputs until a canonical materializer exists;
-- Bridge returns an explicit error rather than substituting a uniform-superposition scaffold.
+Legacy family values such as `bounded_semantic_marking` remain accepted as compatibility labels. They do not choose the compiler, alter the generated circuit or promise support.
 
-Each family has:
-
-- ontology boundary;
-- allowed state-space kinds;
-- allowed goal kinds;
-- allowed semantic operations;
-- excluded patterns;
-- public limits;
-- export targets;
-- evidence / digest contract.
-
-Fallback example:
+Compatibility example:
 
 ```python
 spec = {
@@ -471,7 +457,7 @@ Local/private Docker endpoint:
 client = QDSVBridgeClient.local()
 ```
 
-Public informational endpoints such as `families()` are open. Developer Preview value-producing operations can be used without an API key and are limited by rate limits, payload limits and a demo quota per caller bucket. Deployments can optionally enable API-key-only access for partners, pilots or private environments.
+`client.capabilities()` is the recommended name for the informational catalog. `families()` and `/bridge/families` remain compatibility aliases. Developer Preview value-producing operations can be used without an API key and are limited by rate limits, payload limits and a demo quota per caller bucket.
 
 ## Resource And Multi-User Limits
 
@@ -488,7 +474,7 @@ Do not send:
 
 Send:
 
-- problem family;
+- semantic `problem_spec` or bounded state space;
 - finite state-space size;
 - prepared signal or variable names;
 - goal / predicate / ranking intent;
@@ -496,7 +482,7 @@ Send:
 - qubit/depth limits;
 - materialization policy.
 - compact `prepared_candidates` containing only the bounded numeric signals required by the formula, when requesting a coherent circuit;
-- or a canonical `goal.predicate_ir` for bounded predicate materialization.
+- or a canonical `problem_spec`/`goal.predicate_ir` for operation-graph compilation.
 
 Public API minimum limits:
 
@@ -510,12 +496,11 @@ Public API minimum limits:
 | Monthly demo quota | 100 compilations/exports/reports per caller bucket |
 | Raw data payloads | Not allowed; compact prepared numeric signals are allowed |
 | Hardware execution | Not available from Bridge SDK |
-| `bounded_semantic_marking` | 1024 candidates / 24 signals |
-| `semantic_signal_classification` | 1024 candidates / 32 signals |
-| `predicate_marking` | 2048 candidates / 8 signals |
-| `state_similarity` | 1024 candidates / 64 signals |
-| `combinatorial_relation` | 4096 candidates / 16 signals |
-| `distribution_sampling` | 2048 candidates / 16 signals |
+| Semantic service boundary | 4096 finite candidates / 64 named signals |
+| Compiler v1 coherent boundary | 16 candidates / 20 prepared-signal qubits |
+| Default requested circuit ceiling | 256 qubits / depth 1,000,000 |
+
+The semantic service boundary is not a circuit-size promise. Actual circuit resources depend on the complete operation graph, precision, registers, reversible arithmetic, ancillas and uncompute.
 
 Default API rate limits may be configured by the QDSV deployment:
 
@@ -577,8 +562,9 @@ QDSV Bridge does not expose:
 Product principle:
 
 ```text
-controlled semantic family
--> canonical ProblemSpec / IR
+semantic problem specification
+-> typed operation graph
+-> reversible IR and capability assessment
 -> executable circuit materialization or expert inputs
 -> auditable export
 ```

@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+0.2.0
+-----
+
+* Uses QDSV Operation Compiler v1 as the circuit-capability authority.
+* Adds typed operation graph, reversible IR, strategy, resource and verification evidence.
+* Accepts canonical ``problem_spec`` input without a family selector.
+* Treats legacy family values as compatibility labels only.
+* Adds ``client.capabilities()`` while retaining ``families()`` as an alias.
+* Returns exact missing operation capabilities instead of selecting a family fallback.
+
 0.1.7
 -----
 

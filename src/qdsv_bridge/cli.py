@@ -9,7 +9,7 @@ from .client import QDSVBridgeClient
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="QDSV Bridge SDK CLI")
-    parser.add_argument("command", choices=["families", "validate", "compile", "explain", "export", "report"])
+    parser.add_argument("command", choices=["capabilities", "families", "validate", "compile", "explain", "export", "report"])
     parser.add_argument("spec", nargs="?", help="Path to a Semantic Circuit Spec JSON file.")
     parser.add_argument("--api-url", default=None)
     parser.add_argument("--api-key", default=None, help="Optional QDSV Bridge API key")
@@ -35,8 +35,8 @@ def main() -> None:
         if args.local
         else QDSVBridgeClient(api_url=args.api_url, api_key=args.api_key, license_key=args.license_key)
     )
-    if args.command == "families":
-        print(json.dumps(client.families(), indent=2, ensure_ascii=False))
+    if args.command in {"capabilities", "families"}:
+        print(json.dumps(client.capabilities(), indent=2, ensure_ascii=False))
         return
     if not args.spec:
         parser.error("spec JSON file is required for this command")
