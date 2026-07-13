@@ -9,7 +9,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.4.0"
+    assert qdsv_bridge.__version__ == "0.4.1"
 
 
 def test_normalizes_api_url() -> None:
@@ -90,6 +90,49 @@ def test_export_posts_spec(monkeypatch: pytest.MonkeyPatch) -> None:
     assert calls["method"] == "POST"
     assert calls["url"].endswith("/bridge/export")
     assert calls["kwargs"]["json"]["spec"]["family"] == "semantic_signal_classification"
+
+
+def test_score_model_uses_public_importance_priority_vocabulary(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = {}
+
+    class FakeResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"status": "SUCCESS"}
+
+    def fake_request(method, url, **kwargs):
+        calls["spec"] = kwargs["json"]["spec"]
+        return FakeResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+    spec = {
+        "problem_spec": {
+            "model": {
+                "kind": "score_model",
+                "version": "2.0",
+                "score": {
+                    "terms": [
+                        {
+                            "value": 1,
+                            "importance": 2,
+                            "priority": 3,
+                        }
+                    ]
+                },
+            }
+        }
+    }
+
+    QDSVBridgeClient().build(spec)
+
+    term = calls["spec"]["problem_spec"]["model"]["score"]["terms"][0]
+    assert term["importance"] == 2
+    assert term["priority"] == 3
+    assert "weight" not in term
+    assert "criticality" not in term
 
 
 def test_api_key_is_sent_as_header_and_bearer(monkeypatch: pytest.MonkeyPatch) -> None:

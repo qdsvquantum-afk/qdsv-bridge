@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Current package version: `0.4.0`.
+Current package version: `0.4.1`.
 
 Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 
@@ -339,7 +339,7 @@ The compiler v1 executable slice supports bounded prepared numeric data and pred
 - multiplication and division within the certified bounded profile;
 - absolute and squared differences plus bounded similarity expressions;
 - `eq`, `ne`, `lt`, `lte`, `gt` and `gte` decisions;
-- ScoreModel v2 flat and hierarchical weighted-criticality aggregation;
+- ScoreModel v2 flat and hierarchical importance-priority aggregation;
 - signed contextual adjustments, normalization and penalties;
 - reversible formula and decision operators with explicit uncompute evidence.
 
@@ -367,8 +367,8 @@ computed finite similarity value can be supplied as a prepared numeric metric.
 The implemented ScoreModel v2 capability includes:
 
 - flat multi-term decisions;
-- hierarchical decisions with independently weighted and critical blocks;
-- non-negative term and block weights and criticalities;
+- hierarchical decisions with independent importance and priority at each block;
+- non-negative term and block importance and priority values;
 - signed contextual adjustments over bounded adjustment values;
 - term aggregation, normalization and zero-mass protection;
 - term-level, block-level and global penalty handling;
@@ -383,6 +383,22 @@ The implemented ScoreModel v2 capability includes:
   measurement and explicit uncompute evidence;
 - optional bounded Grover amplification without inferring the number of winning
   candidates through a classical answer scan.
+
+Public ScoreModel specifications use user-oriented decision names:
+
+```python
+term = {
+    "value": prepared_metric,
+    "importance": 2,
+    "priority": 3,
+}
+```
+
+`importance` expresses how much the factor contributes to the decision model.
+`priority` expresses its urgency, severity or decision precedence. The legacy
+names `weight` and `criticality` remain accepted for compatibility, but new SDK
+code and public Bridge responses use `importance` and `priority`. QDSV keeps any
+canonical mathematical naming internal to the operation compiler.
 
 This supports practical finite-candidate workflows such as:
 

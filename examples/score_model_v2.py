@@ -43,8 +43,8 @@ problem_spec = {
                 {
                     "name": "bounded_value",
                     "value": {"op": "squared_diff", "left": value, "right": 0},
-                    "weight": 1,
-                    "criticality": 1,
+                    "importance": 1,
+                    "priority": 1,
                     "adjustments": [
                         {"name": "context", "lambda": 0.5, "value": value}
                     ],

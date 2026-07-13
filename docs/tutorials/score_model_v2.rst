@@ -31,7 +31,7 @@ Implemented decision structure
 The canonical ScoreModel v2 implementation supports:
 
 * flat and hierarchical multi-criteria decisions;
-* term and block weights and criticalities;
+* term and block importance and priority values;
 * signed contextual adjustments;
 * normalization and zero-mass protection;
 * local, block and global penalties;
@@ -39,6 +39,25 @@ The canonical ScoreModel v2 implementation supports:
 * ``eq``, ``ne``, ``lt``, ``lte``, ``gt`` and ``gte`` threshold decisions;
 * reversible formula computation, decision marking, measurement and uncompute;
 * optional bounded Grover amplification without a classical winner scan.
+
+Public vocabulary
+-----------------
+
+User-facing ScoreModel specifications use ``importance`` and ``priority``:
+
+.. code-block:: python
+
+   term = {
+       "value": prepared_metric,
+       "importance": 2,
+       "priority": 3,
+   }
+
+``importance`` describes how strongly a factor contributes to the decision.
+``priority`` describes urgency, severity or decision precedence. Legacy
+``weight`` and ``criticality`` inputs remain accepted for compatibility, but
+new SDK code and public responses use the user-facing names. Canonical
+mathematical naming remains internal to the QDSV operation compiler.
 
 This capability can represent eligibility and approval screening, multi-criteria
 selection, risk-benefit assessment, evaluation of projects or alternatives,

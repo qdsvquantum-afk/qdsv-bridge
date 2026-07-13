@@ -1,6 +1,14 @@
 Release Notes
 =============
 
+0.4.1
+-----
+
+* Uses ``importance`` and ``priority`` as the public ScoreModel v2 vocabulary.
+* Keeps legacy ``weight`` and ``criticality`` inputs as compatibility aliases.
+* Returns public ScoreModel artifacts with user-facing decision terminology while
+  retaining canonical mathematical names inside the QDSV compiler.
+
 0.4.0
 -----
 
