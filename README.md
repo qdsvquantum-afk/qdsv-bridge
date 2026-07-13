@@ -6,13 +6,11 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Current package version: `0.4.1`.
+Current package version: `0.4.2`.
 
 Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 
-QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circuit bridge built on **QDSV - Quantum Declarative Semantic Value**.
-
-It turns supported semantic problem specifications into typed QDSV operation graphs, reversible IR, executable QASM/Qiskit circuit materializations, oracle specs or expert construction inputs.
+QDSV Bridge converts supported semantic problem specifications into executable quantum circuit artifacts or expert construction packages. It is a lightweight Python client SDK built on **QDSV - Quantum Declarative Semantic Value**.
 
 Bridge never labels a scaffold as a completed circuit. Circuit exports are produced through the canonical QDSV operation compiler and materializer. A circuit request must compile to a `reversible_semantic_formula` without classical scanning, precomputed candidates or expected-value tables. A standalone `goal.predicate_ir` can still be returned as expert construction input, but it is not converted into a circuit by classically enumerating its answers.
 
@@ -48,7 +46,7 @@ Choose how much control you want over the returned artifact. A legacy `family` v
 | A simpler starting point without designing circuits | Bridge Use | `client.generate(spec)` | Canonically materialized circuit, evidence, guidance and ready-to-run example |
 | An inspectable OpenQASM/Qiskit/Braket-oriented artifact | Bridge Build | `client.build(spec)` | Executable QASM/Qiskit artifact, oracle spec, canonical IR summary, actual metrics and digests |
 | Expert construction inputs before final circuit materialization | Bridge Expert Prepare | `client.prepare(spec)` | Semantic construction inputs without forcing a final circuit |
-| Expert comparison of possible materializations | Bridge Expert Evaluate | `client.evaluate(spec)` | Suggested materialization variants and comparison evidence |
+| Expert evaluation of a materialized artifact | Bridge Expert Evaluate | `client.evaluate(spec)` | The actual materialization, construction evidence and clearly labeled non-materialized alternatives |
 
 If you are not sure where to start, use:
 
@@ -62,7 +60,7 @@ If you want to inspect or route the artifact into Qiskit, Braket or another Open
 result = client.build(spec)  # intermediate/developer
 ```
 
-Expert users have two separate routes: `prepare` when they want semantic construction ingredients, and `evaluate` when they want to compare possible materializations.
+Expert users have two separate routes: `prepare` for semantic construction ingredients, and `evaluate` for the actual materialization evidence plus clearly labeled conceptual alternatives.
 
 ## 5 Minute Quickstart
 
@@ -102,7 +100,7 @@ spec = {
         "kind": "marking",
         "threshold": 1,
         "criteria": [
-            {"signal": "eligibility_score", "influence": 1, "priority": 1}
+            {"signal": "eligibility_score", "importance": 1, "priority": 1}
         ],
     },
     "target": {
@@ -123,6 +121,7 @@ print(result["circuit_origin"])
 print(result["artifact"]["format"])
 print(result["materialization_evidence"]["formula_materialized_in"])
 print(result["materialization_evidence"]["candidate_precomputed"])
+print(result["construction_verification"])
 ```
 
 For a developer-oriented package with oracle spec, IR summary, digests and preservation evidence:
@@ -232,10 +231,10 @@ QDSV Bridge is one SDK with multiple output depths. The modes do not change the 
 
 | API | Commercial name | Intended user | What Bridge returns |
 |---|---|---|---|
-| `generate()` / `use` | Bridge Use | Basic user who wants to solve without designing circuits. | Canonical materialized circuit, explanation, materialization evidence, actual metrics and ready-to-run example. |
+| `generate()` / `use` | Bridge Use | Basic user who needs a circuit without designing its quantum core. | Ready-to-use canonical circuit, dependencies, expected inputs, measurement meaning, actual resources and a minimal loading example. Execution and integration remain with the user. |
 | `build()` / `build` | Bridge Build | Intermediate user who understands Qiskit, QASM or quantum workflows. | Canonical materialized circuit plus executable QASM/Qiskit, oracle spec, IR summary, actual qubits/depth and digests. |
-| `prepare()` / `expert_prepare` | Bridge Expert Prepare | Expert constructor who wants to design a custom circuit. | Validated family, ProblemSpec/IR, oracle spec, predicates, target state/goal, constraints, variables, information-loss risk, encoding/measurement suggestions, estimated limits and evidence. It does not force a final circuit. |
-| `evaluate()` / `expert_evaluate` | Bridge Expert Evaluate | Expert evaluator who wants to compare QDSV materializations. | Canonical QDSV circuit artifact, materialization variants, resource comparison and reproducible evidence. |
+| `prepare()` / `expert_prepare` | Bridge Expert Prepare | Expert constructor who wants to design a custom circuit. | Validated semantic specification, ProblemSpec/IR, oracle contract, predicates, variables, constraints, capability gaps, encoding/measurement guidance, limits and digests. It does not force a final circuit. |
+| `evaluate()` / `expert_evaluate` | Bridge Expert Evaluate | Expert evaluator who wants the full construction evidence. | The actual canonical materialization and resources. Any other design is labeled conceptual until it is independently materialized; Bridge does not claim an execution comparison. |
 
 Python helpers:
 
@@ -271,11 +270,17 @@ Every export response should include traceability metadata:
   "artifact_type": "qasm3",
   "circuit_origin": "qdsv_canonical_problem_ir_materializer",
   "materialization_evidence": {
-    "formula_materialized_in": "qpu_circuit",
+    "formula_materialized_in": "quantum_circuit",
+    "execution_performed": false,
     "classical_scan": false,
     "candidate_precomputed": false,
     "answer_leakage": false,
     "precomputed_result_table": false
+  },
+  "construction_verification": {
+    "status": "passed",
+    "scope": "semantic_specification_to_circuit_construction",
+    "execution_performed": false
   },
   "warnings": [],
   "digests": {}
@@ -290,7 +295,9 @@ Basic user:
 result = client.generate(spec)
 print(result["circuit_origin"])          # qdsv_canonical_problem_ir_materializer
 print(result["circuit"]["status"])       # materialized_from_canonical_problem_ir
-print(result["ready_to_run_example"])
+print(result["ready_to_run_example"]["dependencies"])
+print(result["ready_to_run_example"]["measurement_contract"])
+print(result["ready_to_run_example"]["resources"])
 ```
 
 Intermediate developer:
@@ -307,6 +314,8 @@ Expert constructor:
 
 ```python
 inputs = client.prepare(spec)
+print(inputs["expert_inputs"]["construction_status"])
+print(inputs["expert_inputs"]["missing_capabilities"])
 print(inputs["expert_inputs"]["encoding_suggestions"])
 print(inputs["expert_inputs"]["measurement_suggestions"])
 ```
@@ -316,8 +325,30 @@ Expert evaluator:
 ```python
 comparison = client.evaluate(spec)
 print(comparison["materialization_variants"])
+print(comparison["construction_alternatives"])
 print(comparison["comparison"])
 ```
+
+## How Bridge Checks The Circuit Construction
+
+Bridge verifies the construction path before returning a completed circuit:
+
+1. It validates and normalizes the semantic specification.
+2. It compiles one canonical ProblemSpec/IR and a typed operation graph.
+3. It rejects the circuit request if any graph node lacks a certified lowering.
+4. It checks the reversible compute/decision/uncompute contract and rejects
+   embedded answer tables or precomputed winning candidates.
+5. It materializes the concrete circuit, measures its actual qubits, depth and
+   operation counts, and enforces the requested/public resource limits.
+6. It links the specification, IR, formula/oracle and artifact with digests.
+
+The response exposes these checks in `construction_verification`. This verifies
+that the delivered artifact was constructed from the accepted semantic
+specification through the supported QDSV path. It does **not** prove that the
+user modeled the real-world problem correctly, that the supplied data is true,
+or that a simulator/QPU produced a correct business result. Bridge does not run
+the circuit; execution, provider selection, credentials, shots, cost and result
+validation remain with the user.
 
 ## Operation Capabilities
 
@@ -327,6 +358,11 @@ Materialization is selected from the typed operation graph, not from a problem-f
 catalog = client.capabilities()
 print(catalog["operation_capabilities"])
 ```
+
+Each physical/composite operation reports whether it is semantically supported,
+graph-composable, verified for circuit generation and QASM loading, and whether
+a resource profile is available. Verification is profile-specific; it is not a
+claim that the same operation is materializable in every possible context.
 
 `client.capabilities()` uses `/api/bridge/capabilities`. The previous
 `client.families()` helper remains only as a compatibility alias; family labels
@@ -371,7 +407,7 @@ The implemented ScoreModel v2 capability includes:
 - non-negative term and block importance and priority values;
 - signed contextual adjustments over bounded adjustment values;
 - term aggregation, normalization and zero-mass protection;
-- term-level, block-level and global penalty handling;
+- flat/global and hierarchical block/global penalty handling;
 - exact rational semantic evaluation followed by declared fixed-point output,
   deterministic rounding and overflow rejection;
 - `eq`, `ne`, `lt`, `lte`, `gt` and `gte` threshold decisions;
@@ -381,8 +417,9 @@ The implemented ScoreModel v2 capability includes:
   the current capability assessment;
 - candidate-independent reversible formula synthesis, decision marking,
   measurement and explicit uncompute evidence;
-- optional bounded Grover amplification without inferring the number of winning
-  candidates through a classical answer scan.
+- optional bounded Grover amplification inside the certified ScoreModel v2
+  materialization, without inferring winning candidates through a classical
+  answer scan. This is not a general Grover recipe for arbitrary problems.
 
 Public ScoreModel specifications use user-oriented decision names:
 
@@ -394,8 +431,11 @@ term = {
 }
 ```
 
-`importance` expresses how much the factor contributes to the decision model.
-`priority` expresses its urgency, severity or decision precedence. The legacy
+`importance` expresses the relative contribution of a factor. `priority`
+expresses its declared urgency or severity. The compiler uses their product as
+the factor applied in both the weighted numerator and normalization mass. A zero
+value removes that term or block from the aggregate; `priority` is not circuit
+execution order or precedence. The legacy
 names `weight` and `criticality` remain accepted for compatibility, but new SDK
 code and public Bridge responses use `importance` and `priority`. QDSV keeps any
 canonical mathematical naming internal to the operation compiler.
@@ -454,7 +494,7 @@ spec = {
         "kind": "marking",
         "threshold": 1,
         "criteria": [
-            {"signal": "eligibility_score", "influence": 1, "priority": 1}
+            {"signal": "eligibility_score", "importance": 1, "priority": 1}
         ],
     },
     "target": {
@@ -512,8 +552,8 @@ qdsv-bridge report spec.json --mode build --format json --output bridge_report.j
 Each Bridge Report includes:
 
 1. Problem and deliverable contract.
-2. Family and mode used.
-3. Validations and canonical materialization evidence.
+2. Delivery mode and the legacy family label, only when supplied.
+3. Construction verification and canonical materialization evidence.
 4. Generated executable QASM/Qiskit content when requested.
 5. Circuit policy and template-use status.
 6. Digests.
@@ -532,7 +572,8 @@ For `expert_prepare`, Bridge may intentionally return construction inputs instea
 
 The SDK calls the QDSV API:
 
-- `GET /api/bridge/families`
+- `GET /api/bridge/capabilities`
+- `GET /api/bridge/families` (compatibility alias)
 - `POST /api/bridge/validate`
 - `POST /api/bridge/compile`
 - `POST /api/bridge/explain`
@@ -571,7 +612,7 @@ Send:
 - semantic `problem_spec` or bounded state space;
 - finite state-space size;
 - prepared signal or variable names;
-- goal / predicate / ranking intent;
+- threshold decision goal or predicate supported by the current compiler;
 - target format;
 - qubit/depth limits;
 - materialization policy.
@@ -599,7 +640,7 @@ The semantic service boundary is not a circuit-size promise. Actual circuit reso
 
 Default API rate limits may be configured by the QDSV deployment:
 
-- `families`: 60/minute
+- `capabilities`: 60/minute (`families` uses the same limit as a compatibility alias)
 - `validate`: 30/minute
 - `compile`: 20/minute
 - `explain`: 20/minute

@@ -10,7 +10,7 @@ spec = {
         "kind": "binary_marking",
         "positive_state": "ictal",
         "threshold": 1,
-        "criteria": [{"signal": "ictal_score", "influence": 1, "priority": 1}],
+        "criteria": [{"signal": "ictal_score", "importance": 1, "priority": 1}],
     },
     "materialization_policy": {
         "preserve_signal_geometry": True,

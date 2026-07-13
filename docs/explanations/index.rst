@@ -34,8 +34,17 @@ Bridge supports different delivery modes for different users:
   outputs when their specification contains computable semantics.
 * Intermediate users can inspect executable OpenQASM/Qiskit artifacts and
   the evidence proving how they were materialized.
-* Expert users can request semantic construction inputs or compare possible
-  materializations.
+* Expert users can request semantic construction inputs or inspect the actual
+  materialization evidence. Alternatives remain explicitly conceptual until
+  independently materialized.
+
+Construction Verification Boundary
+----------------------------------
+
+Bridge verifies the semantic-to-circuit construction path, complete operation
+coverage, reversible contracts, no-precomputed-answer invariants, concrete
+resources and digest linkage. It does not validate the user's domain assumptions,
+the truth of input data, provider execution or simulator/hardware results.
 
 Bridge does not label uniform-superposition scaffolds as completed semantic
 circuits. Specifications without prepared numeric signals or canonical

@@ -39,7 +39,7 @@ def main() -> None:
             "kind": "marking",
             "threshold": 1,
             "criteria": [
-                {"signal": "eligibility_score", "influence": 1, "priority": 1}
+                {"signal": "eligibility_score", "importance": 1, "priority": 1}
             ],
         },
         "target": {

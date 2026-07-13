@@ -1,6 +1,21 @@
 Release Notes
 =============
 
+0.4.2
+-----
+
+* Adds an explicit semantic-to-circuit ``construction_verification`` passport
+  without claiming simulator or hardware execution.
+* Documents exact outputs and responsibilities for basic, intermediate and
+  expert users.
+* Reports only actual materializations as materialized; other expert designs
+  remain labeled conceptual until independently built.
+* Documents the public importance-priority aggregation semantics and the exact
+  flat/global and hierarchical block/global penalty scope.
+* Adds end-to-end evidence for modulo, absolute value, absolute difference,
+  scalar similarity, all six decisions, hierarchical decisions, bounded Grover
+  amplification and work-register cleanup.
+
 0.4.1
 -----
 

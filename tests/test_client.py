@@ -9,7 +9,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.4.1"
+    assert qdsv_bridge.__version__ == "0.4.2"
 
 
 def test_normalizes_api_url() -> None:

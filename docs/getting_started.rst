@@ -55,7 +55,7 @@ Use ``generate`` for the simplest delivery mode:
            "kind": "marking",
            "threshold": 1,
            "criteria": [
-               {"signal": "eligibility_score", "influence": 1, "priority": 1}
+               {"signal": "eligibility_score", "importance": 1, "priority": 1}
            ],
        },
        "target": {
@@ -73,6 +73,7 @@ Use ``generate`` for the simplest delivery mode:
    print(result["status"])
    print(result["bridge_mode"])
    print(result["artifact"]["format"])
+   print(result["construction_verification"])
 
 Delivery Modes
 --------------
@@ -82,7 +83,8 @@ Bridge has one SDK with four delivery modes:
 * ``generate`` for users who want canonically materialized, ready-to-run circuits.
 * ``build`` for executable OpenQASM/Qiskit artifacts plus materialization evidence.
 * ``prepare`` for expert semantic construction inputs.
-* ``evaluate`` for expert comparison of possible materializations.
+* ``evaluate`` for the actual materialization evidence plus explicitly labeled
+  conceptual alternatives. It does not claim an execution comparison.
 
 ``generate`` and ``build`` reject incomplete circuit specifications. They never
 replace the semantic oracle with a placeholder scaffold.
@@ -90,3 +92,12 @@ replace the semantic oracle with a placeholder scaffold.
 Materialization is capability-driven. The optional legacy ``family`` field is
 only a descriptive compatibility label. Use ``client.capabilities()`` to inspect
 the operation-level compiler boundary.
+
+Construction verification
+-------------------------
+
+Every completed circuit includes a ``construction_verification`` passport. It
+records semantic validation, complete operation-graph coverage, reversible
+contract checks, no-precomputed-answer checks, actual resource enforcement and
+digest linkage. Bridge does not execute the artifact or validate the truth of
+the user's domain model or data.

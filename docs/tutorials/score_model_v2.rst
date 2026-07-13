@@ -34,11 +34,12 @@ The canonical ScoreModel v2 implementation supports:
 * term and block importance and priority values;
 * signed contextual adjustments;
 * normalization and zero-mass protection;
-* local, block and global penalties;
+* flat/global and hierarchical block/global penalties;
 * declared fixed-point precision, deterministic rounding and overflow rejection;
 * ``eq``, ``ne``, ``lt``, ``lte``, ``gt`` and ``gte`` threshold decisions;
 * reversible formula computation, decision marking, measurement and uncompute;
-* optional bounded Grover amplification without a classical winner scan.
+* optional bounded Grover amplification inside the ScoreModel v2 profile,
+  without a classical winner scan. This is not a general Grover recipe.
 
 Public vocabulary
 -----------------
@@ -53,8 +54,10 @@ User-facing ScoreModel specifications use ``importance`` and ``priority``:
        "priority": 3,
    }
 
-``importance`` describes how strongly a factor contributes to the decision.
-``priority`` describes urgency, severity or decision precedence. Legacy
+``importance`` describes relative contribution and ``priority`` describes
+declared urgency or severity. Their product is used in the weighted numerator
+and normalization mass. A zero value removes the term or block from the
+aggregate; ``priority`` is not execution order or precedence. Legacy
 ``weight`` and ``criticality`` inputs remain accepted for compatibility, but
 new SDK code and public responses use the user-facing names. Canonical
 mathematical naming remains internal to the QDSV operation compiler.
