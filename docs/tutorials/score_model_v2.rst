@@ -87,7 +87,7 @@ input-state or artifact limits, Bridge rejects the circuit request instead of
 returning a partial scaffold. ``client.prepare`` remains available when expert
 construction inputs are useful but a complete circuit cannot be certified.
 
-Physical evidence and boundaries
+Delivery evidence and boundaries
 --------------------------------
 
 The public response exposes the certified profile, program and artifact digests,
@@ -96,6 +96,10 @@ not expose the private lowering, bounded function rows or candidate-score tables
 
 Physical synthesis is constrained by ``max_input_qubits`` and
 ``max_function_states`` in the numeric contract. Cost can grow rapidly with the
-number and precision of prepared fields. The flat and hierarchical profiles are
-verified on Aer and QuEST. A dedicated ScoreModel v2 IBM hardware run remains
-pending; Bridge itself does not submit hardware jobs.
+number and precision of prepared fields.
+
+Bridge stops after delivering the circuit artifact or expert construction
+inputs. It does not execute the circuit on a simulator or QPU or validate the
+problem result; hardware validation is not part of the Bridge delivery contract.
+Execution resources, provider credentials and result validation remain the
+user's responsibility.

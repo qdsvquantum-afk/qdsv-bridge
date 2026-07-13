@@ -6,6 +6,8 @@ Release Notes
 
 * Uses ``importance`` and ``priority`` as the public ScoreModel v2 vocabulary.
 * Keeps legacy ``weight`` and ``criticality`` inputs as compatibility aliases.
+* Separates Bridge circuit delivery from QDSV backend validation: public
+  capabilities no longer publish simulator or hardware execution status.
 * Returns public ScoreModel artifacts with user-facing decision terminology while
   retaining canonical mathematical names inside the QDSV compiler.
 

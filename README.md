@@ -14,7 +14,7 @@ QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circ
 
 It turns supported semantic problem specifications into typed QDSV operation graphs, reversible IR, executable QASM/Qiskit circuit materializations, oracle specs or expert construction inputs.
 
-Bridge never labels a scaffold as a completed circuit. Circuit exports are produced through the same canonical QDSV materializer used by the Aer and IBM hardware routes. A circuit request must compile to a `reversible_semantic_formula` without classical scanning, precomputed candidates or expected-value tables. A standalone `goal.predicate_ir` can still be returned as expert construction input, but it is not converted into a circuit by classically enumerating its answers.
+Bridge never labels a scaffold as a completed circuit. Circuit exports are produced through the canonical QDSV operation compiler and materializer. A circuit request must compile to a `reversible_semantic_formula` without classical scanning, precomputed candidates or expected-value tables. A standalone `goal.predicate_ir` can still be returned as expert construction input, but it is not converted into a circuit by classically enumerating its answers.
 
 The public developer preview is available without an API key:
 
@@ -425,10 +425,11 @@ qubit and depth metrics.
 The current physical synthesis is bounded by the declared `max_input_qubits` and
 `max_function_states`, as well as Bridge payload, QASM, qubit and depth limits.
 Resource cost can grow rapidly with the number and precision of prepared fields.
-The flat and hierarchical profiles are verified on Aer and QuEST; ScoreModel v2
-IBM hardware execution remains preflight-ready but pending a dedicated hardware
-run. See [`examples/score_model_v2.py`](examples/score_model_v2.py) for a bounded
-end-to-end example.
+Bridge stops after delivering the circuit artifact or expert construction inputs.
+It does not execute the circuit or validate the problem result; hardware
+validation is not part of the Bridge delivery contract. The user chooses the
+simulator or provider, supplies the execution resources and validates the resulting behavior. See
+[`examples/score_model_v2.py`](examples/score_model_v2.py) for a bounded circuit-delivery example.
 
 Other Problem IR operations can still be represented semantically. If any graph node lacks a certified recursive lowering, Bridge returns exact `missing_capabilities` for expert construction instead of claiming a circuit.
 
