@@ -9,7 +9,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.2.0"
+    assert qdsv_bridge.__version__ == "0.4.0"
 
 
 def test_normalizes_api_url() -> None:
@@ -44,7 +44,7 @@ def test_families_get_has_no_json_body(monkeypatch: pytest.MonkeyPatch) -> None:
     assert "json" not in calls["kwargs"]
 
 
-def test_capabilities_uses_compatibility_catalog_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_capabilities_uses_primary_operation_catalog_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
     calls = {}
 
     class FakeResponse:
@@ -63,7 +63,7 @@ def test_capabilities_uses_compatibility_catalog_endpoint(monkeypatch: pytest.Mo
     result = QDSVBridgeClient().capabilities()
 
     assert result["status"] == "SUCCESS"
-    assert calls["url"].endswith("/bridge/families")
+    assert calls["url"].endswith("/bridge/capabilities")
 
 
 def test_export_posts_spec(monkeypatch: pytest.MonkeyPatch) -> None:

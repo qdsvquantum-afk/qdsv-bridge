@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Current package version: `0.2.0`.
+Current package version: `0.4.0`.
 
 Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 
@@ -14,7 +14,7 @@ QDSV Bridge is a lightweight Python client SDK for a controlled semantic-to-circ
 
 It turns supported semantic problem specifications into typed QDSV operation graphs, reversible IR, executable QASM/Qiskit circuit materializations, oracle specs or expert construction inputs.
 
-Bridge never labels a scaffold as a completed circuit. Circuit exports are produced through the same canonical QDSV materializer used by the Aer and IBM hardware routes. A circuit request must provide computable semantics through compact `prepared_candidates` plus a structured threshold, or through a canonical `goal.predicate_ir`. Otherwise Bridge returns expert semantic inputs or rejects the circuit export explicitly.
+Bridge never labels a scaffold as a completed circuit. Circuit exports are produced through the same canonical QDSV materializer used by the Aer and IBM hardware routes. A circuit request must compile to a `reversible_semantic_formula` without classical scanning, precomputed candidates or expected-value tables. A standalone `goal.predicate_ir` can still be returned as expert construction input, but it is not converted into a circuit by classically enumerating its answers.
 
 The public developer preview is available without an API key:
 
@@ -121,7 +121,7 @@ print(result["status"])
 print(result["bridge_mode"])
 print(result["circuit_origin"])
 print(result["artifact"]["format"])
-print(result["materialization_evidence"]["formula_evaluated_on"])
+print(result["materialization_evidence"]["formula_materialized_in"])
 print(result["materialization_evidence"]["candidate_precomputed"])
 ```
 
@@ -142,7 +142,7 @@ Use these notebooks when you want to try Bridge without setting up a local proje
 | Notebook | Flow |
 |---|---|
 | [Open 01 Semantic Candidate Marking](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/01_semantic_candidate_marking.ipynb) | `bounded_semantic_marking` -> QASM3 artifact -> Bridge Report |
-| [Open 02 Predicate Oracle Marking](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/02_predicate_oracle_marking.ipynb) | `predicate_marking` -> Qiskit blueprint -> Bridge Report |
+| [Open 02 Predicate Construction Inputs](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/02_predicate_oracle_marking.ipynb) | `predicate_marking` -> expert construction inputs -> Bridge Report |
 | [Open 03 Semantic Signal Classification](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/03_semantic_signal_classification.ipynb) | `semantic_signal_classification` -> QASM3 artifact -> Bridge Report |
 | [Open 04 IBM/Qiskit Artifact Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/04_ibm_qiskit_bridge_demo.ipynb) | Problem-first spec -> QASM3 artifact -> Qiskit inspection/simulation -> Bridge Report |
 | [Open 05 AWS Braket OpenQASM Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/05_aws_braket_openqasm_demo.ipynb) | Problem-first spec -> OpenQASM artifact -> Braket LocalSimulator -> Bridge Report |
@@ -222,7 +222,7 @@ semantic problem spec
 -> generated circuit artifact or expert construction inputs
 ```
 
-For users who want a simpler starting point, Bridge can generate executable problem-derived circuits when the specification includes computable prepared signals or a canonical predicate. It refuses to present incomplete blueprints as completed circuits.
+For users who want a simpler starting point, Bridge can generate executable problem-derived circuits when the specification compiles completely to a reversible semantic formula. It refuses to present incomplete blueprints or classically enumerated answer oracles as completed circuits.
 
 For expert constructors, Bridge can also return the key semantic inputs needed to design a custom circuit without forcing a final circuit.
 
@@ -271,7 +271,7 @@ Every export response should include traceability metadata:
   "artifact_type": "qasm3",
   "circuit_origin": "qdsv_canonical_problem_ir_materializer",
   "materialization_evidence": {
-    "formula_evaluated_on": "qpu_circuit",
+    "formula_materialized_in": "qpu_circuit",
     "classical_scan": false,
     "candidate_precomputed": false,
     "answer_leakage": false,
@@ -328,14 +328,25 @@ catalog = client.capabilities()
 print(catalog["operation_capabilities"])
 ```
 
-The compiler v1 executable slice supports bounded prepared integer data and predicates composed from:
+`client.capabilities()` uses `/api/bridge/capabilities`. The previous
+`client.families()` helper remains only as a compatibility alias; family labels
+do not select a compiler, set physical capacity or promise circuit delivery.
+
+The compiler v1 executable slice supports bounded prepared numeric data and predicates composed from:
 
 - fields and constants;
 - addition and subtraction;
-- multiplication by a constant;
-- division by a non-zero constant;
-- `gte` or `gt` as the root decision;
-- flat or hierarchical ScoreModel expressions that desugar to the same affine representation.
+- multiplication and division within the certified bounded profile;
+- absolute and squared differences plus bounded similarity expressions;
+- `eq`, `ne`, `lt`, `lte`, `gt` and `gte` decisions;
+- ScoreModel v2 flat and hierarchical weighted-criticality aggregation;
+- signed contextual adjustments, normalization and penalties;
+- reversible formula and decision operators with explicit uncompute evidence.
+
+ScoreModel v2 is available through a canonical `problem_spec`. Bridge returns the
+materialized circuit and a public evidence passport, but not the private lowering,
+functional rows, candidate-score tables or precomputed answers. See
+[`examples/score_model_v2.py`](examples/score_model_v2.py) for a bounded end-to-end example.
 
 Other Problem IR operations can still be represented semantically. If any graph node lacks a certified recursive lowering, Bridge returns exact `missing_capabilities` for expert construction instead of claiming a circuit.
 
@@ -482,7 +493,8 @@ Send:
 - qubit/depth limits;
 - materialization policy.
 - compact `prepared_candidates` containing only the bounded numeric signals required by the formula, when requesting a coherent circuit;
-- or a canonical `problem_spec`/`goal.predicate_ir` for operation-graph compilation.
+- or a canonical `problem_spec` that the Operation Compiler can certify as `reversible_semantic_formula`.
+- standalone predicates may be sent to `expert_prepare`; they are not synthesized into circuits from precomputed satisfying states.
 
 Public API minimum limits:
 

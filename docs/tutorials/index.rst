@@ -5,6 +5,7 @@ Tutorials
    :maxdepth: 1
 
    first_bridge_workflow
+   score_model_v2
 
 Colab Notebooks
 ---------------

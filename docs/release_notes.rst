@@ -1,6 +1,37 @@
 Release Notes
 =============
 
+0.4.0
+-----
+
+* Adds canonical ScoreModel v2 circuit delivery for bounded flat and hierarchical
+  formulas supported by QDSV Operation Compiler.
+* Supports nonlinear value expressions, signed contextual adjustments,
+  weighted-criticality aggregation, normalization, penalties and six comparison
+  operators within the certified physical profile.
+* Returns a public materialization passport with circuit and compiler digests,
+  actual resources and no-precomputation evidence.
+* Does not expose private lowering data, functional rows, candidate-score tables,
+  quantized offsets or precomputed answers.
+* Ensures exported OpenQASM 2 programs use instructions that Qiskit can load again.
+* Makes ``/bridge/capabilities`` the primary catalog endpoint and keeps
+  ``/bridge/families`` only as a compatibility alias.
+* Separates global payload admission limits from physical circuit capacity,
+  which is decided by the certified lowering profile and actual resources.
+
+0.3.0
+-----
+
+* Removes the legacy circuit route that classically enumerated predicate results.
+* Exports circuits only when QDSV Operation Compiler produces a reversible semantic
+  formula without precomputed answers.
+* Keeps standalone predicates available as expert construction inputs rather than
+  presenting them as executable circuits.
+* Reports ``formula_materialized_in`` and explicit no-bypass evidence in generated
+  artifacts.
+* Rejects unsupported circuit requests with capability gaps and a safe expert-mode
+  alternative.
+
 0.2.0
 -----
 

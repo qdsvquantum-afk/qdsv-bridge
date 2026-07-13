@@ -9,7 +9,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.2.0"
+SDK_VERSION = "0.4.0"
 PRIVATE_NODE_UNAVAILABLE_MESSAGE = (
     "Private QDSV node temporarily unavailable. It may be offline, reserved for "
     "private processing, or busy. Try again later or use QDSVBridgeClient() for "
@@ -110,7 +110,7 @@ class QDSVBridgeClient:
     def capabilities(self) -> dict[str, Any]:
         """Return operation-level compiler capabilities and service limits."""
 
-        return self._request("GET", "/bridge/families")
+        return self._request("GET", "/bridge/capabilities")
 
     def validate(self, spec: Mapping[str, Any], *, mode: str | None = None) -> dict[str, Any]:
         return self._request("POST", "/bridge/validate", json={"spec": self._spec_with_mode(spec, mode)})
