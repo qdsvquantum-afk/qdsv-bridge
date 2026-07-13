@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Current package version: `0.4.2`.
+Current package version: `0.4.3`.
 
 Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 

@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+0.4.3
+-----
+
+* Clarifies the public artifact boundary for every delivery mode and keeps
+  private compiler representations and implementation rules out of responses.
+* Makes active examples capability-driven and limits Amazon Braket wording to
+  the tested ``LocalSimulator`` OpenQASM conversion workflow.
+* Updates the first workflow tutorial to use a directly materializable problem
+  specification without a family selector.
+
 0.4.2
 -----
 
@@ -15,11 +25,6 @@ Release Notes
 * Adds end-to-end evidence for modulo, absolute value, absolute difference,
   scalar similarity, all six decisions, hierarchical decisions, bounded Grover
   amplification and work-register cleanup.
-* Clarifies the public artifact boundary for every delivery mode and keeps
-  private compiler representations and implementation rules out of responses.
-* Makes active examples capability-driven and limits Amazon Braket wording to
-  the tested ``LocalSimulator`` OpenQASM conversion workflow.
-
 0.4.1
 -----
 
