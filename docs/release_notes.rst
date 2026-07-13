@@ -25,6 +25,7 @@ Release Notes
 * Adds end-to-end evidence for modulo, absolute value, absolute difference,
   scalar similarity, all six decisions, hierarchical decisions, bounded Grover
   amplification and work-register cleanup.
+
 0.4.1
 -----
 
