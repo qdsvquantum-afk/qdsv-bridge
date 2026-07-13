@@ -83,7 +83,7 @@ The example sends a canonical ``problem_spec`` and requests OpenQASM 2 through
 * actual qubit and depth metrics;
 * formula, circuit and operation-program digests;
 * evidence that candidate answers were not precomputed;
-* the certified lowering profile, without private lowering tables.
+* the public capability profile identifier, without private implementation details.
 
 The physical profile is deliberately bounded. If a formula exceeds the current
 input-state or artifact limits, Bridge rejects the circuit request instead of
@@ -93,9 +93,11 @@ construction inputs are useful but a complete circuit cannot be certified.
 Delivery evidence and boundaries
 --------------------------------
 
-The public response exposes the certified profile, program and artifact digests,
-actual qubit and depth metrics, and explicit no-precomputation evidence. It does
-not expose the private lowering, bounded function rows or candidate-score tables.
+The public response exposes the capability profile identifier, program and
+artifact digests, actual qubit and depth metrics, and explicit
+no-precomputation evidence. It does not expose private compiler implementation,
+internal optimization rules, intermediate candidate scores or precomputed
+answers.
 
 Physical synthesis is constrained by ``max_input_qubits`` and
 ``max_function_states`` in the numeric contract. Cost can grow rapidly with the

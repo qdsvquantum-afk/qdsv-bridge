@@ -2,7 +2,6 @@ from qdsv_bridge import QDSVBridgeClient
 
 
 spec = {
-    "family": "semantic_signal_classification",
     "state_space": {"kind": "finite_candidates", "candidate_count": 2, "candidate_id": "eeg_window"},
     "signals": ["ictal_score"],
     "prepared_candidates": [{"ictal_score": 0}, {"ictal_score": 1}],

@@ -36,7 +36,6 @@ from qdsv_bridge import QDSVBridgeClient
 client = QDSVBridgeClient()
 
 spec = {
-    "family": "bounded_semantic_marking",
     "bridge_mode": "build",
     "state_space": {
         "kind": "finite_candidates",
@@ -107,13 +106,13 @@ The notebook demonstrates:
 
 ## Boundaries
 
-Bridge is not an IBM Quantum hardware execution SDK. It does not expose the private QDSV Runtime, backend-routing heuristics, production adapters or private lowering internals.
+Bridge is not an IBM Quantum hardware execution SDK. It does not expose the private runtime, internal compilation or optimization rules, or private backend adapters.
 
 The current public role of Bridge is upstream of execution:
 
 ```text
 preserve problem intent
--> materialize the formula/oracle through canonical ProblemSpec/IR
+-> construct the formula/oracle through the supported QDSV path
 -> derive an executable auditable artifact
 -> provide metadata and warnings
 -> let the Qiskit user inspect and control the circuit workflow
@@ -128,7 +127,7 @@ For Qiskit users, the practical benefit is not loss of control. The benefit is t
 - what problem was declared;
 - what state-space role was used;
 - what artifact was generated;
-- whether the formula was evaluated in the circuit or lowered as a finite-domain oracle;
+- whether the formula was constructed in the circuit;
 - whether candidates or result tables were precomputed;
 - what warnings or limits should be inspected before execution.
 

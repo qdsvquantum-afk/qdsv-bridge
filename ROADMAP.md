@@ -1,33 +1,33 @@
 # QDSV Bridge Roadmap
 
-QDSV Bridge is in Developer Preview. The SDK is a public client; the private QDSV Runtime and semantic compiler internals remain closed.
+QDSV Bridge is in Developer Preview. The SDK is a public client; the private runtime and internal compilation rules are not included.
 
 ## Current
 
 - Public Python SDK on PyPI.
 - Public Bridge API client.
-- Family-based validation, compile, explain and export.
+- Capability-driven validation, compile, explain and export.
 - Bridge Report generation in JSON, Markdown and HTML.
 - Output modes: `use`, `build`, `expert_prepare`, `expert_evaluate`.
-- Controlled fallback family: `bounded_semantic_marking`.
+- Legacy family labels accepted as optional compatibility metadata only.
 - Resource limits and raw-data rejection.
 - Circuit-origin metadata: `qdsv_canonical_problem_ir_materializer`.
 
 ## Next
 
-- More family examples.
+- More problem-first capability examples.
 - More QASM/Qiskit blueprint examples.
 - Clearer preservation reports.
 - Better examples for basic, intermediate and expert users.
 - More diagnostics for unsupported specs.
 - Notebooks that compare prebuilt-template workflows vs problem-derived Bridge outputs.
-- Recipes for current public families: semantic candidate marking, signal classification, predicate/oracle marking, state similarity, combinatorial relations and distribution sampling.
+- Recipes for supported operation combinations and explicit examples of unsupported capability requests.
 
 ## Later
 
-- More specialized Bridge families.
+- More certified operation compositions and construction profiles.
 - More export target variants.
-- PennyLane, Braket, Azure Quantum/Q#, Cirq and VS Code integrations as planned integrations, not current public capabilities.
+- PennyLane, Azure Quantum/Q#, Cirq and VS Code integrations as planned integrations, not current public capabilities. Amazon Braket remains limited to the tested LocalSimulator OpenQASM conversion workflow.
 - Packaged NISQ workflow examples such as QUBO/QAOA/VQE/Grover as recipes built on top of Bridge artifacts.
 - TypeScript client preview.
 - Stronger public examples for Qiskit/PennyLane/Braket users.

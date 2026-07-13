@@ -2,7 +2,8 @@
 
 Status: public developer-preview positioning note.
 
-QDSV Bridge already includes a public Braket-oriented demo path:
+QDSV Bridge includes a public OpenQASM demo tested with the Amazon Braket
+`LocalSimulator` conversion workflow:
 
 ```text
 controlled semantic problem specification
@@ -52,7 +53,7 @@ We would like to ask whether a tutorial-style contribution around QDSV Bridge wo
 
 QDSV Bridge is an open-source Python SDK that starts from controlled problem-first semantic specifications and exports inspectable OpenQASM artifacts with reproducibility reports.
 
-For Braket-oriented workflows, we prepared a public demo showing:
+For the tested Amazon Braket LocalSimulator conversion workflow, we prepared a public demo showing:
 
 QDSV Bridge semantic spec
 -> OpenQASM artifact
@@ -84,7 +85,7 @@ Do not describe Bridge as:
 Prefer:
 
 ```text
-QDSV Bridge exports OpenQASM artifacts that can be inspected and executed in Braket-oriented workflows using the Amazon Braket SDK and LocalSimulator.
+QDSV Bridge exports an OpenQASM artifact compatible with the tested Amazon Braket SDK and LocalSimulator conversion workflow.
 ```
 
 ## Readiness Checklist

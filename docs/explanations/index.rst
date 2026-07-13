@@ -5,25 +5,25 @@ Problem-first Boundary
 ----------------------
 
 Bridge starts from controlled semantic problem specifications rather than
-from handwritten circuit templates. The public artifact boundary is canonical
-QDSV ProblemSpec/IR, a typed operation graph and backend-neutral reversible IR,
-followed by executable OpenQASM/Qiskit output plus reproducibility evidence.
+from handwritten circuit templates. The public artifact boundary consists of
+an executable circuit or expert construction package plus reproducibility
+evidence. Internal compiler representations are not part of that boundary.
 
 Operation Compiler Boundary
 ---------------------------
 
-Problem-family labels do not select a circuit implementation. The QDSV
-Operation Compiler checks every graph node and only declares a circuit ready
-when the complete graph has a certified reversible lowering. Otherwise Bridge
-returns construction inputs and the exact missing capabilities.
+Problem-family labels do not select a circuit implementation. The compiler
+checks every required operation and only declares a circuit ready when the
+complete supported construction path succeeds. Otherwise Bridge returns public
+construction inputs and the exact missing capabilities.
 
 Public SDK, Private Runtime
 ---------------------------
 
-The public SDK exposes the client, CLI, examples, notebooks and public
-preview documentation. It does not expose the private QDSV Runtime, CAP,
-production lowering internals, private backend adapters, secrets or
-production configuration.
+The public SDK exposes the client, CLI, examples, notebooks and public preview
+documentation. It does not expose the private runtime, internal compilation or
+optimization rules, private backend adapters, secrets or production
+configuration.
 
 Delivery Model
 --------------
@@ -49,3 +49,12 @@ the truth of input data, provider execution or simulator/hardware results.
 Bridge does not label uniform-superposition scaffolds as completed semantic
 circuits. Specifications without prepared numeric signals or canonical
 predicate IR remain expert inputs.
+
+Advanced Internal Boundary
+--------------------------
+
+Internally, the supported construction path uses a typed operation graph and a
+backend-neutral reversible representation. These terms define the verification
+boundary only. Public responses contain stable summaries, capability
+identifiers, resource evidence and digests rather than the private graph,
+reversible representation or implementation rules.

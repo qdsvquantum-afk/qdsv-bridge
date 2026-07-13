@@ -21,7 +21,9 @@ problem intent
 -> Bridge Report
 ```
 
-This makes the handoff explicit. The user can see what Bridge generated, which semantic family was used, what warnings were reported and which digests identify the artifact.
+This makes the handoff explicit. The user can see what Bridge generated, which
+delivery mode was used, any optional legacy label, the reported warnings and
+the digests that identify the artifact.
 
 ## Current Public Artifact
 
@@ -53,7 +55,7 @@ Bridge should be understood as upstream of the execution framework:
 ```text
 Bridge
   declares and validates the problem-level structure
-  materializes through canonical ProblemSpec/IR
+  constructs the circuit through the supported QDSV path
   exports executable OpenQASM and reproducibility metadata
 
 Framework
@@ -63,7 +65,7 @@ Framework
 
 This keeps the roles separated:
 
-- Bridge records problem intent and generates auditable artifacts through the canonical QDSV materializer.
+- Bridge records problem intent and generates auditable artifacts through the supported QDSV construction path.
 - Qiskit, Braket or another framework controls framework-specific simulation, transpilation and execution.
 
 ## Qiskit Path
@@ -130,11 +132,11 @@ See:
 Every Bridge Report records:
 
 - the problem and deliverable contract;
-- family and mode used;
+- delivery mode and optional legacy family label, only when supplied;
 - canonical materialization evidence, including formula location and precomputation flags;
 - generated artifact content;
 - warnings and limits;
-- artifact, IR, oracle, materialization and problem-spec digests.
+- public artifact, construction and problem-spec digests.
 
 This means the OpenQASM artifact is not just a circuit text file. It is attached to a traceable semantic export package.
 
@@ -148,13 +150,13 @@ The current public role of Bridge is:
 
 ```text
 controlled semantic spec
--> canonical QDSV ProblemSpec / IR
+-> supported QDSV construction path
 -> executable auditable OpenQASM artifact
 -> framework-specific workflow
 -> reproducibility report
 ```
 
-Managed hardware execution, provider-specific backend routing and production lowering remain outside the public Bridge SDK.
+Managed hardware execution, provider-specific backend routing and private compilation remain outside the public Bridge SDK.
 
 ## Public Links
 

@@ -23,7 +23,6 @@ def main() -> None:
     client = QDSVBridgeClient(api_url=API_URL, api_key=API_KEY, timeout=60)
 
     spec = {
-        "family": "bounded_semantic_marking",
         "bridge_mode": "build",
         "state_space": {
             "kind": "finite_candidates",

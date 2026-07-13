@@ -2,9 +2,9 @@
 
 Status: public developer preview.
 
-QDSV Bridge is a problem-first specification layer for quantum-oriented workflows. It helps users declare a controlled semantic problem specification before exporting inspectable OpenQASM artifacts that can be used in Braket-oriented workflows with the Amazon Braket SDK and `LocalSimulator`.
+QDSV Bridge is a problem-first specification layer for quantum-oriented workflows. It helps users declare a controlled semantic problem specification before exporting an OpenQASM artifact compatible with the tested Amazon Braket `LocalSimulator` conversion workflow.
 
-Bridge does not replace Amazon Braket and is not an official Amazon Braket integration. It prepares canonically materialized OpenQASM artifacts, materialization evidence and reproducibility reports for Braket-oriented workflows.
+Bridge does not replace Amazon Braket and is not an official Amazon Braket integration. It prepares problem-derived OpenQASM artifacts, construction evidence and reproducibility reports for the tested local conversion workflow.
 
 ## Current Public Flow
 
@@ -34,7 +34,6 @@ from qdsv_bridge import QDSVBridgeClient
 client = QDSVBridgeClient()
 
 spec = {
-    "family": "bounded_semantic_marking",
     "bridge_mode": "build",
     "state_space": {
         "kind": "finite_candidates",
@@ -124,7 +123,7 @@ The notebook demonstrates:
 - installing the Amazon Braket Python SDK as an optional demo dependency;
 - connecting to the public Bridge API;
 - declaring a bounded semantic problem specification;
-- building an OpenQASM 3 artifact for a Braket-oriented target;
+- building an OpenQASM 3 artifact for the tested Braket LocalSimulator conversion;
 - preparing a small Braket-compatible OpenQASM view;
 - simulating locally with `LocalSimulator`;
 - generating a Bridge Report.
@@ -134,7 +133,7 @@ The notebook demonstrates:
 This demo was tested with:
 
 - Python 3.11;
-- `qdsv-bridge` 0.3.0;
+- `qdsv-bridge` 0.4.2;
 - Amazon Braket SDK;
 - Amazon Braket `LocalSimulator`.
 
@@ -142,13 +141,13 @@ Python 3.14 is not recommended for this demo yet due to dependency compatibility
 
 ## Boundaries
 
-Bridge is not an AWS hardware execution SDK. It does not manage AWS accounts, Amazon S3 task locations, Braket QPU access, billing, backend selection, production adapters or private lowering internals.
+Bridge is not an AWS hardware execution SDK. It does not manage AWS accounts, Amazon S3 task locations, Braket QPU access, billing or managed execution. It also does not expose private backend adapters or internal compilation rules.
 
 The current public role of Bridge is upstream of managed execution:
 
 ```text
 preserve problem intent
--> materialize an executable circuit through canonical ProblemSpec/IR
+-> construct an executable circuit through the supported QDSV path
 -> derive an auditable OpenQASM artifact
 -> provide metadata and warnings
 -> let the Braket user inspect and control the execution workflow

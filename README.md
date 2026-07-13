@@ -12,7 +12,7 @@ Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 
 QDSV Bridge converts supported semantic problem specifications into executable quantum circuit artifacts or expert construction packages. It is a lightweight Python client SDK built on **QDSV - Quantum Declarative Semantic Value**.
 
-Bridge never labels a scaffold as a completed circuit. Circuit exports are produced through the canonical QDSV operation compiler and materializer. A circuit request must compile to a `reversible_semantic_formula` without classical scanning, precomputed candidates or expected-value tables. A standalone `goal.predicate_ir` can still be returned as expert construction input, but it is not converted into a circuit by classically enumerating its answers.
+Bridge never labels an incomplete artifact as a completed circuit. If the accepted problem can be constructed with the currently supported capabilities and resource limits, Bridge returns the circuit. Otherwise it returns a bounded expert construction package or an explicit capability error; it does not invent a circuit or embed a precomputed answer.
 
 The public developer preview is available without an API key:
 
@@ -44,7 +44,7 @@ Choose how much control you want over the returned artifact. A legacy `family` v
 | If you need... | Use | Python helper | Main output |
 |---|---|---|---|
 | A simpler starting point without designing circuits | Bridge Use | `client.generate(spec)` | Canonically materialized circuit, evidence, guidance and ready-to-run example |
-| An inspectable OpenQASM/Qiskit/Braket-oriented artifact | Bridge Build | `client.build(spec)` | Executable QASM/Qiskit artifact, oracle spec, canonical IR summary, actual metrics and digests |
+| An inspectable OpenQASM/Qiskit artifact | Bridge Build | `client.build(spec)` | Executable QASM/Qiskit artifact, public oracle contract, stable public IR summary, actual metrics and digests |
 | Expert construction inputs before final circuit materialization | Bridge Expert Prepare | `client.prepare(spec)` | Semantic construction inputs without forcing a final circuit |
 | Expert evaluation of a materialized artifact | Bridge Expert Evaluate | `client.evaluate(spec)` | The actual materialization, construction evidence and clearly labeled non-materialized alternatives |
 
@@ -161,13 +161,13 @@ For Qiskit-oriented users, see the public integration guide:
 
 ## Amazon Braket OpenQASM Workflow
 
-For Braket-oriented users, see the public OpenQASM integration guide:
+For users of the tested Amazon Braket `LocalSimulator` conversion workflow, see:
 
 - [QDSV Bridge for Amazon Braket OpenQASM Workflows](docs/integrations/aws_braket.md)
 - [Amazon Braket Community Submission Path](docs/integrations/aws_braket_community_path.md)
 - [Open 05 AWS Braket OpenQASM Demo](https://colab.research.google.com/github/qdsvquantum-afk/qdsv-bridge/blob/main/notebooks/05_aws_braket_openqasm_demo.ipynb)
 
-QDSV Bridge exports OpenQASM artifacts and includes `to_braket_openqasm()` for the bounded gate-name/definition conversion used by the tested Amazon Braket `LocalSimulator` workflow. This is not an official Amazon Braket integration and does not include managed AWS hardware execution.
+QDSV Bridge exports an OpenQASM artifact compatible with the tested Amazon Braket `LocalSimulator` conversion workflow and includes `to_braket_openqasm()` for its bounded gate-name/definition conversion. This is not an official Amazon Braket integration and does not include managed AWS hardware execution.
 
 ## OpenQASM-First Interoperability
 
@@ -192,8 +192,8 @@ client = QDSVBridgeClient.local()
 ## What This Is
 
 - A client SDK for QDSV Bridge.
-- A controlled interface to the QDSV Operation Compiler and canonical circuit materializer.
-- A way to request QDSV IR, oracle specs, QASM/Qiskit artifacts or expert construction inputs.
+- A controlled interface for requesting problem-derived quantum circuit artifacts.
+- A way to request QASM/Qiskit artifacts, public construction contracts or expert construction inputs.
 - A way to generate shareable Bridge Reports in JSON, Markdown or HTML.
 - A bridge for users who need circuit ecosystems but do not want to start from prebuilt templates.
 
@@ -204,21 +204,19 @@ client = QDSVBridgeClient.local()
 - It is not a hardware execution SDK.
 - It is not an arbitrary circuit generator.
 - It is not a selector of prefabricated circuit templates.
-- It does not expose CAP, backend selection heuristics, private lowering internals, QuEST/Aer/IBM adapters, secrets or production configuration.
+- It does not expose the private runtime, internal compilation or optimization rules, private backend adapters, secrets or production configuration.
 
 ## Why This Exists
 
 Traditional quantum workflows often start by asking users to choose a circuit, encoding, ansatz or measurement pattern. That can force the data to adapt to a circuit.
 
-QDSV Bridge starts from a bounded semantic problem. The QDSV Operation Compiler builds a typed operation graph and checks every required operation before any circuit is claimed.
+QDSV Bridge starts from a bounded semantic problem and checks that every required capability and resource is available before a circuit is claimed.
 
 ```text
 semantic problem spec
--> typed operation graph
--> reversible IR and capability validation
--> oracle specification
--> materialization policy
--> generated circuit artifact or expert construction inputs
+-> capability and resource validation
+-> executable circuit or expert construction package
+-> auditable report
 ```
 
 For users who want a simpler starting point, Bridge can generate executable problem-derived circuits when the specification compiles completely to a reversible semantic formula. It refuses to present incomplete blueprints or classically enumerated answer oracles as completed circuits.
@@ -227,7 +225,7 @@ For expert constructors, Bridge can also return the key semantic inputs needed t
 
 ## Bridge Modes
 
-QDSV Bridge is one SDK with multiple output depths. The modes do not change the core principle: a circuit is delivered only after canonical QDSV ProblemSpec/IR materialization succeeds.
+QDSV Bridge is one SDK with multiple output depths. The modes do not change the core principle: a circuit is delivered only after the complete supported construction path succeeds.
 
 | API | Commercial name | Intended user | What Bridge returns |
 |---|---|---|---|
@@ -334,8 +332,8 @@ print(comparison["comparison"])
 Bridge verifies the construction path before returning a completed circuit:
 
 1. It validates and normalizes the semantic specification.
-2. It compiles one canonical ProblemSpec/IR and a typed operation graph.
-3. It rejects the circuit request if any graph node lacks a certified lowering.
+2. It builds one canonical public problem representation and operation plan.
+3. It rejects the circuit request if any required operation lacks a certified implementation.
 4. It checks the reversible compute/decision/uncompute contract and rejects
    embedded answer tables or precomputed winning candidates.
 5. It materializes the concrete circuit, measures its actual qubits, depth and
@@ -350,9 +348,18 @@ or that a simulator/QPU produced a correct business result. Bridge does not run
 the circuit; execution, provider selection, credentials, shots, cost and result
 validation remain with the user.
 
+### Advanced Technical Boundary
+
+Internally, the supported path uses a typed operation graph and a reversible
+intermediate representation before concrete circuit generation. These stages
+are mentioned here only to define the verification boundary: the public SDK
+does not expose the private reversible IR, lowering implementation, optimization
+rules or backend adapters. Public responses contain only stable summaries,
+capability identifiers, resource evidence and digests.
+
 ## Operation Capabilities
 
-Materialization is selected from the typed operation graph, not from a problem-family name. Query the current catalog with:
+Circuit construction is selected from the required operations and available capabilities, not from a problem-family name. Query the current catalog with:
 
 ```python
 catalog = client.capabilities()
@@ -456,11 +463,10 @@ profile does **not** claim complete ranking, Top-K, argmax/argmin, unrestricted
 optimization, arbitrary vector similarity or automatic model calibration.
 
 ScoreModel v2 is available through a canonical `problem_spec`. Bridge returns the
-materialized circuit and a public evidence passport, but not the private lowering,
-bounded function rows, candidate-score tables or precomputed answers. The public
-evidence states whether the formula was materialized in the circuit, whether
-candidate answers were precomputed, which lowering profile was used and the actual
-qubit and depth metrics.
+materialized circuit and a public evidence passport. It does not expose private
+compiler implementation, internal optimization rules, intermediate candidate
+scores or precomputed answers. The public profile is only a capability identifier;
+the evidence also reports actual qubit and depth metrics.
 
 The current physical synthesis is bounded by the declared `max_input_qubits` and
 `max_function_states`, as well as Bridge payload, QASM, qubit and depth limits.
@@ -471,58 +477,32 @@ validation is not part of the Bridge delivery contract. The user chooses the
 simulator or provider, supplies the execution resources and validates the resulting behavior. See
 [`examples/score_model_v2.py`](examples/score_model_v2.py) for a bounded circuit-delivery example.
 
-Other Problem IR operations can still be represented semantically. If any graph node lacks a certified recursive lowering, Bridge returns exact `missing_capabilities` for expert construction instead of claiming a circuit.
+Other operations can still be represented semantically. If any required operation lacks a certified implementation, Bridge returns exact `missing_capabilities` for expert construction instead of claiming a circuit.
 
 Legacy family values such as `bounded_semantic_marking` remain accepted as compatibility labels. They do not choose the compiler, alter the generated circuit or promise support.
 
-Compatibility example:
+Legacy family labels remain accepted only as optional metadata:
 
 ```python
-spec = {
-    "family": "bounded_semantic_marking",
-    "state_space": {
-        "kind": "finite_candidates",
-        "candidate_count": 2,
-        "candidate_id": "candidate",
-    },
-    "signals": ["eligibility_score"],
-    "prepared_candidates": [
-        {"eligibility_score": 0},
-        {"eligibility_score": 1},
-    ],
-    "goal": {
-        "kind": "marking",
-        "threshold": 1,
-        "criteria": [
-            {"signal": "eligibility_score", "importance": 1, "priority": 1}
-        ],
-    },
-    "target": {
-        "format": "qasm3",
-        "backend_family": "qiskit",
-    },
-    "limits": {
-        "max_qubits": 8,
-        "max_depth": 160,
-    },
-}
-
-result = client.build(spec)
-print(result["family"])
-print(result["circuit_origin"])
-print(result["warnings"])
+legacy_labeled_spec = {**spec, "family": "bounded_semantic_marking"}
 ```
+
+The label does not select the compiler, alter the circuit or promise support.
 
 ## What It Exports
 
-Depending on `target.format`, QDSV Bridge can export:
+What is exposed depends on the delivery mode:
 
-- `problem_spec`
-- `ir`
-- `oracle_spec`
-- `qasm2`
-- `qasm3`
-- `qiskit_blueprint`
+| Mode | Public artifact boundary |
+|---|---|
+| `generate()` | Circuit, loading guidance, measurement meaning, actual resources and construction evidence. No public IR or lowering details. |
+| `build()` | Editable QASM/Qiskit artifact, public oracle contract, stable public IR summary, resources and digests. No reversible IR. |
+| `prepare()` | Public construction contract, semantic requirements, capability gaps and design guidance. No private compiler plan. |
+| `evaluate()` | Actual materialization evidence and conceptual alternatives. No private selection heuristics. |
+
+The public `oracle_spec` never contains answer tables, private function rows or
+winning candidates. A public profile value is an identifier and version only,
+not an implementation disclosure.
 
 ## Bridge Report
 
@@ -615,10 +595,9 @@ Send:
 - threshold decision goal or predicate supported by the current compiler;
 - target format;
 - qubit/depth limits;
-- materialization policy.
 - compact `prepared_candidates` containing only the bounded numeric signals required by the formula, when requesting a coherent circuit;
-- or a canonical `problem_spec` that the Operation Compiler can certify as `reversible_semantic_formula`.
-- standalone predicates may be sent to `expert_prepare`; they are not synthesized into circuits from precomputed satisfying states.
+- or a canonical `problem_spec` containing the supported operations needed to construct the circuit.
+- unsupported predicates may be sent to `expert_prepare`; they are not converted into circuits from precomputed satisfying states.
 
 Public API minimum limits:
 
@@ -647,13 +626,9 @@ Default API rate limits may be configured by the QDSV deployment:
 - `export`: 10/minute
 - `report`: 10/minute
 
-Rate limits use `Authorization`, `x-api-key` or `x-license-key` when present. Otherwise they fall back to IP plus SDK name.
-
-API keys are optional for the open Developer Preview path. They become useful for higher quotas, partner access, private pilots, usage attribution or deployments configured with `QDSV_BRIDGE_API_KEY_REQUIRED=true`.
-
-In the current public deployment, rate limiting is in-memory per API instance. If Cloud Run scales to multiple instances, the effective limit may multiply until a distributed rate-limit store is enabled.
-
-The SDK itself is stateless and does not block multiple users. Multi-user control, quotas, optional API keys, license checks and history belong to the QDSV/Qruba API deployment, not to the local Python package.
+Quotas, authentication requirements and rate limits are configurable by each
+deployment. The public preview may apply different limits from a private or
+partner deployment.
 
 Raw dataset payloads are rejected:
 
@@ -683,24 +658,16 @@ PennyLane, Azure Quantum/Q#, Cirq, VS Code, TypeScript clients, Amazon Braket ma
 
 ## Important Boundaries
 
-QDSV Bridge does not expose:
-
-- QDSV Runtime internals;
-- CAP internals;
-- backend selection heuristics;
-- private QuEST/Aer/IBM adapters;
-- native lowering internals;
-- unrestricted circuit generation;
-- arbitrary Python execution;
-- prefabricated circuit selection as the main product;
-- user-supplied free circuits as family contracts.
+QDSV Bridge does not expose the private runtime, internal compilation or
+optimization rules, private backend adapters, secrets or production
+configuration. It also does not provide unrestricted circuit generation or
+arbitrary Python execution.
 
 Product principle:
 
 ```text
 semantic problem specification
--> typed operation graph
--> reversible IR and capability assessment
+-> capability and resource validation
 -> executable circuit materialization or expert inputs
 -> auditable export
 ```
@@ -713,9 +680,8 @@ any input -> arbitrary circuit
 
 ## Open SDK, Private Runtime
 
-This repository is open-core:
-
-- Open under MIT: Python client SDK, examples, docs and tests.
-- Not included: QDSV Runtime, ontology compiler internals, CAP, lowering, advanced materialization, backend adapters, private endpoints, secrets or production configuration.
+This repository contains the MIT-licensed Python client SDK, examples,
+documentation and tests. It does not contain the private runtime, internal
+compilation rules, private backend adapters, secrets or production configuration.
 
 QDSV, QIntent and Qruba names and marks are project marks of their respective owners. The MIT License for this repository does not grant trademark rights.

@@ -9,5 +9,6 @@ How-to Guides
    ../integrations/aws_braket
    ../integrations/aws_braket_community_path
 
-These guides explain how Bridge artifacts can be inspected or routed into
-OpenQASM, Qiskit and Amazon Braket-oriented workflows.
+These guides explain how Bridge artifacts can be inspected in OpenQASM and
+Qiskit, or converted through the tested Amazon Braket ``LocalSimulator``
+workflow.

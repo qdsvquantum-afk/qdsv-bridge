@@ -15,6 +15,10 @@ Release Notes
 * Adds end-to-end evidence for modulo, absolute value, absolute difference,
   scalar similarity, all six decisions, hierarchical decisions, bounded Grover
   amplification and work-register cleanup.
+* Clarifies the public artifact boundary for every delivery mode and keeps
+  private compiler representations and implementation rules out of responses.
+* Makes active examples capability-driven and limits Amazon Braket wording to
+  the tested ``LocalSimulator`` OpenQASM conversion workflow.
 
 0.4.1
 -----
@@ -87,5 +91,5 @@ Release Notes
 -----
 
 * Clarifies Bridge delivery modes for basic, intermediate and expert users.
-* Documents Qiskit and Braket-oriented OpenQASM workflows.
+* Documents Qiskit and the tested Amazon Braket LocalSimulator OpenQASM workflow.
 * Adds Qiskit Ecosystem documentation scaffolding.
