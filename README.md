@@ -343,10 +343,76 @@ The compiler v1 executable slice supports bounded prepared numeric data and pred
 - signed contextual adjustments, normalization and penalties;
 - reversible formula and decision operators with explicit uncompute evidence.
 
+## ScoreModel v2 Decision Capability
+
+ScoreModel v2 is the broadest decision-oriented circuit path currently exposed
+through Bridge. It is not tied to one industry or to similarity alone. It
+materializes bounded multi-criteria decision predicates over finite candidates
+through the canonical QDSV operation compiler.
+
+ScoreModel v2 accepts two complementary value routes:
+
+| Value route | What the user provides | Typical sources |
+|---|---|---|
+| Prepared numeric metric | Any finite numeric value that fits the declared numeric contract, together with optional provenance | Probability, normalized distance, risk metric, correlation, externally calculated similarity, model output or domain measurement |
+| QDSV numeric expression | Prepared numeric fields plus a bounded operation graph supported by the ScoreModel v2 physical profile | Direct values, bounded arithmetic, absolute or squared difference and scalar numeric similarity |
+
+An externally produced metric remains an input: Bridge does not claim to have
+computed it. This lets users bring a value from another model or domain process
+while QDSV materializes the bounded decision operation. QDSV can also compute
+scalar numeric similarity inside the circuit profile. Arbitrary vector or cosine
+similarity is not currently computed by this physical profile, but a separately
+computed finite similarity value can be supplied as a prepared numeric metric.
+
+The implemented ScoreModel v2 capability includes:
+
+- flat multi-term decisions;
+- hierarchical decisions with independently weighted and critical blocks;
+- non-negative term and block weights and criticalities;
+- signed contextual adjustments over bounded adjustment values;
+- term aggregation, normalization and zero-mass protection;
+- term-level, block-level and global penalty handling;
+- exact rational semantic evaluation followed by declared fixed-point output,
+  deterministic rounding and overflow rejection;
+- `eq`, `ne`, `lt`, `lte`, `gt` and `gte` threshold decisions;
+- bounded value expressions using fields, constants, addition, subtraction,
+  multiplication, division, safe division, modulo, absolute value, absolute
+  difference, squared difference and scalar numeric similarity when accepted by
+  the current capability assessment;
+- candidate-independent reversible formula synthesis, decision marking,
+  measurement and explicit uncompute evidence;
+- optional bounded Grover amplification without inferring the number of winning
+  candidates through a classical answer scan.
+
+This supports practical finite-candidate workflows such as:
+
+- eligibility, approval and compliance screening;
+- multi-criteria candidate selection by threshold;
+- risk-benefit and cost-value assessment;
+- project, supplier, customer, hypothesis or alternative evaluation;
+- contextual decisions where the same observed value must be adjusted by
+  declared circumstances;
+- hierarchical decisions that combine local block assessments into one global
+  acceptance predicate.
+
+These are threshold-based decision and selection workflows. The current physical
+profile does **not** claim complete ranking, Top-K, argmax/argmin, unrestricted
+optimization, arbitrary vector similarity or automatic model calibration.
+
 ScoreModel v2 is available through a canonical `problem_spec`. Bridge returns the
 materialized circuit and a public evidence passport, but not the private lowering,
-functional rows, candidate-score tables or precomputed answers. See
-[`examples/score_model_v2.py`](examples/score_model_v2.py) for a bounded end-to-end example.
+bounded function rows, candidate-score tables or precomputed answers. The public
+evidence states whether the formula was materialized in the circuit, whether
+candidate answers were precomputed, which lowering profile was used and the actual
+qubit and depth metrics.
+
+The current physical synthesis is bounded by the declared `max_input_qubits` and
+`max_function_states`, as well as Bridge payload, QASM, qubit and depth limits.
+Resource cost can grow rapidly with the number and precision of prepared fields.
+The flat and hierarchical profiles are verified on Aer and QuEST; ScoreModel v2
+IBM hardware execution remains preflight-ready but pending a dedicated hardware
+run. See [`examples/score_model_v2.py`](examples/score_model_v2.py) for a bounded
+end-to-end example.
 
 Other Problem IR operations can still be represented semantically. If any graph node lacks a certified recursive lowering, Bridge returns exact `missing_capabilities` for expert construction instead of claiming a circuit.
 
