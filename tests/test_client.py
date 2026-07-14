@@ -9,7 +9,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.4.3"
+    assert qdsv_bridge.__version__ == "0.4.4"
 
 
 def test_normalizes_api_url() -> None:
@@ -242,6 +242,7 @@ def test_report_posts_spec_format_and_mode(monkeypatch: pytest.MonkeyPatch) -> N
 
 def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPatch) -> None:
     modes = []
+    requested_specs = []
 
     class FakeResponse:
         ok = True
@@ -253,6 +254,7 @@ def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPat
 
     def fake_request(method, url, **kwargs):
         modes.append(kwargs["json"]["spec"]["bridge_mode"])
+        requested_specs.append(kwargs["json"]["spec"])
         return FakeResponse()
 
     monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
@@ -264,3 +266,4 @@ def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPat
     client.evaluate(spec)
 
     assert modes == ["use", "build", "expert_prepare", "expert_evaluate"]
+    assert requested_specs[2]["target"]["format"] == "oracle_spec"

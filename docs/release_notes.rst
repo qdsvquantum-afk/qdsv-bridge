@@ -1,6 +1,17 @@
 Release Notes
 =============
 
+0.4.4
+-----
+
+* Narrows the public contract to circuit delivery and expert construction
+  artifacts, removing unrelated terminology from the Bridge surface.
+* Rejects unsupported abbreviated goals before circuit materialization instead
+  of silently substituting another intent.
+* Ensures ``prepare()`` requests an expert construction artifact rather than a
+  final circuit and verifies ``operation_coverage`` in the correct delivery mode.
+* Installs the OpenQASM 3 importer in the end-user Colab validation workflow.
+
 0.4.3
 -----
 

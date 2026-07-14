@@ -9,7 +9,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.4.3"
+SDK_VERSION = "0.4.4"
 PRIVATE_NODE_UNAVAILABLE_MESSAGE = (
     "Private QDSV node temporarily unavailable. It may be offline, reserved for "
     "private processing, or busy. Try again later or use QDSVBridgeClient() for "
@@ -146,7 +146,11 @@ class QDSVBridgeClient:
     def prepare(self, spec: Mapping[str, Any]) -> dict[str, Any]:
         """Expert-constructor mode: semantic inputs for designing a custom circuit."""
 
-        return self.export(spec, mode="expert_prepare")
+        prepared_spec = dict(spec)
+        target = dict(prepared_spec.get("target") or {})
+        target["format"] = "oracle_spec"
+        prepared_spec["target"] = target
+        return self.export(prepared_spec, mode="expert_prepare")
 
     def evaluate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
         """Expert-evaluator mode: suggested QDSV materialization and variants."""

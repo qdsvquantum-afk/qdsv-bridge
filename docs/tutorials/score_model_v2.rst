@@ -67,8 +67,9 @@ selection, risk-benefit assessment, evaluation of projects or alternatives,
 context-aware decisions and hierarchical acceptance policies, provided the
 problem is finite, numeric and threshold-based.
 
-It does not currently claim complete ranking, Top-K, argmax/argmin, unrestricted
-optimization, arbitrary vector similarity or automatic calibration.
+Bridge only claims the operations and materialization profiles listed by its
+public capability contract. Capabilities outside that contract are not inferred
+or substituted.
 
 Run the public example from the repository root:
 

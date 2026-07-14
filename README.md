@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Current package version: `0.4.3`.
+Current package version: `0.4.4`.
 
 Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 
@@ -458,9 +458,9 @@ This supports practical finite-candidate workflows such as:
 - hierarchical decisions that combine local block assessments into one global
   acceptance predicate.
 
-These are threshold-based decision and selection workflows. The current physical
-profile does **not** claim complete ranking, Top-K, argmax/argmin, unrestricted
-optimization, arbitrary vector similarity or automatic model calibration.
+These are bounded threshold-based circuit-delivery workflows. Bridge only claims
+the operations and materialization profiles listed by its public capability
+contract; capabilities outside that contract are not inferred or substituted.
 
 ScoreModel v2 is available through a canonical `problem_spec`. Bridge returns the
 materialized circuit and a public evidence passport. It does not expose private
