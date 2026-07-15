@@ -1,6 +1,18 @@
 Release Notes
 =============
 
+0.5.0
+-----
+
+* Routes the complete canonical bounded expression set through the shared QDSV
+  operation compiler instead of product-specific circuit paths.
+* Adds one general bounded reversible circuit realizer, with resource-aware
+  specialized formula synthesis derived from the same canonical program.
+* Uses exact valid-domain preparation and diffusion, including non-power-of-two
+  candidate domains, with explicit compute-mark-uncompute verification.
+* Publishes circuit-generation and QASM-load evidence for all canonical public
+  expression operations and keeps physical resource rejection explicit.
+
 0.4.4
 -----
 

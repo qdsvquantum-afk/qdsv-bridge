@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#resource-and-multi-user-limits)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Current package version: `0.4.4`.
+Current package version: `0.5.0`.
 
 Documentation site: https://qdsvquantum-afk.github.io/qdsv-bridge/
 
@@ -375,16 +375,26 @@ claim that the same operation is materializable in every possible context.
 `client.families()` helper remains only as a compatibility alias; family labels
 do not select a compiler, set physical capacity or promise circuit delivery.
 
-The compiler v1 executable slice supports bounded prepared numeric data and predicates composed from:
+The canonical bounded compiler supports predicates composed from these public
+operations:
 
-- fields and constants;
-- addition and subtraction;
-- multiplication and division within the certified bounded profile;
-- absolute and squared differences plus bounded similarity expressions;
-- `eq`, `ne`, `lt`, `lte`, `gt` and `gte` decisions;
-- ScoreModel v2 flat and hierarchical importance-priority aggregation;
-- signed contextual adjustments, normalization and penalties;
-- reversible formula and decision operators with explicit uncompute evidence.
+- values and arithmetic: `field`, `add`, `sub`, `mul`, `div`, `safe_div`,
+  `ratio`, `percent`, `mod`, `abs`, `abs_diff`, `squared_diff`, `min`, `max`,
+  `clip`, `sum_fields`, `mean_fields`, `round`, `floor`, `ceil` and `sign`;
+- decisions and sets: `eq`, `ne`, `lt`, `lte`, `gt`, `gte`, `between`,
+  `outside`, `within_tolerance` and `in_set`;
+- logic and missing-value handling: `and`, `or`, `xor`, `not`, `is_null`,
+  `not_null`, `coalesce` and `default_if_invalid`;
+- bounded similarity and vectors: `similarity`, `vector`,
+  `vector_similarity` and `weighted_sum`;
+- ScoreModel v2 flat and hierarchical importance-priority aggregation,
+  including signed contextual adjustments, normalization and penalties.
+
+Every operation above is tested through the same canonical path from semantic
+specification to QASM loading and ideal circuit execution. This is a bounded
+finite-domain guarantee, not an unlimited resource guarantee: a valid
+specification can still be rejected when its required qubits, depth, function
+states or artifact size exceed the declared service limits.
 
 ## ScoreModel v2 Decision Capability
 
@@ -403,9 +413,11 @@ ScoreModel v2 accepts two complementary value routes:
 An externally produced metric remains an input: Bridge does not claim to have
 computed it. This lets users bring a value from another model or domain process
 while QDSV materializes the bounded decision operation. QDSV can also compute
-scalar numeric similarity inside the circuit profile. Arbitrary vector or cosine
-similarity is not currently computed by this physical profile, but a separately
-computed finite similarity value can be supplied as a prepared numeric metric.
+scalar numeric similarity inside its specialized circuit profile. Bounded vector
+similarity is available through the canonical general profile when its complete
+finite-domain materialization fits the declared resource limits. A separately
+computed finite similarity value can also be supplied as a prepared metric, in
+which case Bridge records it as an input rather than claiming to compute it.
 
 The implemented ScoreModel v2 capability includes:
 
@@ -477,7 +489,10 @@ validation is not part of the Bridge delivery contract. The user chooses the
 simulator or provider, supplies the execution resources and validates the resulting behavior. See
 [`examples/score_model_v2.py`](examples/score_model_v2.py) for a bounded circuit-delivery example.
 
-Other operations can still be represented semantically. If any required operation lacks a certified implementation, Bridge returns exact `missing_capabilities` for expert construction instead of claiming a circuit.
+Bridge rejects unknown operations and any construction that cannot be
+materialized within the active capability and resource contract. It never
+substitutes a different operation or returns a circuit labeled as complete when
+the requested semantic graph was not materialized.
 
 Legacy family values such as `bounded_semantic_marking` remain accepted as compatibility labels. They do not choose the compiler, alter the generated circuit or promise support.
 

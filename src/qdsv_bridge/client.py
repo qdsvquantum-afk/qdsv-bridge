@@ -9,7 +9,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.4.4"
+SDK_VERSION = "0.5.0"
 PRIVATE_NODE_UNAVAILABLE_MESSAGE = (
     "Private QDSV node temporarily unavailable. It may be offline, reserved for "
     "private processing, or busy. Try again later or use QDSVBridgeClient() for "
