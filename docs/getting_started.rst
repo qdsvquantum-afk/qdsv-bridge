@@ -17,7 +17,8 @@ For optional Qiskit artifact inspection:
    pip install "qdsv-bridge[qiskit]"
 
 The Qiskit extra is version-capped to the current supported major series
-(``qiskit>=2,<3``) to follow Qiskit Ecosystem compatibility guidance.
+(``qiskit>=2,<3``) to preserve compatibility with the currently tested Qiskit
+major version.
 
 Create a client for the public developer preview:
 
@@ -84,7 +85,8 @@ Bridge has one SDK with four delivery modes:
 * ``build`` for executable OpenQASM/Qiskit artifacts plus materialization evidence.
 * ``prepare`` for expert semantic construction inputs.
 * ``evaluate`` for the actual materialization evidence plus explicitly labeled
-  conceptual alternatives. It does not claim an execution comparison.
+  conceptual alternatives. It evaluates construction evidence; it does not
+  execute a circuit or claim a simulator/QPU comparison.
 
 ``generate`` and ``build`` reject incomplete circuit specifications. They never
 replace the semantic oracle with a placeholder scaffold.

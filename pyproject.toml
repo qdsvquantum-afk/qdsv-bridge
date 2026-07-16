@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "qdsv-bridge"
-version = "0.5.0"
+version = "0.5.1"
 description = "Lightweight Python client for capability-driven QDSV semantic-to-circuit compilation."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -43,6 +43,9 @@ docs = [
 Homepage = "https://qdsv.cloud"
 Documentation = "https://qdsvquantum-afk.github.io/qdsv-bridge/"
 Source = "https://github.com/qdsvquantum-afk/qdsv-bridge"
+Changelog = "https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/CHANGELOG.md"
+Issues = "https://github.com/qdsvquantum-afk/qdsv-bridge/issues"
+Security = "https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/SECURITY.md"
 
 [project.scripts]
 qdsv-bridge = "qdsv_bridge.cli:main"

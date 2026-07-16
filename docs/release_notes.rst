@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+0.5.1
+-----
+
+* Reorganizes the package README around installation, delivery modes, outputs,
+  limits and support.
+* Clarifies conditional circuit delivery, ``evaluate()`` behavior and the
+  ``qiskit_blueprint`` artifact.
+* Adds tested compatibility, privacy, versioning, error-handling and support
+  guidance.
+
 0.5.0
 -----
 
