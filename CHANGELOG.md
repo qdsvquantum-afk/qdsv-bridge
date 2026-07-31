@@ -2,6 +2,13 @@
 
 Notable public changes to QDSV Bridge are documented here. The project is a Developer Preview and has not reached a stable `1.0` contract.
 
+## 0.5.2
+
+- Adds a stable backend-neutral circuit realization package linked to the canonical semantic, quantum and reversible-plan identities.
+- Separates ideal circuit construction evidence from target-specific readiness, optimization, mitigation and provider execution.
+- Adds an explicit hardware handoff contract: Bridge delivers the canonical ideal logical circuit, while managed IBM execution belongs to Runtime/HSP or an equivalent user-controlled physical workflow.
+- Keeps unavailable ideal replay evidence explicit and removes private artifact locations from public target summaries.
+
 ## 0.5.1
 
 - Reorganizes the package README around installation, delivery modes, outputs, limits and support.

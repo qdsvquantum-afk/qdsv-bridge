@@ -1,6 +1,19 @@
 Release Notes
 =============
 
+0.5.2
+-----
+
+* Adds a backend-neutral circuit realization package tied to the canonical
+  semantic, quantum and reversible-plan identities.
+* Separates ideal circuit evidence from target optimization, mitigation and
+  provider execution through an explicit hardware handoff contract.
+* Clarifies that Bridge delivers the canonical ideal logical circuit; managed
+  IBM execution belongs to QDSV Runtime/HSP or an equivalent user-controlled
+  physical workflow.
+* Keeps unavailable ideal replay evidence explicit and omits private artifact
+  locations from public target summaries.
+
 0.5.1
 -----
 

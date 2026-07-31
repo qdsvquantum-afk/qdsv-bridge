@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#status-and-scope)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Source/package version: `0.5.1`. See the PyPI badge for publication status.
+Source/package version: `0.5.2`. See the PyPI badge for publication status.
 
 QDSV Bridge is a lightweight Python client SDK that converts supported semantic problem specifications into executable OpenQASM/Qiskit-compatible circuit artifacts or validated expert construction packages.
 
@@ -80,6 +80,25 @@ print(result["construction_verification"])
 ```
 
 When materialization succeeds within the supported capability and resource limits, `generate()` returns the completed circuit and loading guidance. Otherwise the SDK raises an explicit HTTP error; it does not return a substitute circuit.
+
+## Ideal Circuit And Hardware Handoff
+
+When Bridge materializes a circuit, the response includes a backend-neutral `circuit_realization_package`. It links the logical circuit to the canonical semantic, quantum and reversible-plan digests and includes the public result, measurement and decoder contracts.
+
+```python
+package = result["circuit_realization_package"]
+
+print(package["canonical_identity"])
+print(package["logical_realization"])
+print(package["validation"])
+print(result["target_handoff"])
+```
+
+This package establishes what the canonical ideal circuit represents; it is not evidence that a specific QPU will preserve the ideal result. `target_handoff` states the remaining work for a real backend, including target transpilation, physical-resource review and any supported mitigation. Bridge does not apply those target-specific adjustments or execute the circuit.
+
+For managed IBM execution, send the package through QDSV Runtime/HSP or Qruba's hardware flow. If you choose to run the artifact yourself, Bridge's handoff means: this is the ideal logical circuit; for IBM real hardware you must use Runtime/HSP or an equivalent user-controlled physical workflow.
+
+Ideal dynamic replay is reported only when it was actually performed. `resource_limited`, `not_run` or `unsupported` remain explicit evidence states and are never promoted to `passed`.
 
 ## Delivery Modes
 

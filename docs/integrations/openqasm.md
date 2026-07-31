@@ -156,7 +156,7 @@ controlled semantic spec
 -> reproducibility report
 ```
 
-Managed hardware execution, provider-specific backend routing and private compilation remain outside the public Bridge SDK.
+Managed hardware execution, provider-specific backend routing and private compilation remain outside the public Bridge SDK. For real IBM execution, treat Bridge's output as the ideal logical circuit and pass it through QDSV Runtime/HSP or an equivalent user-controlled physical workflow.
 
 ## Public Links
 

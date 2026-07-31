@@ -108,6 +108,8 @@ The notebook demonstrates:
 
 Bridge is not an IBM Quantum hardware execution SDK. It does not expose the private runtime, internal compilation or optimization rules, or private backend adapters.
 
+Bridge exports the canonical ideal circuit and its contracts. To make that artifact useful on real IBM hardware, use QDSV Runtime/HSP or an equivalent user-controlled physical workflow that performs target selection, target-aware transpilation, calibration review, mitigation and separate hardware evidence reporting.
+
 The current public role of Bridge is upstream of execution:
 
 ```text
@@ -115,6 +117,7 @@ preserve problem intent
 -> construct the formula/oracle through the supported QDSV path
 -> derive an executable auditable artifact
 -> provide metadata and warnings
+-> hand off to Runtime/HSP or a user-controlled IBM workflow for real QPU execution
 -> let the Qiskit user inspect and control the circuit workflow
 ```
 
