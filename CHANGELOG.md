@@ -2,6 +2,12 @@
 
 Notable public changes to QDSV Bridge are documented here. The project is a Developer Preview and has not reached a stable `1.0` contract.
 
+## 0.5.3
+
+- Adds a minimal public ScoreModel example using prepared metrics, a shared declared scale and the high-level `generate()` contract.
+- Clarifies that `priority` is a domain parameter rather than criterion order or execution precedence.
+- Keeps private ScoreModel aggregation and compiler rules outside the public SDK documentation and adds regression coverage for that boundary.
+
 ## 0.5.2
 
 - Adds a stable backend-neutral circuit realization package linked to the canonical semantic, quantum and reversible-plan identities.
@@ -32,7 +38,7 @@ Notable public changes to QDSV Bridge are documented here. The project is a Deve
 ## 0.4.0
 
 - Adds canonical ScoreModel v2 delivery for bounded flat and hierarchical decisions.
-- Adds public `importance` and `priority` terminology, contextual adjustments, normalization, penalties and comparison decisions.
+- Adds public `importance` and `priority` terminology, contextual adjustments, bounded score handling, penalties and comparison decisions while keeping aggregation internals private.
 - Separates semantic admission limits from the resources of the materialized circuit.
 
 ## Earlier Releases

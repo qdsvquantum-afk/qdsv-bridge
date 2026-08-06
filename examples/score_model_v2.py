@@ -1,79 +1,52 @@
-"""Request a bounded ScoreModel v2 circuit from the canonical QDSV path."""
+"""Generate a small multi-criteria ScoreModel circuit with Bridge."""
+
+from __future__ import annotations
 
 from qdsv_bridge import QDSVBridgeClient
 
 
-def field(name: str) -> dict:
+def build_spec() -> dict:
+    """Return a public ScoreModel specification without compiler internals."""
+
     return {
-        "op": "field",
-        "dataset": "input_0",
-        "row": {"var": "x"},
-        "column": name,
+        "state_space": {
+            "kind": "finite_candidates",
+            "candidate_count": 2,
+            "candidate_id": "application",
+        },
+        "signals": ["readiness", "reliability"],
+        # These are prepared input metrics, not decisions or expected answers.
+        "prepared_candidates": [
+            {"readiness": 800, "reliability": 900},
+            {"readiness": 400, "reliability": 500},
+        ],
+        "goal": {
+            "kind": "marking",
+            # Prepared metrics and the cutoff use the same declared 0..1000 scale.
+            "threshold": 700,
+            "criteria": [
+                {"signal": "readiness", "importance": 2, "priority": 1},
+                {"signal": "reliability", "importance": 1, "priority": 1},
+            ],
+        },
+        "target": {"format": "qasm3", "backend_family": "qiskit"},
+        "limits": {"max_qubits": 16, "max_depth": 1_000},
     }
 
 
-value = field("value")
-problem_spec = {
-    "target": "quantum_hardware",
-    "domain": {"variable": "x", "type": "int_range", "start": 0, "end": 1},
-    "data_binding": {
-        "kind": "data_binding.v1",
-        "datasets": [
-            {
-                "id": "input_0",
-                "row_variable": "x",
-                "index_field": "candidate_index",
-                "rows": [
-                    {"candidate_index": 0, "value": 0},
-                    {"candidate_index": 1, "value": 1},
-                ],
-            }
-        ],
-    },
-    "model": {
-        "kind": "score_model",
-        "version": "2.0",
-        "numeric_contract": {
-            "output_scale": 2,
-            "max_function_states": 8,
-            "max_input_qubits": 2,
-        },
-        "score": {
-            "terms": [
-                {
-                    "name": "bounded_value",
-                    "value": {"op": "squared_diff", "left": value, "right": 0},
-                    "importance": 1,
-                    "priority": 1,
-                    "adjustments": [
-                        {"name": "context", "lambda": 0.5, "value": value}
-                    ],
-                }
-            ],
-            "penalty": 0,
-            "epsilon": 0.001,
-            "decision": "gte",
-            "threshold": 1,
-            "execution_strategy": "semantic_auto",
-        },
-    },
-    "query": {"kind": "find_any"},
-    "evidence": {"shots": 1024},
-}
+def main() -> None:
+    client = QDSVBridgeClient()
+    result = client.generate(build_spec())
+    package = result["circuit_realization_package"]
 
-spec = {
-    "problem_spec": problem_spec,
-    "target": {"format": "qasm2", "backend_family": "qiskit"},
-    "limits": {"max_qubits": 256, "max_depth": 1_000_000},
-    "materialization_policy": {"mode": "superposition_oracle", "shots": 1024},
-}
+    print("status:", result["status"])
+    print("artifact format:", result["artifact"]["format"])
+    print("canonical identity:", package["canonical_identity"])
+    print("result contract:", package["contracts"]["result"])
+    print("measurement contract:", package["contracts"]["measurement"])
+    print("target handoff:", result["target_handoff"])
+    print(result["artifact"]["content"])
 
-result = QDSVBridgeClient().build(spec)
-evidence = result["materialization_evidence"]
 
-print(result["artifact"]["format"])
-print(result["circuit"]["status"])
-print(evidence["materializer"])
-print(evidence["formula_variant"])
-print(evidence["actual_qubits"], evidence["actual_depth"])
-print(evidence["candidate_precomputed"])
+if __name__ == "__main__":
+    main()

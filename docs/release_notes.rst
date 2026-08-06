@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+0.5.3
+-----
+
+* Adds a minimal public ScoreModel example based on prepared metrics, a shared
+  declared scale and the high-level ``generate()`` contract.
+* Clarifies that ``priority`` represents a domain parameter rather than list
+  order or execution precedence.
+* Keeps private ScoreModel aggregation and compiler rules outside the public
+  SDK documentation and adds regression coverage for that boundary.
+
 0.5.2
 -----
 
@@ -66,8 +76,8 @@ Release Notes
   expert users.
 * Reports only actual materializations as materialized; other expert designs
   remain labeled conceptual until independently built.
-* Documents the public importance-priority aggregation semantics and the exact
-  flat/global and hierarchical block/global penalty scope.
+* Documents the public importance and priority configuration contract while
+  keeping aggregation and lowering internals outside the SDK surface.
 * Adds end-to-end evidence for modulo, absolute value, absolute difference,
   scalar similarity, all six decisions, hierarchical decisions, bounded Grover
   amplification and work-register cleanup.
@@ -88,8 +98,8 @@ Release Notes
 * Adds canonical ScoreModel v2 circuit delivery for bounded flat and hierarchical
   formulas supported by QDSV Operation Compiler.
 * Supports nonlinear value expressions, signed contextual adjustments,
-  weighted-criticality aggregation, normalization, penalties and six comparison
-  operators within the certified physical profile.
+  bounded multi-criteria decisions, penalties and six comparison operators
+  within the certified physical profile.
 * Returns a public materialization passport with circuit and compiler digests,
   actual resources and no-precomputation evidence.
 * Does not expose private lowering data, functional rows, candidate-score tables,

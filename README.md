@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#status-and-scope)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Source/package version: `0.5.2`. See the PyPI badge for publication status.
+Source/package version: `0.5.3`. See the PyPI badge for publication status.
 
 QDSV Bridge is a lightweight Python client SDK that converts supported semantic problem specifications into executable OpenQASM/Qiskit-compatible circuit artifacts or validated expert construction packages.
 
@@ -80,6 +80,12 @@ print(result["construction_verification"])
 ```
 
 When materialization succeeds within the supported capability and resource limits, `generate()` returns the completed circuit and loading guidance. Otherwise the SDK raises an explicit HTTP error; it does not return a substitute circuit.
+
+For a minimal multi-criteria ScoreModel example, run
+[`examples/score_model_v2.py`](examples/score_model_v2.py). Prepared metrics and
+the cutoff use one declared scale, and `priority` represents a domain priority,
+not the position of a criterion. The SDK example does not reproduce private
+ScoreModel aggregation or compiler rules.
 
 ## Ideal Circuit And Hardware Handoff
 

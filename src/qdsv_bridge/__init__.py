@@ -2,7 +2,7 @@ from .client import QDSVBridgeClient
 from .compat import to_braket_openqasm
 from .exceptions import QDSVBridgeAPIError, QDSVBridgeError, QDSVBridgeHTTPError
 
-__version__ = "0.5.2"
+__version__ = "0.5.3"
 
 __all__ = [
     "QDSVBridgeClient",

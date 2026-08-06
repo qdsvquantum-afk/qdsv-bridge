@@ -33,7 +33,7 @@ The canonical ScoreModel v2 implementation supports:
 * flat and hierarchical multi-criteria decisions;
 * term and block importance and priority values;
 * signed contextual adjustments;
-* normalization and zero-mass protection;
+* bounded score-scale handling and zero-input protection;
 * flat/global and hierarchical block/global penalties;
 * declared fixed-point precision, deterministic rounding and overflow rejection;
 * ``eq``, ``ne``, ``lt``, ``lte``, ``gt`` and ``gte`` threshold decisions;
@@ -55,12 +55,13 @@ User-facing ScoreModel specifications use ``importance`` and ``priority``:
    }
 
 ``importance`` describes relative contribution and ``priority`` describes
-declared urgency or severity. Their product is used in the weighted numerator
-and normalization mass. A zero value removes the term or block from the
-aggregate; ``priority`` is not execution order or precedence. Legacy
-``weight`` and ``criticality`` inputs remain accepted for compatibility, but
-new SDK code and public responses use the user-facing names. Canonical
-mathematical naming remains internal to the QDSV operation compiler.
+declared urgency or severity. ``priority`` is a domain parameter, not execution
+order, list position or precedence. Prepared metrics and the decision cutoff
+must use the same declared scale. Bridge interprets these inputs through the
+versioned ScoreModel contract; its internal aggregation and lowering rules are
+not part of the public SDK surface. Legacy ``weight`` and ``criticality`` inputs
+remain accepted for compatibility, but new SDK code and public responses use
+the user-facing names.
 
 This capability can represent eligibility and approval screening, multi-criteria
 selection, risk-benefit assessment, evaluation of projects or alternatives,
@@ -77,8 +78,10 @@ Run the public example from the repository root:
 
    python examples/score_model_v2.py
 
-The example sends a canonical ``problem_spec`` and requests OpenQASM 2 through
-``client.build``. A successful response includes:
+The example sends a small public multi-criteria specification and requests a
+completed circuit through ``client.generate``. It deliberately avoids compiler
+internals and does not include expected decisions. A successful response
+includes:
 
 * an executable circuit artifact;
 * actual qubit and depth metrics;
