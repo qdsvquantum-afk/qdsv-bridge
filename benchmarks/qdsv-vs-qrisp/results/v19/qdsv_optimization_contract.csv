@@ -1,0 +1,6 @@
+case_id,logical_optimization_status,optimization_contract_status,optimization_contract_errors,optimizer_qiskit_version,canonical_semantic_status,optimized_semantic_status,recommended_semantic_status,native_artifact_role,recommended_delivery_mode
+compliance_eq_constant_8,accepted,passed,[],2.3.0,sampled_consistent,sampled_consistent,sampled_consistent,canonical_ideal_artifact,inline
+compliance_gte_constant_8,accepted,passed,[],2.3.0,sampled_consistent,sampled_consistent,sampled_consistent,canonical_ideal_artifact,inline
+cost_eq_constant_8,accepted,passed,[],2.3.0,sampled_consistent,sampled_consistent,sampled_consistent,canonical_ideal_artifact,inline
+cost_lte_constant_8,accepted,passed,[],2.3.0,sampled_consistent,sampled_consistent,sampled_consistent,canonical_ideal_artifact,inline
+cost_lte_field_8,accepted,passed,[],2.3.0,sampled_consistent,sampled_consistent,sampled_consistent,canonical_ideal_artifact,inline

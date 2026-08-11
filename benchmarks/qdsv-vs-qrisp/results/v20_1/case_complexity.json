@@ -1,0 +1,11 @@
+{
+  "budget_value_8": {
+    "predicate_node_count": 7,
+    "comparison_count": 2,
+    "max_boolean_depth": 1,
+    "candidate_count": 8,
+    "data_field_count": 4,
+    "diagnostic_dimension": "nested_native_and_two_field_comparisons",
+    "unused_data_fields": []
+  }
+}

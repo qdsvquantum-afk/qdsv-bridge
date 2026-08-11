@@ -1,0 +1,3 @@
+platform,case_id,input_artifact_role,validation,common_case_eligible,verification_strength,shots,native_qubits,native_depth,native_gates,normalized_status,normalized_qubits,normalized_depth,normalized_cx,construction_seconds,operational_status,resource_comparison_eligible
+QDSV,budget_value_8,canonical_ideal_artifact,sampled_consistent,True,sampled_mps,8192,11,542,794,normalized,11,7518,3997,6.192460506000032,sampled_consistent,True
+Qrisp,budget_value_8,platform_native_artifact,sampled_consistent,True,sampled_mps,8192,47,4784,9145,normalized,47,26322,16858,13.484606407000001,sampled_consistent,True

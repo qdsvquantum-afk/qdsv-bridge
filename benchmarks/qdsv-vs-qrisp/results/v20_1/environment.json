@@ -1,0 +1,66 @@
+{
+  "captured_at_utc": "2026-08-11T00:32:09.195106+00:00",
+  "python": "3.12.13",
+  "implementation": "CPython",
+  "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+  "expected_versions": {
+    "qdsv-bridge": "0.6.1",
+    "qrisp": "0.9.6",
+    "qiskit": "2.5.1",
+    "qiskit-aer": "0.17.2",
+    "numpy": "2.0.2",
+    "pandas": "2.2.2",
+    "sympy": "1.13.0",
+    "packaging": "23.2",
+    "psutil": "6.1.1"
+  },
+  "observed_versions": {
+    "qdsv-bridge": "0.6.1",
+    "qrisp": "0.9.6",
+    "qiskit": "2.5.1",
+    "qiskit-aer": "0.17.2",
+    "numpy": "2.0.2",
+    "pandas": "2.2.2",
+    "sympy": "1.13.0",
+    "packaging": "23.2",
+    "psutil": "6.1.1"
+  },
+  "pip_check_returncode": 1,
+  "pip_check_lines": [
+    "ipython 7.34.0 requires jedi, which is not installed.",
+    "wheel 0.47.0 has requirement packaging>=24.0, but you have packaging 23.2.",
+    "google-cloud-bigquery 3.42.2 has requirement packaging>=24.2.0, but you have packaging 23.2.",
+    "db-dtypes 1.7.1 has requirement packaging>=24.2.0, but you have packaging 23.2.",
+    "bigquery-magics 0.14.0 has requirement packaging>=24.2.0, but you have packaging 23.2.",
+    "torch 2.11.0+cpu has requirement sympy>=1.13.3, but you have sympy 1.13.0.",
+    "xarray 2025.12.0 has requirement packaging>=24.1, but you have packaging 23.2."
+  ],
+  "core_conflicts": [],
+  "external_conflicts": [
+    "ipython 7.34.0 requires jedi, which is not installed.",
+    "wheel 0.47.0 has requirement packaging>=24.0, but you have packaging 23.2.",
+    "google-cloud-bigquery 3.42.2 has requirement packaging>=24.2.0, but you have packaging 23.2.",
+    "db-dtypes 1.7.1 has requirement packaging>=24.2.0, but you have packaging 23.2.",
+    "bigquery-magics 0.14.0 has requirement packaging>=24.2.0, but you have packaging 23.2.",
+    "torch 2.11.0+cpu has requirement sympy>=1.13.3, but you have sympy 1.13.0.",
+    "xarray 2025.12.0 has requirement packaging>=24.1, but you have packaging 23.2."
+  ],
+  "benchmark_version_policy": "frozen_v20_1_budget_value_independent_native_bilateral",
+  "platform_access_profiles": {
+    "QDSV": "public_docs_full",
+    "Qrisp": "public_docs_native_nested_condition_environment+audited_packaging_compatibility_shim"
+  },
+  "qrisp_packaging_compatibility": {
+    "version": "qrisp_packaging_compatibility.v1",
+    "distribution": "qrisp",
+    "distribution_version": "0.9.6",
+    "canonical_module": "qrisp.permeability.unqomp",
+    "packaged_module": "qrisp.permeability.qc_transformations.unqomp",
+    "alias_applied": true,
+    "module_path": "/usr/local/lib/python3.12/dist-packages/qrisp/permeability/qc_transformations/unqomp.py",
+    "module_sha256": "575a05c250caec4d13b939558c941a8b27026f9bd357d0411f7f30f23f74fa08",
+    "framework_source_modified": false,
+    "semantic_adapter_modified": false
+  },
+  "qrisp_semantic_strategy": "native_nested_condition_environment"
+}

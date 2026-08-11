@@ -1,0 +1,57 @@
+[
+  {
+    "platform": "QDSV",
+    "case_id": "budget_value_8",
+    "access_profile": "public_docs_full",
+    "common_harness_loc": 40,
+    "business_data_loc": 6,
+    "neutral_predicate_specification_loc": 7,
+    "neutral_case_definition_loc": 21,
+    "neutral_predicate_consumption": "structured_public_spec_consumed_by_reusable_layer",
+    "shared_platform_infrastructure_loc": 170,
+    "shared_platform_infrastructure_sha256": "828c83192de2897c03123e0c5c960764c8dfa5133264a73864afb3498f355444",
+    "case_specific_platform_logic_loc": 0,
+    "case_specific_platform_logic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "environment_compatibility_loc": 0,
+    "environment_compatibility_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "authentication_integration_loc": 0,
+    "manual_responsibilities": [
+      "neutral_predicate_specification",
+      "generate_call",
+      "artifact_retrieval"
+    ],
+    "effort_status": "measured",
+    "end_user_invocation_loc": 6,
+    "platform_specific_new_case_loc": 6,
+    "end_user_invocation_sha256": "da38ca0d47216f57bb017d0272af1e92ae578a342ec789d3c45ae9d7c6ed0961"
+  },
+  {
+    "platform": "Qrisp",
+    "case_id": "budget_value_8",
+    "access_profile": "public_docs_native_nested_condition_environment+audited_packaging_compatibility_shim",
+    "common_harness_loc": 40,
+    "business_data_loc": 6,
+    "neutral_predicate_specification_loc": 7,
+    "neutral_case_definition_loc": 21,
+    "neutral_predicate_consumption": "manually_reexpressed_in_native_case_logic",
+    "shared_platform_infrastructure_loc": 239,
+    "shared_platform_infrastructure_sha256": "4643e231957e19d4c48d4db289d3e68ec1cba81a67eb177071fa2964a0d9dcd6",
+    "case_specific_platform_logic_loc": 13,
+    "case_specific_platform_logic_sha256": "8dbe2565b59512d23706e32a079892f836e42bcbe3c544466c204fd396a65ad8",
+    "environment_compatibility_loc": 38,
+    "environment_compatibility_sha256": "1d75f7dda6e415ac88517889af82e0ed89471f1321f60f95f132f39e4c4450f5",
+    "authentication_integration_loc": 0,
+    "manual_responsibilities": [
+      "register_allocation",
+      "candidate_state_preparation",
+      "explicit_reversible_field_loading",
+      "native_case_condition",
+      "condition_uncomputation",
+      "compile_and_qasm_export"
+    ],
+    "effort_status": "measured",
+    "end_user_invocation_loc": 2,
+    "platform_specific_new_case_loc": 15,
+    "end_user_invocation_sha256": "550f2fe6b26a6bf278e363c126a166dec73db3e691d87eebe7f592f6c81cd30e"
+  }
+]

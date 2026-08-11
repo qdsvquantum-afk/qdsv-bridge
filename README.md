@@ -333,6 +333,12 @@ Bridge does not provide managed IBM Quantum or Amazon Braket hardware execution.
 
 The notebooks cover problem-first circuit delivery, expert construction inputs, Qiskit inspection and the tested Braket `LocalSimulator` conversion flow.
 
+## Reproducible Benchmark
+
+The repository includes a transparent [QDSV Bridge vs Qrisp problem-to-circuit benchmark](benchmarks/qdsv-vs-qrisp/README.md). It starts from shared public business data and predicate meaning, validates each independently constructed artifact through a common replay contract, and compares resources only after both artifacts pass that gate.
+
+The primary `v20.1` experiment uses independent public-interface implementations for QDSV Bridge `0.6.1` and Qrisp `0.9.6`. It documents the objective, platform-selection rationale, responsibility boundary, frozen methodology, results, limitations, notebooks, selected evidence and SHA-256 identifiers for the complete bundles.
+
 ## Reports
 
 Bridge can render the same public construction evidence as JSON, Markdown or HTML:

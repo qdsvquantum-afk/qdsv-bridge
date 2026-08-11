@@ -1,0 +1,57 @@
+{
+  "compliance_eq_constant_8": {
+    "node_count": 3,
+    "max_depth": 2,
+    "comparison_count": 1,
+    "boolean_operator_count": 0,
+    "field_reference_count": 1,
+    "candidate_count": 8,
+    "data_field_count": 1,
+    "diagnostic_dimension": "equality_constant_binary_field",
+    "unused_data_fields": []
+  },
+  "compliance_gte_constant_8": {
+    "node_count": 3,
+    "max_depth": 2,
+    "comparison_count": 1,
+    "boolean_operator_count": 0,
+    "field_reference_count": 1,
+    "candidate_count": 8,
+    "data_field_count": 1,
+    "diagnostic_dimension": "inequality_constant_binary_field",
+    "unused_data_fields": []
+  },
+  "cost_eq_constant_8": {
+    "node_count": 3,
+    "max_depth": 2,
+    "comparison_count": 1,
+    "boolean_operator_count": 0,
+    "field_reference_count": 1,
+    "candidate_count": 8,
+    "data_field_count": 1,
+    "diagnostic_dimension": "equality_constant_wide_field",
+    "unused_data_fields": []
+  },
+  "cost_lte_constant_8": {
+    "node_count": 3,
+    "max_depth": 2,
+    "comparison_count": 1,
+    "boolean_operator_count": 0,
+    "field_reference_count": 1,
+    "candidate_count": 8,
+    "data_field_count": 1,
+    "diagnostic_dimension": "inequality_constant_wide_field",
+    "unused_data_fields": []
+  },
+  "cost_lte_field_8": {
+    "node_count": 3,
+    "max_depth": 2,
+    "comparison_count": 1,
+    "boolean_operator_count": 0,
+    "field_reference_count": 2,
+    "candidate_count": 8,
+    "data_field_count": 2,
+    "diagnostic_dimension": "inequality_field_rhs",
+    "unused_data_fields": []
+  }
+}
