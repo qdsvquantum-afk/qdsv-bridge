@@ -2,11 +2,13 @@
 
 This benchmark evaluates what a user obtains when starting from the same public business problem and using each platform's public interfaces to produce a verifiable logical quantum artifact. It is not a benchmark of predesigned circuits, hardware execution, noise mitigation, or backend-specific transpilation.
 
+The benchmark begins with business semantics, not with a pre-designed quantum circuit.
+
 The primary result is the controlled `budget_value_8` experiment (`v20.1`). A complementary comparator-diagnostics track (`v19`) records where the evaluated native Qrisp construction completed or did not complete under frozen operational budgets. The two tracks answer different questions and are reported separately.
 
 ## Why Qrisp
 
-Qrisp was selected because it is open source, high level, locally reproducible, able to export into the Qiskit ecosystem, and sufficiently expressive for a transparent implementation of the same business predicate. It therefore provides a more reproducible comparison for this experiment than a platform requiring remote synthesis authorization.
+Qrisp was selected because it is open source, high level, locally reproducible, able to export into the Qiskit ecosystem, and sufficiently expressive to implement the tested business predicate transparently through public APIs. It therefore provides a more reproducible comparison for this experiment than a platform requiring remote synthesis authorization.
 
 Selection does not imply that Qrisp and QDSV have identical product scope. QDSV Bridge accepts a problem-oriented semantic specification and delegates circuit realization to its materializer. In the evaluated Qrisp path, a technical user translates the same rule into native quantum-programming constructs.
 
@@ -81,7 +83,7 @@ Both tracks share public business data, predicate meaning, frozen expectations, 
 | Build comparisons | Bridge, automatic | Technical user uses native Qrisp conditions |
 | Compose the Boolean rule | Bridge, automatic | Technical user composes native control environments |
 | Define temporary values | Bridge/materializer, automatic | Technical user defines them; Qrisp compiles them |
-| Manage ancillas | Bridge/materializer, automatic | Qrisp compiler plus explicit cleanup by the technical user |
+| Manage ancillas | Bridge/materializer, automatic | Qrisp compiler plus cleanup expressed or coordinated by the technical user |
 | Perform uncomputation | Bridge, automatic | Qrisp compiler plus the technical user's construction |
 | Materialize the logical circuit | Bridge, automatic | Qrisp compiler, after the native implementation is supplied |
 | Export the artifact | Bridge, automatic | Technical user configures export through Qrisp/Qiskit |
@@ -115,6 +117,6 @@ The repository stores the notebooks, review-sized evidence files, and complete i
 
 ## Conclusion
 
-For the controlled common case, both platforms produced semantically consistent artifacts, and the QDSV canonical artifact was materially smaller before and after common normalization. The broader diagnostics additionally show a difference in the amount of platform-specific reversible construction required from the technical user under the evaluated paths.
+Both platforms produced semantically consistent artifacts in the controlled common case. For this controlled common case, the QDSV canonical artifact was materially smaller before and after common normalization. The broader diagnostics additionally show a difference in the amount of platform-specific reversible construction required from the technical user under the evaluated paths.
 
 The defensible conclusion is limited to these frozen fixtures, versions, budgets, and integration strategies. It does not establish universal superiority, hardware advantage, fault tolerance, or a general limitation of Qrisp.
