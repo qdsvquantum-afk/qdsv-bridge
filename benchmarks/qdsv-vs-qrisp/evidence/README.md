@@ -46,6 +46,6 @@ The historical ANF-based track is retained for audit context only. The independe
 
 ## Complete bundles
 
-This directory contains hashes and provenance. Review-sized CSV/JSON evidence and executable notebooks are versioned separately for direct inspection. The complete immutable bundles, including the full QPY/QASM evidence produced by each run, are available under [`bundles/`](bundles/).
+This directory contains hashes and provenance. Review-sized CSV/JSON evidence and executable notebooks are versioned separately for direct inspection. The complete immutable bundles, including the full QPY/QASM evidence produced by each run, are available under [`bundles/`](https://github.com/qdsvquantum-afk/qdsv-bridge/tree/main/benchmarks/qdsv-vs-qrisp/evidence/bundles).
 
 Always verify a downloaded ZIP against `SHA256SUMS` before using it as evidence.

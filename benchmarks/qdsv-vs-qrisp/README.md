@@ -106,12 +106,12 @@ The incomplete cases are operational observations about the evaluated implementa
 
 ## Evidence
 
-- [Primary v20.1 selected evidence](results/v20_1/)
-- [Complementary v19 selected evidence](results/v19/)
-- [Executable notebooks](notebooks/)
+- [Primary v20.1 selected evidence](https://github.com/qdsvquantum-afk/qdsv-bridge/tree/main/benchmarks/qdsv-vs-qrisp/results/v20_1)
+- [Complementary v19 selected evidence](https://github.com/qdsvquantum-afk/qdsv-bridge/tree/main/benchmarks/qdsv-vs-qrisp/results/v19)
+- [Executable notebooks](https://github.com/qdsvquantum-afk/qdsv-bridge/tree/main/benchmarks/qdsv-vs-qrisp/notebooks)
 - [Evidence inventory and ZIP hashes](evidence/README.md)
 
-The repository stores the notebooks, review-sized evidence files, and complete immutable ZIP bundles under [`evidence/bundles/`](evidence/bundles/). Every bundle is identified by SHA-256 in [`evidence/SHA256SUMS`](evidence/SHA256SUMS).
+The repository stores the notebooks, review-sized evidence files, and complete immutable ZIP bundles under [`evidence/bundles/`](https://github.com/qdsvquantum-afk/qdsv-bridge/tree/main/benchmarks/qdsv-vs-qrisp/evidence/bundles). Every bundle is identified by SHA-256 in [`evidence/SHA256SUMS`](evidence/SHA256SUMS).
 
 ## Conclusion
 
