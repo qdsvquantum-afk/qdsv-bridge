@@ -111,7 +111,7 @@ The incomplete cases are operational observations about the evaluated implementa
 - [Executable notebooks](notebooks/)
 - [Evidence inventory and ZIP hashes](evidence/README.md)
 
-The repository stores the notebooks and review-sized evidence files. Complete immutable ZIP bundles are intended to be attached to the GitHub benchmark release and are identified by SHA-256 even when a release asset is unavailable.
+The repository stores the notebooks, review-sized evidence files, and complete immutable ZIP bundles under [`evidence/bundles/`](evidence/bundles/). Every bundle is identified by SHA-256 in [`evidence/SHA256SUMS`](evidence/SHA256SUMS).
 
 ## Conclusion
 

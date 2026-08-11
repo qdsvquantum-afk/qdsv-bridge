@@ -44,8 +44,8 @@ SHA-256  32ed83fdefc6d69fdf23d610cd6460843840eaf6a55467d89e865f6aa69e34ec
 
 The historical ANF-based track is retained for audit context only. The independent native `v20.1` track is the primary result.
 
-## Repository vs release assets
+## Complete bundles
 
-This directory contains hashes and provenance. Review-sized CSV/JSON evidence and executable notebooks are versioned in Git. Full ZIP bundles, including larger QPY/QASM artifacts, should be attached to the GitHub benchmark release rather than committed to the main repository history.
+This directory contains hashes and provenance. Review-sized CSV/JSON evidence and executable notebooks are versioned separately for direct inspection. The complete immutable bundles, including the full QPY/QASM evidence produced by each run, are available under [`bundles/`](bundles/).
 
 Always verify a downloaded ZIP against `SHA256SUMS` before using it as evidence.
