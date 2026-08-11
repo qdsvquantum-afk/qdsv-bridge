@@ -2,6 +2,28 @@
 
 Notable public changes to QDSV Bridge are documented here. The project is a Developer Preview and has not reached a stable `1.0` contract.
 
+## 0.6.1
+
+- Lets reproducible workflows freeze the public logical-optimization contract through `build_predicate_spec(logical_optimization=...)`.
+- Preserves server-side validation of the versioned optimization mode, profile and acceptance policy without exposing custom passes or physical-backend settings.
+
+## 0.6.0
+
+- Preserves the canonical ideal artifact while optionally delivering a separately identified exact logical optimization.
+- Adds the frozen target-independent `qiskit_structural_exact_v1` profile and `pareto_no_regression_v1` acceptance policy.
+- Adds full prepared-state equivalence, register and measurement preservation, valid-domain checks, raw/QPY/structural digests and before/after logical metrics.
+- Adds bounded isolated optimization with explicit timeout, memory, validation and fallback states.
+- Separates materialization from inline delivery so an accepted optimized artifact may be delivered when the canonical representation exceeds the inline limit.
+- Adds `select_recommended_artifact()` for basic users without changing the meaning of `result["artifact"]`.
+- Keeps backend selection, layout, routing, scheduling, noise suppression, mitigation and QPU execution outside Bridge.
+
+## 0.5.4
+
+- Adds `build_predicate_spec()` for bounded public predicates with nested `and`, `or` and `xor` composition.
+- Supports field-to-field comparisons without routing business rules through ScoreModel or exposing private aggregation mechanics.
+- Derives candidate identity from stable row order and never evaluates the predicate or adds expected answers in the SDK.
+- Adds a runnable compound supplier-eligibility example and regression tests for deterministic, outcome-blind construction.
+
 ## 0.5.3
 
 - Adds a minimal public ScoreModel example using prepared metrics, a shared declared scale and the high-level `generate()` contract.

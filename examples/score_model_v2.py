@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from qdsv_bridge import QDSVBridgeClient
+from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
 
 
 def build_spec() -> dict:
@@ -37,15 +37,18 @@ def build_spec() -> dict:
 def main() -> None:
     client = QDSVBridgeClient()
     result = client.generate(build_spec())
+    recommended = select_recommended_artifact(result)
     package = result["circuit_realization_package"]
 
     print("status:", result["status"])
     print("artifact format:", result["artifact"]["format"])
+    print("recommended artifact:", result["recommended_artifact_role"])
+    print("optimization:", result["logical_optimization"])
     print("canonical identity:", package["canonical_identity"])
     print("result contract:", package["contracts"]["result"])
     print("measurement contract:", package["contracts"]["measurement"])
     print("target handoff:", result["target_handoff"])
-    print(result["artifact"]["content"])
+    print(recommended["content"])
 
 
 if __name__ == "__main__":

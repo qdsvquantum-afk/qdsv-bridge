@@ -133,7 +133,7 @@ The notebook demonstrates:
 This demo was tested with:
 
 - Python 3.11;
-- `qdsv-bridge` 0.5.3;
+- `qdsv-bridge` 0.6.1;
 - Amazon Braket SDK;
 - Amazon Braket `LocalSimulator`.
 

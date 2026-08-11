@@ -1,6 +1,30 @@
 Release Notes
 =============
 
+0.6.1
+-----
+
+* Allows reproducible workflows to freeze the public logical-optimization
+  contract through ``build_predicate_spec(logical_optimization=...)``.
+* Keeps custom passes and physical-backend settings outside the public helper.
+
+0.6.0
+-----
+
+* Keeps the canonical ideal artifact immutable and exposes an optional exact
+  target-independent optimized logical child artifact.
+* Adds reproducible before/after resources, contractual replay evidence,
+  artifact lineage and conservative Pareto acceptance.
+* Adds ``select_recommended_artifact`` for basic users while keeping physical
+  compilation, noise handling and provider execution in Runtime/HSP.
+
+0.5.4
+-----
+
+* Added ``build_predicate_spec()`` for bounded compound business predicates.
+* Added deterministic normalization for nested boolean rules and field-to-field comparisons.
+* Kept predicate evaluation, expected answers and private ScoreModel aggregation outside the SDK helper.
+
 0.5.3
 -----
 

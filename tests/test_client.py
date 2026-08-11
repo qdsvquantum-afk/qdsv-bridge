@@ -4,12 +4,51 @@ import pytest
 import requests
 
 import qdsv_bridge
-from qdsv_bridge import QDSVBridgeClient
+from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
+from qdsv_bridge.client import SDK_VERSION
 from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.5.3"
+    assert qdsv_bridge.__version__ == "0.6.1"
+    assert SDK_VERSION == qdsv_bridge.__version__
+
+
+def test_selects_optimized_logical_artifact_when_recommended() -> None:
+    result = {
+        "artifact": {"role": "canonical_ideal_artifact", "content": "canonical"},
+        "optimized_logical_artifact": {
+            "role": "optimized_logical_artifact",
+            "status": "accepted",
+            "content": "optimized",
+        },
+        "recommended_artifact_role": "optimized_logical_artifact",
+    }
+
+    selected = select_recommended_artifact(result)
+
+    assert selected["content"] == "optimized"
+    assert result["artifact"]["content"] == "canonical"
+
+
+def test_recommended_artifact_helper_falls_back_to_canonical() -> None:
+    result = {
+        "artifact": {"role": "canonical_ideal_artifact", "content": "canonical"},
+        "optimized_logical_artifact": {"status": "no_material_improvement"},
+        "recommended_artifact_role": "canonical_ideal_artifact",
+    }
+
+    assert select_recommended_artifact(result)["content"] == "canonical"
+
+
+def test_recommended_artifact_helper_rejects_metadata_only_delivery() -> None:
+    with pytest.raises(QDSVBridgeAPIError):
+        select_recommended_artifact(
+            {
+                "artifact": {"content": None, "delivery_mode": "metadata_only"},
+                "recommended_artifact_role": "canonical_ideal_artifact",
+            }
+        )
 
 
 def test_normalizes_api_url() -> None:

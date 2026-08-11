@@ -12,7 +12,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from qdsv_bridge import QDSVBridgeClient, to_braket_openqasm
+from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact, to_braket_openqasm
 
 
 API_URL = os.getenv("QDSV_BRIDGE_API_URL") or None
@@ -52,7 +52,7 @@ def main() -> None:
     }
 
     artifact_package = client.build(spec)
-    qasm3_source = artifact_package["artifact"]["content"]
+    qasm3_source = select_recommended_artifact(artifact_package)["content"]
     braket_qasm = to_braket_openqasm(qasm3_source)
 
     Path("bridge_aws_braket_artifact.qasm").write_text(qasm3_source, encoding="utf-8")

@@ -1,4 +1,4 @@
-from qdsv_bridge import QDSVBridgeClient
+from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
 
 
 spec = {
@@ -24,9 +24,11 @@ spec = {
 
 client = QDSVBridgeClient()
 result = client.build(spec)
+recommended = select_recommended_artifact(result)
 
 print(result["status"])
 print(result["bridge_mode"])
 print(result["circuit"])
 print(result["materialization_evidence"])
-print(result["artifact"]["content"])
+print(result["recommended_artifact_role"])
+print(recommended["content"])
