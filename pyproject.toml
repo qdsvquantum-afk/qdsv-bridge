@@ -56,5 +56,6 @@ packages = ["src/qdsv_bridge"]
 [tool.hatch.build.targets.sdist]
 exclude = [
   "/submissions",
+  "/benchmarks",
   "/docs/_build",
 ]

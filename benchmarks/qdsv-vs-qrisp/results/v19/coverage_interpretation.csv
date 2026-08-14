@@ -1,3 +1,0 @@
-platform,total_cases,passed,platform_outcomes_observed,adapter_gaps,operational_incomplete,semantic_failures
-QDSV,5,5,5,0,0,0
-Qrisp,5,1,1,0,4,0

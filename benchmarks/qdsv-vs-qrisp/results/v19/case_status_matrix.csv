@@ -1,6 +1,0 @@
-case_id,QDSV,Qrisp
-compliance_eq_constant_8,sampled_consistent,construction_timeout
-compliance_gte_constant_8,sampled_consistent,construction_timeout
-cost_eq_constant_8,sampled_consistent,construction_timeout
-cost_lte_constant_8,sampled_consistent,construction_timeout
-cost_lte_field_8,sampled_consistent,sampled_consistent
