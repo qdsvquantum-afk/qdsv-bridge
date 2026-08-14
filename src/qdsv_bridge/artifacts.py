@@ -6,7 +6,23 @@ from .exceptions import QDSVBridgeAPIError
 
 
 def select_recommended_artifact(result: Mapping[str, Any]) -> dict[str, Any]:
-    """Return the best delivered logical artifact without hiding the canonical one."""
+    """Return the recommended inline logical artifact.
+
+    The canonical artifact remains available in ``result["artifact"]``. This
+    helper returns an accepted optimized child only when
+    ``recommended_artifact_role`` selects it and inline content is present;
+    otherwise it returns the canonical inline artifact.
+
+    Args:
+        result: A Bridge ``generate`` or ``build`` response.
+
+    Returns:
+        A copy of the recommended inline artifact mapping.
+
+    Raises:
+        QDSVBridgeAPIError: If neither recommended nor canonical circuit
+            content is available inline.
+    """
 
     role = str(result.get("recommended_artifact_role") or "canonical_ideal_artifact")
     if role == "optimized_logical_artifact":

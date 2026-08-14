@@ -86,7 +86,30 @@ def build_predicate_spec(
 
     Candidate identifiers are derived only from stable row order. The helper
     translates the declared expression; it does not evaluate the predicate or
-    add expected answers.
+    add expected answers. ``logical_optimization`` accepts ``True`` for the
+    default public contract, ``False`` for canonical-only delivery, or a
+    mapping that freezes ``mode``, ``profile`` and ``acceptance_policy``.
+
+    Args:
+        rows: Prepared business inputs in stable candidate order.
+        predicate: Public predicate expression to normalize without evaluating.
+        candidate_id_field: Stable integer identity field added to each row.
+        dataset_id: Identifier used by the generated data binding.
+        row_variable: Variable name used by the bounded candidate domain.
+        artifact_format: Requested Bridge artifact format.
+        backend_family: Portable framework family for the logical artifact.
+        shots: Evidence request recorded in the specification.
+        materialization_mode: Public circuit materialization mode.
+        max_qubits: Logical qubit guardrail for materialization.
+        max_depth: Logical depth guardrail for materialization.
+        logical_optimization: Default, disabled, or explicitly frozen public
+            logical-optimization contract.
+
+    Returns:
+        A new Bridge specification with copied rows and predicate data.
+
+    Raises:
+        PredicateSpecError: If the bounded predicate contract is malformed.
     """
 
     if not isinstance(rows, Sequence) or isinstance(rows, (str, bytes)) or not rows:

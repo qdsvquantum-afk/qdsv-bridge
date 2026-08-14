@@ -12,7 +12,8 @@ Bridge does not replace Amazon Braket and is not an official Amazon Braket integ
 problem intent
 -> controlled semantic specification
 -> Bridge validation and canonical QDSV materialization
--> OpenQASM 3 artifact
+-> optional exact logical optimization and explicit recommendation
+-> canonical or accepted optimized OpenQASM 3 artifact
 -> Braket-compatible OpenQASM view
 -> Amazon Braket LocalSimulator
 -> Bridge Report
@@ -29,7 +30,7 @@ pip install qdsv-bridge amazon-braket-sdk
 Minimal build flow:
 
 ```python
-from qdsv_bridge import QDSVBridgeClient
+from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
 
 client = QDSVBridgeClient()
 
@@ -63,10 +64,19 @@ spec = {
 }
 
 artifact_package = client.build(spec)
-qasm3_source = artifact_package["artifact"]["content"]
+canonical = artifact_package["artifact"]
+recommended = select_recommended_artifact(artifact_package)
+qasm3_source = recommended["content"]
+
+print(canonical["role"])
+print(artifact_package["recommended_artifact_role"])
 ```
 
-Bridge's canonical artifact uses Qiskit's OpenQASM 3 standard-gate include. The Braket demo therefore creates an explicit compatibility view: it removes that include, defines the four gates used by the lowered circuit, and renames Qiskit's `cx` instruction to Braket's `cnot` spelling.
+Bridge's Qiskit-oriented OpenQASM 3 artifact uses the standard-gate include.
+The Braket demo therefore creates an explicit compatibility view of the
+selected logical artifact: it removes that include, defines the four gates used
+by the lowered circuit, and renames Qiskit's `cx` instruction to Braket's
+`cnot` spelling. The canonical Bridge artifact and its digests remain unchanged.
 
 ```python
 def to_braket_openqasm(source: str) -> str:

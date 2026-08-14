@@ -20,10 +20,10 @@ construction inputs and the exact missing capabilities.
 Public SDK, Private Runtime
 ---------------------------
 
-The public SDK exposes the client, CLI, examples, notebooks and public preview
-documentation. It does not expose the private runtime, internal compilation or
-optimization rules, private backend adapters, secrets or production
-configuration.
+The public SDK exposes the client, CLI, examples, notebooks, versioned logical
+optimization contract and public preview documentation. It does not expose the
+private runtime, compiler implementation rules, private backend adapters,
+secrets or production configuration.
 
 Delivery Model
 --------------
@@ -58,3 +58,48 @@ backend-neutral reversible representation. These terms define the verification
 boundary only. Public responses contain stable summaries, capability
 identifiers, resource evidence and digests rather than the private graph,
 reversible representation or implementation rules.
+
+Logical Artifact Lifecycle
+--------------------------
+
+Bridge 0.6.1 separates artifact identity from artifact recommendation:
+
+.. code-block:: text
+
+   semantic specification
+   -> canonical logical materialization
+   -> immutable canonical artifact and digest
+   -> optional exact logical optimization
+   -> validated child artifact and parent digest
+   -> conservative recommendation
+   -> physical handoff outside Bridge
+
+The canonical artifact remains the source of truth. The optimized artifact is
+an optional child realization of the same semantic program, not a new problem
+definition. Bridge records its lineage and keeps both roles visible.
+
+Exact Logical Optimization
+--------------------------
+
+The public ``qiskit_structural_exact_v1`` profile is target-independent. Its
+acceptance contract checks prepared-state equivalence, register and measurement
+preservation, valid-domain behavior and protected logical resource metrics. The
+``pareto_no_regression_v1`` policy can recommend a child only when validation
+passes and protected metrics do not regress.
+
+Public evidence includes the requested profile, declared pass sequence,
+acceptance status, before/after resources, artifact identities and validation
+outcome. Private compiler implementation rules, custom passes and target-aware
+decision logic are not part of the SDK contract.
+
+Logical and Physical Responsibilities
+-------------------------------------
+
+Logical optimization reduces or simplifies a portable logical artifact without
+selecting a device. It does not include physical qubit layout, connectivity
+routing, scheduling, calibration-aware target selection, noise suppression,
+error mitigation or provider execution.
+
+Those target-aware responsibilities belong to Runtime/HSP or an equivalent
+user-controlled physical workflow. Hardware evidence must remain separate from
+Bridge construction and logical-equivalence evidence.

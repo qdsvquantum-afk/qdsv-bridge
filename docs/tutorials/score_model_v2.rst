@@ -19,7 +19,7 @@ measure, correlation, externally calculated similarity, model output or domain
 measurement. Bridge preserves its declared provenance but does not claim to have
 computed an externally supplied metric.
 
-The current physical profile can also calculate bounded scalar numeric
+The current materialization profile can also calculate bounded scalar numeric
 similarity and supported arithmetic expressions inside the materialized
 operation. Arbitrary vector or cosine similarity is not calculated by this
 profile; users may instead provide such a result as a prepared finite numeric
@@ -89,7 +89,19 @@ includes:
 * evidence that candidate answers were not precomputed;
 * the public capability profile identifier, without private implementation details.
 
-The physical profile is deliberately bounded. If a formula exceeds the current
+The response keeps ``artifact`` as the canonical logical source of truth and
+may include an accepted ``optimized_logical_artifact``. For ordinary inline
+use, select the recommendation without hiding the canonical artifact:
+
+.. code-block:: python
+
+   from qdsv_bridge import select_recommended_artifact
+
+   recommended = select_recommended_artifact(result)
+   print(result["recommended_artifact_role"])
+   print(recommended["content"])
+
+The materialization profile is deliberately bounded. If a formula exceeds the current
 input-state or artifact limits, Bridge rejects the circuit request instead of
 returning a partial scaffold. ``client.prepare`` remains available when expert
 construction inputs are useful but a complete circuit cannot be certified.
@@ -98,17 +110,17 @@ Delivery evidence and boundaries
 --------------------------------
 
 The public response exposes the capability profile identifier, program and
-artifact digests, actual qubit and depth metrics, and explicit
-no-precomputation evidence. It does not expose private compiler implementation,
-internal optimization rules, intermediate candidate scores or precomputed
-answers.
+artifact digests, actual qubit and depth metrics, explicit no-precomputation
+evidence, and the versioned logical-optimization result. It does not expose
+private compiler implementation rules, optimization pass internals,
+intermediate candidate scores or precomputed answers.
 
 Physical synthesis is constrained by ``max_input_qubits`` and
 ``max_function_states`` in the numeric contract. Cost can grow rapidly with the
 number and precision of prepared fields.
 
-Bridge stops after delivering the circuit artifact or expert construction
-inputs. It does not execute the circuit on a simulator or QPU or validate the
-problem result; hardware validation is not part of the Bridge delivery contract.
-Execution resources, provider credentials and result validation remain the
-user's responsibility.
+Bridge stops after delivering the canonical or accepted optimized logical
+artifact, or expert construction inputs. It does not execute the circuit on a
+simulator or QPU or validate the problem result; hardware validation is not part
+of the Bridge delivery contract. Execution resources, provider credentials and
+result validation remain the user's responsibility or belong to Runtime/HSP.

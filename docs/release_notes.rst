@@ -7,6 +7,8 @@ Release Notes
 * Allows reproducible workflows to freeze the public logical-optimization
   contract through ``build_predicate_spec(logical_optimization=...)``.
 * Keeps custom passes and physical-backend settings outside the public helper.
+* Documents canonical and optimized artifact roles, recommendation behavior,
+  public optimization evidence and the Runtime/HSP physical handoff.
 
 0.6.0
 -----

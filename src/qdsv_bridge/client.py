@@ -134,12 +134,12 @@ class QDSVBridgeClient:
         )
 
     def generate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        """Generate a circuit only through canonical QDSV ProblemSpec/IR materialization."""
+        """Generate a canonical circuit and optional validated logical child."""
 
         return self.export(spec, mode="use")
 
     def build(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        """Return a canonical circuit plus editable QASM/Qiskit/IR artifacts."""
+        """Return logical artifacts, editable views, evidence and digests."""
 
         return self.export(spec, mode="build")
 

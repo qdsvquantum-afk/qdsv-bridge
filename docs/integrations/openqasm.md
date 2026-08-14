@@ -15,15 +15,16 @@ Bridge uses OpenQASM as a public artifact boundary:
 ```text
 problem intent
 -> controlled semantic specification
--> Bridge validation/build
--> OpenQASM artifact
+-> Bridge validation and canonical build
+-> optional exact logical optimization
+-> canonical or recommended OpenQASM artifact
 -> framework-specific inspection or execution workflow
 -> Bridge Report
 ```
 
 This makes the handoff explicit. The user can see what Bridge generated, which
-delivery mode was used, any optional legacy label, the reported warnings and
-the digests that identify the artifact.
+artifact role was selected, which delivery mode was used, any optional legacy
+label, the reported warnings and the digests that identify each artifact.
 
 ## Current Public Artifact
 
@@ -48,6 +49,12 @@ c_result[1] = measure selected[0];
 
 The complete artifact is inspectable and executable. Bridge no longer emits an empty semantic-oracle insertion point as a completed circuit. If canonical materialization is not possible, circuit export fails explicitly and the user can request expert semantic inputs instead.
 
+``artifact`` remains the canonical logical source of truth. When exact replay,
+register and measurement preservation, valid-domain checks and protected
+logical resource checks pass, Bridge may also return
+``optimized_logical_artifact`` and recommend it explicitly. Both remain
+portable logical artifacts; neither is routed to a physical backend by Bridge.
+
 ## Framework Handoff Pattern
 
 Bridge should be understood as upstream of the execution framework:
@@ -56,7 +63,8 @@ Bridge should be understood as upstream of the execution framework:
 Bridge
   declares and validates the problem-level structure
   constructs the circuit through the supported QDSV path
-  exports executable OpenQASM and reproducibility metadata
+  preserves the canonical artifact and may validate an optimized logical child
+  exports executable OpenQASM, lineage and reproducibility metadata
 
 Framework
   imports or adapts the OpenQASM artifact
@@ -137,6 +145,8 @@ Every Bridge Report records:
 - generated artifact content;
 - warnings and limits;
 - public artifact, construction and problem-spec digests.
+- logical-optimization profile, acceptance result, artifact lineage and
+  before/after resources when optimization is requested.
 
 This means the OpenQASM artifact is not just a circuit text file. It is attached to a traceable semantic export package.
 
@@ -151,12 +161,13 @@ The current public role of Bridge is:
 ```text
 controlled semantic spec
 -> supported QDSV construction path
--> executable auditable OpenQASM artifact
+-> canonical and optional accepted optimized OpenQASM artifacts
+-> explicit recommended role
 -> framework-specific workflow
 -> reproducibility report
 ```
 
-Managed hardware execution, provider-specific backend routing and private compilation remain outside the public Bridge SDK. For real IBM execution, treat Bridge's output as the ideal logical circuit and pass it through QDSV Runtime/HSP or an equivalent user-controlled physical workflow.
+Managed hardware execution and provider-specific backend routing remain outside the public Bridge SDK. For real IBM execution, treat the selected Bridge output as an ideal logical circuit and pass it through QDSV Runtime/HSP or an equivalent user-controlled physical workflow. The public logical optimizer is not a replacement for target-aware transpilation.
 
 ## Public Links
 

@@ -1,14 +1,18 @@
 QDSV Bridge Documentation
 =========================
 
-QDSV Bridge is a Python SDK for moving from controlled problem-first
-semantic specifications toward executable quantum circuit artifacts,
-including OpenQASM/Qiskit workflows, the tested Amazon Braket
-``LocalSimulator`` conversion workflow and reproducibility reports.
+QDSV Bridge is a Python SDK for moving from controlled problem-first semantic
+specifications to executable quantum circuit artifacts. Version 0.6.1 delivers
+an immutable canonical logical artifact and, when its exact validation and
+no-regression policy pass, an optional optimized logical child artifact.
 
 Bridge is part of the Qiskit Ecosystem and uses OpenQASM as a public
 artifact boundary between higher-level problem representation and
 framework-specific quantum software tooling.
+
+The benchmark and optimization layers do not change the declared problem.
+They preserve the semantic contract while making artifact identity, lineage,
+resources and validation evidence inspectable.
 
 .. toctree::
    :hidden:
@@ -27,16 +31,39 @@ Start Here
 
 * Install the SDK from PyPI: ``pip install qdsv-bridge``.
 * Use ``QDSVBridgeClient()`` for the public developer preview.
-* Start with ``client.generate(spec)`` when you want a canonically materialized,
-  ready-to-run circuit.
+* Start with ``client.generate(spec)`` when you want a completed logical
+  circuit without designing the circuit manually.
+* Use ``select_recommended_artifact(result)`` to receive the accepted optimized
+  child when available and otherwise the canonical source of truth.
 * Use ``client.build(spec)`` when you want executable OpenQASM/Qiskit
   artifacts, stable public summaries, construction contracts, actual metrics,
   digests and reports.
 
+Artifact Roles
+--------------
+
+``result["artifact"]`` is always the canonical ideal artifact. Bridge never
+replaces it silently. ``result["optimized_logical_artifact"]`` is optional and
+is linked to its parent by digest. ``result["recommended_artifact_role"]``
+records which artifact passed the public recommendation policy.
+
+The default optimization profile is exact and target-independent. It preserves
+the prepared state, registers, measurements and valid candidate domain, and it
+is accepted only when protected logical resource metrics do not regress. It is
+not backend routing, calibration-aware compilation, noise reduction, error
+mitigation or QPU execution.
+
 Current Public Role
 -------------------
 
-Bridge is a developer-preview interoperability layer. It does not expose
-the private runtime, internal compilation or optimization rules, private
-backend adapters, secrets or production configuration.
-It does not export placeholder oracle scaffolds as completed circuits.
+Bridge is a developer-preview interoperability layer. It publicly exposes the
+versioned logical-optimization profile, declared public pass sequence, artifact
+roles, before/after resources, validation status and lineage needed to audit its
+output. It does not expose private compiler implementation rules, backend
+adapters, secrets or production configuration, and it does not export
+placeholder oracle scaffolds as completed circuits.
+
+Bridge stops at the portable logical-artifact boundary. Runtime/HSP or an
+equivalent user-controlled workflow remains responsible for backend selection,
+layout, routing, scheduling, calibration review, mitigation and hardware
+evidence.

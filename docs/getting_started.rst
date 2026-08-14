@@ -24,7 +24,7 @@ Create a client for the public developer preview:
 
 .. code-block:: python
 
-   from qdsv_bridge import QDSVBridgeClient
+   from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
 
    client = QDSVBridgeClient()
 
@@ -70,18 +70,48 @@ Use ``generate`` for the simplest delivery mode:
    }
 
    result = client.generate(spec)
+   canonical = result["artifact"]
+   recommended = select_recommended_artifact(result)
 
    print(result["status"])
    print(result["bridge_mode"])
-   print(result["artifact"]["format"])
+   print(canonical["role"])
+   print(result["recommended_artifact_role"])
+   print(recommended["format"])
    print(result["construction_verification"])
+
+Canonical and Recommended Artifacts
+-----------------------------------
+
+The canonical artifact is the immutable source of truth for the generated
+logical circuit. Bridge may also derive an exact target-independent optimized
+child and recommend it after contractual replay and Pareto no-regression checks.
+
+Inspect both roles when you need audit evidence:
+
+.. code-block:: python
+
+   print(result["digests"]["artifact_digest"])
+   print(result["digests"].get("optimized_artifact_digest"))
+   print(result.get("optimized_logical_artifact"))
+   print(result["logical_optimization"])
+
+Use ``select_recommended_artifact`` for normal inline delivery. The helper
+returns the accepted optimized artifact when available and otherwise the
+canonical artifact. If delivery is metadata-only, it raises an explicit API
+error rather than inventing inline circuit content.
+
+The public optimization profile does not select a backend or apply layout,
+routing, scheduling, approximation, mitigation or noise handling. See
+:doc:`how_to/logical_artifacts` for reproducible configuration and audit steps.
 
 Delivery Modes
 --------------
 
 Bridge has one SDK with four delivery modes:
 
-* ``generate`` for users who want canonically materialized, ready-to-run circuits.
+* ``generate`` for users who want completed logical circuits and a safe
+  recommended-artifact selection.
 * ``build`` for executable OpenQASM/Qiskit artifacts plus materialization evidence.
 * ``prepare`` for expert semantic construction inputs.
 * ``evaluate`` for the actual materialization evidence plus explicitly labeled
@@ -103,3 +133,8 @@ records semantic validation, complete operation-graph coverage, reversible
 contract checks, no-precomputed-answer checks, actual resource enforcement and
 digest linkage. Bridge does not execute the artifact or validate the truth of
 the user's domain model or data.
+
+``logical_optimization`` is separate evidence. It reports the frozen profile,
+acceptance policy, parent/child lineage, exact replay result and before/after
+logical resources. A successful optimization is not evidence that a physical
+backend will preserve the same result.

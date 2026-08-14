@@ -4,7 +4,7 @@ Status: public developer preview.
 
 QDSV Bridge is a problem-first specification layer for quantum-oriented workflows. It helps users declare a controlled semantic problem specification before exporting inspectable artifacts for circuit ecosystems such as Qiskit.
 
-Bridge does not replace Qiskit. It uses canonical QDSV ProblemSpec/IR materialization to prepare executable QASM/Qiskit artifacts, materialization evidence and reproducibility reports.
+Bridge does not replace Qiskit. It uses canonical QDSV ProblemSpec/IR materialization to prepare executable QASM/Qiskit artifacts, materialization evidence and reproducibility reports. It can also derive and validate an exact target-independent optimized logical child without changing the canonical source of truth.
 
 ## Current Public Flow
 
@@ -12,7 +12,8 @@ Bridge does not replace Qiskit. It uses canonical QDSV ProblemSpec/IR materializ
 problem intent
 -> controlled semantic specification
 -> Bridge validation and canonical QDSV materialization
--> QASM3 or Qiskit-oriented artifact
+-> optional exact logical optimization and explicit recommendation
+-> canonical or accepted optimized QASM3/Qiskit-oriented artifact
 -> Qiskit inspection or local simulation
 -> Bridge Report
 ```
@@ -31,7 +32,7 @@ The optional Qiskit extra is version-capped to the current supported major serie
 Minimal build flow:
 
 ```python
-from qdsv_bridge import QDSVBridgeClient
+from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
 
 client = QDSVBridgeClient()
 
@@ -65,9 +66,14 @@ spec = {
 }
 
 artifact_package = client.build(spec)
-qasm3_source = artifact_package["artifact"]["content"]
+canonical = artifact_package["artifact"]
+recommended = select_recommended_artifact(artifact_package)
+qasm3_source = recommended["content"]
 
 print(qasm3_source)
+print(canonical["role"])
+print(artifact_package["recommended_artifact_role"])
+print(artifact_package["logical_optimization"])
 print(artifact_package["materialization_evidence"])
 print(artifact_package["digests"])
 ```
@@ -106,16 +112,17 @@ The notebook demonstrates:
 
 ## Boundaries
 
-Bridge is not an IBM Quantum hardware execution SDK. It does not expose the private runtime, internal compilation or optimization rules, or private backend adapters.
+Bridge is not an IBM Quantum hardware execution SDK. It exposes the versioned public logical-optimization profile and its evidence, but not private compiler implementation rules, pass internals or backend adapters.
 
-Bridge exports the canonical ideal circuit and its contracts. To make that artifact useful on real IBM hardware, use QDSV Runtime/HSP or an equivalent user-controlled physical workflow that performs target selection, target-aware transpilation, calibration review, mitigation and separate hardware evidence reporting.
+Bridge exports the canonical ideal circuit, an optional accepted optimized logical child and their contracts. To make the selected artifact useful on real IBM hardware, use QDSV Runtime/HSP or an equivalent user-controlled physical workflow that performs target selection, target-aware transpilation, calibration review, any supported mitigation and separate hardware evidence reporting.
 
 The current public role of Bridge is upstream of execution:
 
 ```text
 preserve problem intent
 -> construct the formula/oracle through the supported QDSV path
--> derive an executable auditable artifact
+-> derive the canonical artifact and optional exact optimized child
+-> select the recommended logical artifact without hiding the canonical one
 -> provide metadata and warnings
 -> hand off to Runtime/HSP or a user-controlled IBM workflow for real QPU execution
 -> let the Qiskit user inspect and control the circuit workflow

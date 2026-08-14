@@ -11,7 +11,7 @@ Use ``generate`` when you want a simpler starting point:
 
 .. code-block:: python
 
-   from qdsv_bridge import QDSVBridgeClient
+   from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
 
    client = QDSVBridgeClient()
 
@@ -41,8 +41,18 @@ Use ``generate`` when you want a simpler starting point:
    }
 
    result = client.generate(spec)
-   print(result["artifact"]["content"])
+   canonical = result["artifact"]
+   recommended = select_recommended_artifact(result)
+
+   print(canonical["role"])
+   print(result["recommended_artifact_role"])
+   print(recommended["content"])
    print(result["construction_verification"])
+   print(result["logical_optimization"])
+
+The canonical artifact remains available even when Bridge recommends the
+optimized child. This keeps the original logical realization auditable and
+makes the recommendation explicit rather than silently replacing output.
 
 Use ``build`` when you need additional editable artifacts and
 reproducibility evidence:
@@ -52,3 +62,7 @@ reproducibility evidence:
    result = client.build(spec)
    print(result["editable_artifacts"]["ir_summary"])
    print(result["digests"])
+
+For real hardware, hand the selected logical artifact and its contracts to
+Runtime/HSP or an equivalent target-aware workflow. Do not interpret logical
+optimization as layout, routing, noise reduction or hardware validation.
