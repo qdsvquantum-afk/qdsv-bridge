@@ -136,6 +136,17 @@ The complete runnable example is
 Do not include labels, expected decisions or precomputed predicate results in
 `rows`; only provide the prepared business inputs referenced by the predicate.
 
+## Similarity Inputs
+
+Bridge keeps externally prepared similarity metrics separate from similarity
+operations declared in the semantic program. A supplied `similarity_score` is
+used as prepared input and is not presented as a circuit-computed value.
+`similarity(...)` supports bounded scalar comparison, while
+`vector_similarity(...)` has one fixed normalized-overlap/fidelity meaning for
+bounded prepared numeric vectors. It is not an arbitrary vector metric or a
+general cosine-similarity interface. Availability remains subject to the
+current capability and resource contract.
+
 ## Ideal Circuit And Hardware Handoff
 
 When Bridge materializes a circuit, the response includes a backend-neutral `circuit_realization_package`. It links the logical circuit to the canonical semantic, quantum and reversible-plan digests and includes the public result, measurement and decoder contracts.

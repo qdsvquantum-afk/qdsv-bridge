@@ -50,6 +50,17 @@ Bridge does not label uniform-superposition scaffolds as completed semantic
 circuits. Specifications without prepared numeric signals or canonical
 predicate IR remain expert inputs.
 
+Similarity Boundary
+-------------------
+
+Bridge distinguishes prepared metrics from declared similarity operations. An
+externally supplied similarity score remains an attributed input; Bridge does
+not claim to have calculated it. The public operation contract includes bounded
+scalar similarity and a fixed normalized-overlap/fidelity operation for bounded
+prepared numeric vectors. It does not provide arbitrary vector metrics or a
+general cosine-similarity interface. Materialization remains capability- and
+resource-dependent.
+
 Advanced Internal Boundary
 --------------------------
 

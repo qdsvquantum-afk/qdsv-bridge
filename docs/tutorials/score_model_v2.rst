@@ -19,11 +19,16 @@ measure, correlation, externally calculated similarity, model output or domain
 measurement. Bridge preserves its declared provenance but does not claim to have
 computed an externally supplied metric.
 
-The current materialization profile can also calculate bounded scalar numeric
-similarity and supported arithmetic expressions inside the materialized
-operation. Arbitrary vector or cosine similarity is not calculated by this
-profile; users may instead provide such a result as a prepared finite numeric
-metric.
+When similarity is declared as part of the supported semantic program, the
+public contract distinguishes two operations:
+
+* ``similarity(...)`` provides bounded scalar numeric similarity; and
+* ``vector_similarity(...)`` provides one fixed normalized-overlap/fidelity
+  meaning for bounded prepared numeric vectors of compatible shape.
+
+Neither operation is an arbitrary similarity plug-in or a general cosine
+similarity interface. Other similarity measures must be supplied as prepared
+finite numeric metrics, with their external provenance kept explicit.
 
 Implemented decision structure
 ------------------------------
