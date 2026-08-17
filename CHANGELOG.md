@@ -1,6 +1,13 @@
 # Changelog
 
-Notable public changes to QDSV Bridge are documented here. The project is a Developer Preview and has not reached a stable `1.0` contract.
+Notable public changes to QDSV Bridge are documented here. The project is a Public Preview and has not reached a stable `1.0` contract or an SLA.
+
+## 0.6.2
+
+- Moves QDSV Bridge from Developer Preview to Public Preview for bounded real-world validation while preserving explicit pre-`1.0`, resource and SLA boundaries.
+- Reorganizes the package landing page around the problem-first user journey and moves detailed delivery, outcome, privacy, compatibility and handoff contracts into versioned documentation.
+- Adds an executable README Quickstart regression test that preserves circuit-domain identity separately from the user's business reference.
+- Updates package metadata from alpha to beta without changing Bridge's logical-artifact boundary or claiming simulator, provider or QPU execution.
 
 ## 0.6.1
 

@@ -3,26 +3,142 @@
 [![PyPI](https://img.shields.io/pypi/v/qdsv-bridge.svg)](https://pypi.org/project/qdsv-bridge/)
 [![Python](https://img.shields.io/pypi/pyversions/qdsv-bridge.svg)](https://pypi.org/project/qdsv-bridge/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/LICENSE)
-[![Status](https://img.shields.io/badge/status-developer%20preview-0ea5e9.svg)](#status-and-scope)
+[![Status](https://img.shields.io/badge/status-public%20preview-0ea5e9.svg)](#current-availability-and-operational-boundaries)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Source/package version: `0.6.1`. See the PyPI badge for publication status.
+Source/package version: `0.6.2`. See the PyPI badge for publication status.
 
-QDSV Bridge is a lightweight Python client SDK that converts supported semantic problem specifications into executable OpenQASM/Qiskit-compatible circuit artifacts or validated expert construction packages.
+## From Business Meaning To Quantum Artifacts
 
-Circuit delivery is conditional on capability and resource validation. Bridge does not execute circuits, generate arbitrary circuits or embed precomputed answers.
+QDSV Bridge transforms supported business rules, prepared data and functional
+objectives into semantically validated and optimized logical quantum artifacts.
+It is QDSV's interoperability layer for today's circuit-based quantum
+ecosystem: the semantic problem remains primary, and logical circuits are
+derived when the destination requires a circuit artifact.
+
+For supported problem families, users do not need to design gates, quantum
+registers, ancillas, reversible cleanup or a framework-specific quantum model.
+The user describes what the problem means; Bridge derives and verifies its
+quantum realization.
+
+> **The circuit is a delivery format, not the source of truth.**
+
+The semantic problem specification remains canonical while Bridge derives,
+validates and documents:
+
+- the supported reversible construction, registers, controls and cleanup;
+- an immutable canonical logical circuit;
+- an optional exact logical optimization linked to its parent by digest;
+- semantic-equivalence and no-regression validation;
+- inspectable OpenQASM/Qiskit artifacts, resources and construction evidence;
+- a traceable handoff for downstream simulator or hardware execution.
+
+The user provides bounded candidates, prepared numeric inputs, functional
+rules, thresholds, priorities and objectives. Bridge derives the supported
+quantum construction without requiring the user to design it. It never
+fabricates an unsupported construction or embeds precomputed answers when a
+request cannot be materialized.
 
 - [Documentation](https://qdsvquantum-afk.github.io/qdsv-bridge/)
 - [PyPI](https://pypi.org/project/qdsv-bridge/)
 - [Source](https://github.com/qdsvquantum-afk/qdsv-bridge)
 
-## Status And Scope
+## Business-First Quickstart
 
-QDSV Bridge is a Developer Preview for bounded, problem-first circuit construction. The public service is provided without an SLA and may change or be temporarily unavailable.
+Start with the candidates and the rule they must satisfy. This example asks
+Bridge to mark suppliers whose quality is at least `700` and whose compliance
+flag is `1`:
 
-Bridge validates the semantic-to-circuit construction path and reports the resources required by the generated artifact. It can also derive an exact, target-independent logical optimization and recommend it when contractual replay passes and protected logical metrics do not regress. It does not validate the user's domain assumptions, execute on a simulator or QPU, choose a provider, manage credentials, mitigate noise or interpret experimental results.
+```python
+from qdsv_bridge import (
+    QDSVBridgeClient,
+    build_predicate_spec,
+    select_recommended_artifact,
+)
 
-The public SDK supports Python `3.9` and later. Before `1.0`, minor releases may introduce contract changes; deprecations and migration notes are recorded in the [changelog](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/CHANGELOG.md).
+suppliers = [
+    {"candidate_index": 0, "supplier_id": 101, "quality": 820, "compliance": 1},
+    {"candidate_index": 1, "supplier_id": 102, "quality": 680, "compliance": 1},
+    {"candidate_index": 2, "supplier_id": 103, "quality": 760, "compliance": 0},
+]
+
+business_rule = {
+    "op": "and",
+    "args": [
+        {
+            "op": "gte",
+            "left": {"op": "field", "name": "quality"},
+            "right": {"op": "const", "value": 700},
+        },
+        {
+            "op": "eq",
+            "left": {"op": "field", "name": "compliance"},
+            "right": {"op": "const", "value": 1},
+        },
+    ],
+}
+
+spec = build_predicate_spec(rows=suppliers, predicate=business_rule)
+result = QDSVBridgeClient().generate(spec)
+recommended = select_recommended_artifact(result)
+
+print(result["status"])
+print(result["recommended_artifact_role"])
+print(recommended["format"])
+print(result["construction_verification"])
+```
+
+The user does not provide gates, registers, ancillas, reversible cleanup or
+expected answers. `candidate_index` is the stable circuit-domain identity;
+`supplier_id` remains the organization's business reference.
+`build_predicate_spec()` preserves both, normalizes the declared rule without
+evaluating it, and applies portable defaults for the logical artifact. Advanced
+users can override those defaults through its typed parameters.
+
+The successful response can contain:
+
+- an immutable canonical logical artifact;
+- an accepted optimized child artifact when exact validation and no-regression
+  checks pass;
+- the recommended artifact role and inspectable OpenQASM/Qiskit content;
+- construction verification, resource metrics, digests and traceability;
+- a handoff contract for downstream simulation or hardware execution.
+
+The complete runnable version is
+[`examples/compound_business_predicate.py`](examples/compound_business_predicate.py).
+
+## How Bridge Differs From Quantum Synthesis Platforms
+
+Most quantum-development platforms reduce the work required to construct a
+circuit but still expect the user to define or review a quantum program.
+Bridge starts one layer earlier: with the bounded problem and its functional
+meaning.
+
+The distinction is not merely fewer lines of code. It is a different user
+responsibility:
+
+| Dimension | Classiq | QDSV Bridge |
+|---|---|---|
+| Starting point | An explicit Qmod quantum model, written manually or with AI assistance | Prepared business data and a supported semantic rule |
+| User thinks about | Quantum functions, variables, model behavior and synthesis | Candidates, values, criteria, thresholds, priorities and outcomes |
+| Canonical source | The explicit quantum model | The semantic problem specification |
+| Quantum-specific user work | Define or review the quantum model | No quantum program design for supported problem families |
+| Reversible realization | Synthesized from the Qmod model | Derived from the semantic rule and linked to semantic digests |
+| Optimization | Broad synthesis, including hardware-aware options | Exact target-independent logical optimization with replay and no-regression acceptance |
+| Execution | Integrated simulator and provider workflows | Deliberately separated through Qiskit, Qruba or QDSV Runtime/HSP |
+| Primary strength | Broad quantum-engineering and execution platform | Higher problem-level abstraction and less explicit quantum engineering |
+
+Classiq provides a high-level environment for designing and synthesizing
+quantum programs. For supported problem families, QDSV Bridge removes
+quantum-program design from the end-user workflow.
+
+Classiq provides a broader integrated quantum-development environment. Bridge
+provides an earlier entry point for organizations that want to begin with the
+problem rather than with a quantum program. The comparison above describes the
+public workflows and architectural responsibility boundary; it is not a claim
+of universal circuit-performance superiority. See the
+[Classiq documentation](https://docs.classiq.io/) for its current public
+workflow.
 
 ## Installation
 
@@ -38,53 +154,52 @@ Install the optional Qiskit inspection dependencies:
 pip install "qdsv-bridge[qiskit]"
 ```
 
-The Qiskit extra is capped at `qiskit>=2,<3` to preserve compatibility with the currently tested Qiskit major version.
+The Qiskit extra is capped at `qiskit>=2,<3` to preserve compatibility with the
+currently tested Qiskit major version. The Public Preview does not require an
+API key.
 
-## Quickstart
+## Current Availability And Operational Boundaries
 
-The public Developer Preview does not require an API key:
+QDSV Bridge `0.6.2` is publicly available through PyPI and the Qiskit Ecosystem
+for bounded real-world validation. Its supported capability catalog and
+deployment options continue to expand under the Public Preview contract.
 
-```python
-from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
+- Bridge supports bounded problem families and explicit resource limits; it
+  does not accept every arbitrary business or quantum program.
+- The public service is provided without an SLA and may change or be
+  temporarily unavailable before `1.0`.
+- Bridge does not execute on a simulator or QPU, select a provider, manage
+  credentials, route to hardware, mitigate noise or interpret experiments.
+- Do not send confidential, regulated or secret data to the public service.
 
-client = QDSVBridgeClient()
+Bridge validates the semantic-to-circuit construction path and reports the
+resources required by the generated artifact. It can derive an exact,
+target-independent logical optimization and recommend it only when contractual
+replay passes and protected logical metrics do not regress. The canonical
+artifact is never replaced silently.
 
-spec = {
-    "state_space": {
-        "kind": "finite_candidates",
-        "candidate_count": 2,
-        "candidate_id": "candidate",
-    },
-    "signals": ["eligibility_score"],
-    "prepared_candidates": [
-        {"eligibility_score": 0},
-        {"eligibility_score": 1},
-    ],
-    "goal": {
-        "kind": "marking",
-        "threshold": 1,
-        "criteria": [
-            {"signal": "eligibility_score", "importance": 1, "priority": 1}
-        ],
-    },
-    "target": {"format": "qasm3", "backend_family": "qiskit"},
-    "limits": {"max_qubits": 8, "max_depth": 160},
-}
+The public SDK supports Python `3.9` and later. Before `1.0`, minor releases may
+introduce contract changes; deprecations and migration notes are recorded in
+the [changelog](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/CHANGELOG.md).
 
-result = client.generate(spec)
-recommended = select_recommended_artifact(result)
+## Technical Workflows
 
-print(result["status"])
-print(result["artifact"]["role"])  # Canonical source of truth.
-print(result["recommended_artifact_role"])
-print(recommended["format"])
-print(recommended["content"])
-print(result["construction_verification"])
-```
+Use `build_predicate_spec()` for explicit public predicates with nested boolean
+composition and field-to-field comparisons. Use the lower-level specification
+contract when you need to freeze artifact format, backend family, evidence or
+resource limits. In either path, do not include labels, expected decisions or
+precomputed predicate results in the input rows.
 
-When materialization succeeds within the supported capability and resource limits, `generate()` returns the completed canonical circuit and loading guidance. Bridge also attempts the frozen `qiskit_structural_exact_v1` logical profile by default. The canonical artifact is never replaced silently; `select_recommended_artifact()` returns the accepted optimized artifact when available and otherwise returns the canonical artifact.
+When materialization succeeds, `generate()` returns the canonical circuit and
+loading guidance. Bridge attempts the public `qiskit_structural_exact_v1`
+logical optimization by default. `select_recommended_artifact()` returns the
+accepted optimized artifact when available and otherwise returns the canonical
+artifact.
 
-The optimization is exact and target-independent. It does not perform layout, routing, scheduling, calibration-aware selection, noise suppression, mitigation or hardware execution. Those operations remain in Runtime/HSP.
+The optimization is exact and target-independent. It does not perform layout,
+routing, scheduling, calibration-aware selection, noise suppression,
+mitigation or hardware execution. Those operations remain downstream in
+Qiskit, Qruba or QDSV Runtime/HSP.
 
 For a minimal multi-criteria ScoreModel example, run
 [`examples/score_model_v2.py`](examples/score_model_v2.py). Prepared metrics and
@@ -92,268 +207,15 @@ the cutoff use one declared scale, and `priority` represents a domain priority,
 not the position of a criterion. The SDK example does not reproduce private
 ScoreModel aggregation or compiler rules.
 
-## Compound Business Predicates
-
-Use `build_predicate_spec()` when the business rule is already an explicit,
-public predicate. The helper supports nested boolean composition and
-field-to-field comparisons while preserving candidate order. It translates the
-declared rule; it does not evaluate it or add expected answers.
-
-```python
-from qdsv_bridge import QDSVBridgeClient, build_predicate_spec
-
-rows = [
-    {"quality": 800, "delivery": 700, "compliance": 1},
-    {"quality": 720, "delivery": 600, "compliance": 1},
-]
-predicate = {
-    "op": "and",
-    "args": [
-        {
-            "op": "gte",
-            "left": {"op": "field", "name": "quality"},
-            "right": {"op": "const", "value": 700},
-        },
-        {
-            "op": "gte",
-            "left": {"op": "field", "name": "delivery"},
-            "right": {"op": "const", "value": 650},
-        },
-        {
-            "op": "eq",
-            "left": {"op": "field", "name": "compliance"},
-            "right": {"op": "const", "value": 1},
-        },
-    ],
-}
-
-spec = build_predicate_spec(rows=rows, predicate=predicate)
-result = QDSVBridgeClient().generate(spec)
-```
-
-The complete runnable example is
-[`examples/compound_business_predicate.py`](examples/compound_business_predicate.py).
-Do not include labels, expected decisions or precomputed predicate results in
-`rows`; only provide the prepared business inputs referenced by the predicate.
-
-## Similarity Inputs
-
-Bridge keeps externally prepared similarity metrics separate from similarity
-operations declared in the semantic program. A supplied `similarity_score` is
-used as prepared input and is not presented as a circuit-computed value.
-`similarity(...)` supports bounded scalar comparison, while
-`vector_similarity(...)` has one fixed normalized-overlap/fidelity meaning for
-bounded prepared numeric vectors. It is not an arbitrary vector metric or a
-general cosine-similarity interface. Availability remains subject to the
-current capability and resource contract.
-
-## Ideal Circuit And Hardware Handoff
-
-When Bridge materializes a circuit, the response includes a backend-neutral `circuit_realization_package`. It links the logical circuit to the canonical semantic, quantum and reversible-plan digests and includes the public result, measurement and decoder contracts.
-
-```python
-package = result["circuit_realization_package"]
-
-print(package["canonical_identity"])
-print(package["logical_realization"])
-print(package["validation"])
-print(result["target_handoff"])
-```
-
-This package establishes what the canonical ideal circuit represents; it is not evidence that a specific QPU will preserve the ideal result. `target_handoff` states the remaining work for a real backend, including target transpilation, physical-resource review and any supported mitigation. Bridge does not apply those target-specific adjustments or execute the circuit.
-
-For managed IBM execution, send the package through QDSV Runtime/HSP or Qruba's hardware flow. If you choose to run the artifact yourself, Bridge's handoff means: this is the ideal logical circuit; for IBM real hardware you must use Runtime/HSP or an equivalent user-controlled physical workflow.
-
-Ideal dynamic replay is reported only when it was actually performed. `resource_limited`, `not_run` or `unsupported` remain explicit evidence states and are never promoted to `passed`.
-
-## Canonical And Optimized Logical Artifacts
-
-`result["artifact"]` remains the immutable canonical artifact for backward compatibility and auditability. The optional `result["optimized_logical_artifact"]` is a child artifact linked to it by digest. Bridge recommends the child only when exact full-state replay, register and measurement preservation, valid-domain checks and the Pareto no-regression policy all pass.
-
-```python
-canonical = result["artifact"]
-recommended = select_recommended_artifact(result)
-
-print(result["logical_optimization"]["resources_before"])
-print(result["logical_optimization"]["resources_after"])
-print(result["recommended_artifact_role"])
-```
-
-Set `target.logical_optimization` to `false` only when byte-for-byte canonical delivery is required. Basic users do not need to configure passes, logical bases or seeds.
-
-Reproducible benchmarks can freeze the public profile explicitly. The bounded-predicate helper accepts the same contract:
-
-```python
-spec = build_predicate_spec(
-    rows=rows,
-    predicate=predicate,
-    logical_optimization={
-        "mode": "auto",
-        "profile": "qiskit_structural_exact_v1",
-        "acceptance_policy": "pareto_no_regression_v1",
-    },
-)
-```
-
-`mode`, rather than an `enabled` field, is the versioned public switch. Custom passes, physical targets, layouts, routing and approximation settings are intentionally rejected.
-
-## Delivery Modes
-
-Bridge uses one specification and offers four output depths:
-
-| Method | Intended user | Result |
-|---|---|---|
-| `generate()` | A user who needs the quantum core without designing it | Completed circuit, loading guidance, measurement meaning, resources and construction evidence, when materialization succeeds |
-| `build()` | A developer integrating QASM or Qiskit | Editable circuit artifact, public construction summaries, resources and digests, when materialization succeeds |
-| `prepare()` | An expert designing a custom circuit | Validated construction requirements and capability gaps without forcing a final circuit |
-| `evaluate()` | An expert reviewing a construction | Materialization evidence and clearly labeled construction alternatives |
-
-`evaluate()` evaluates construction evidence. It does not execute the circuit on a simulator or QPU and does not compare runtime results.
-
-### Start By User Type
-
-All four modes reuse the `spec` from the Quickstart. Users can begin with one call and move to a deeper delivery mode without redefining the problem.
-
-Basic user - receive the completed quantum core and loading guidance:
-
-```python
-result = client.generate(spec)
-recommended = select_recommended_artifact(result)
-print(recommended["content"])
-print(result["ready_to_run_example"])
-```
-
-Intermediate developer - receive editable QASM/Qiskit artifacts and digests:
-
-```python
-package = client.build(spec)
-print(package["editable_artifacts"]["artifact_content"])
-print(package["editable_artifacts"]["oracle_spec"])
-print(package["digests"])
-```
-
-Expert constructor - receive the validated construction package without forcing a circuit:
-
-```python
-prepared = client.prepare(spec)
-inputs = prepared["expert_inputs"]
-print(inputs["construction_status"])
-print(inputs["relevant_variables"])
-print(inputs["missing_capabilities"])
-print(inputs["encoding_suggestions"])
-```
-
-Expert evaluator - review construction evidence and labeled alternatives without executing the circuit:
-
-```python
-review = client.evaluate(spec)
-print(review["construction_verification"])
-print(review["materialization_evidence"])
-print(review["construction_alternatives"])
-print(review["comparison"]["comparative_execution_performed"])
-```
-
-## Outputs And Outcomes
-
-Supported public artifact targets are:
-
-| Target | Output |
-|---|---|
-| `qasm2` | Completed OpenQASM 2 circuit |
-| `qasm3` | Completed OpenQASM 3 circuit |
-| `qiskit_blueprint` | Python loader generated from the completed canonical QASM circuit; it is not a partial circuit blueprint |
-| `oracle_spec` | Public expert construction contract |
-| `problem_spec` | Normalized public problem specification |
-| `ir` | Stable public summary, not the private compiler representation |
-
-Circuit-oriented targets are returned only when the full supported construction succeeds. Typical outcomes are:
-
-| Outcome | SDK behavior |
-|---|---|
-| Materialized circuit | Successful `generate()` or `build()` response with artifact, resources and evidence |
-| Expert construction package | Successful `prepare()` response without a forced circuit |
-| Unsupported capability | `QDSVBridgeHTTPError` with the API error payload |
-| Resource limit exceeded | `QDSVBridgeHTTPError` with the required resource details |
-| Invalid specification | `QDSVBridgeHTTPError` with validation details |
-| Transport or service failure | `QDSVBridgeAPIError` |
-
-Handle API rejections explicitly:
-
-```python
-from qdsv_bridge import QDSVBridgeAPIError, QDSVBridgeHTTPError
-
-try:
-    result = client.generate(spec)
-except QDSVBridgeHTTPError as error:
-    print(error.status_code)
-    print(error.payload)
-except QDSVBridgeAPIError as error:
-    print(f"Bridge service unavailable: {error}")
-```
-
-The current operation catalog and service limits are available from:
-
-```python
-catalog = client.capabilities()
-```
-
-For the detailed operation contract and ScoreModel v2 capabilities, see the [technical documentation](https://qdsvquantum-afk.github.io/qdsv-bridge/explanations/index.html) and [ScoreModel tutorial](https://qdsvquantum-afk.github.io/qdsv-bridge/tutorials/score_model_v2.html).
-
-## Limits And Privacy
-
-Bridge accepts compact semantic specifications and bounded prepared numeric inputs. It is not a bulk-data service and does not accept raw datasets or hardware-execution requests.
-
-Public Preview limits are configurable and include payload, compilation time, artifact size, qubit and depth ceilings. A semantically valid problem may still be rejected when its materialized circuit exceeds the active resource limits. Query `client.capabilities()` for the current deployment contract.
-
-Do not submit personal, confidential, regulated or security-sensitive data to the public preview. The public preview provides no contractual retention guarantee. Use a private deployment for sensitive workloads and review the [security policy](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/SECURITY.md) before reporting a vulnerability.
-
-Default public endpoint:
-
-```python
-client = QDSVBridgeClient()  # https://api.qdsv.cloud/api
-```
-
-Private/local endpoint for an existing QDSV Docker deployment:
-
-```python
-client = QDSVBridgeClient.local()  # http://localhost:18080/api
-```
-
-## Tested Compatibility
-
-| Component | Tested/supported boundary |
-|---|---|
-| Python | `>=3.9` |
-| Qiskit SDK | `>=2,<3` |
-| Qiskit Aer | `>=0.17,<0.18` |
-| Qiskit QASM 3 importer | `>=0.5,<0.7` |
-| OpenQASM | QASM 2 and QASM 3 artifacts generated by Bridge |
-| Amazon Braket SDK | Optional OpenQASM conversion tested with `LocalSimulator`; not version-pinned and not an official Amazon Braket integration |
-
-Bridge does not provide managed IBM Quantum or Amazon Braket hardware execution.
-
-## Integrations And Examples
-
-- [First Bridge workflow](https://qdsvquantum-afk.github.io/qdsv-bridge/tutorials/first_bridge_workflow.html)
-- [ScoreModel v2 circuit delivery](https://qdsvquantum-afk.github.io/qdsv-bridge/tutorials/score_model_v2.html)
-- [IBM/Qiskit artifact workflow](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/docs/integrations/ibm_quantum.md)
-- [OpenQASM-first interoperability](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/docs/integrations/openqasm.md)
-- [Amazon Braket LocalSimulator conversion](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/docs/integrations/aws_braket.md)
-- [Python examples](https://github.com/qdsvquantum-afk/qdsv-bridge/tree/main/examples)
-- [Colab notebooks](https://github.com/qdsvquantum-afk/qdsv-bridge/tree/main/notebooks)
-
-The notebooks cover problem-first circuit delivery, expert construction inputs, Qiskit inspection and the tested Braket `LocalSimulator` conversion flow.
-
-## Reports
-
-Bridge can render the same public construction evidence as JSON, Markdown or HTML:
-
-```python
-report = client.report(spec, mode="build", format="markdown")
-print(report["content"])
-```
-
-Reports identify the accepted specification, delivered artifact, warnings, resource evidence and digests. They do not claim simulator or hardware execution.
+## Technical Reference
+
+The detailed contracts remain versioned in the documentation:
+
+- [Public SDK contract](https://qdsvquantum-afk.github.io/qdsv-bridge/reference/public_contract.html): delivery modes, outputs, errors, limits, privacy, reports and compatibility.
+- [Problem-first and similarity boundaries](https://qdsvquantum-afk.github.io/qdsv-bridge/explanations/index.html): prepared metrics, declared operations and construction guarantees.
+- [Canonical and optimized artifacts](https://qdsvquantum-afk.github.io/qdsv-bridge/how_to/logical_artifacts.html): profiles, lineage, validation and recommendation.
+- [IBM/Qiskit handoff](https://qdsvquantum-afk.github.io/qdsv-bridge/integrations/ibm_quantum.html): the boundary between logical artifacts and physical execution.
+- [Examples and tutorials](https://qdsvquantum-afk.github.io/qdsv-bridge/tutorials/index.html): first workflow, ScoreModel and inspectable artifacts.
 
 ## Support And Security
 

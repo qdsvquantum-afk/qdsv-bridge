@@ -73,7 +73,8 @@ reversible representation or implementation rules.
 Logical Artifact Lifecycle
 --------------------------
 
-Bridge 0.6.1 separates artifact identity from artifact recommendation:
+The current Bridge contract separates artifact identity from artifact
+recommendation:
 
 .. code-block:: text
 

@@ -1,6 +1,6 @@
 # QDSV Bridge OpenQASM-First Interoperability
 
-Status: public developer preview.
+Status: Public Preview.
 
 QDSV Bridge is a problem-first specification layer that exports auditable OpenQASM artifacts from controlled semantic problem specifications.
 

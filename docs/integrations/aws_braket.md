@@ -1,6 +1,6 @@
 # QDSV Bridge for Amazon Braket OpenQASM Workflows
 
-Status: public developer preview.
+Status: Public Preview.
 
 QDSV Bridge is a problem-first specification layer for quantum-oriented workflows. It helps users declare a controlled semantic problem specification before exporting an OpenQASM artifact compatible with the tested Amazon Braket `LocalSimulator` conversion workflow.
 
@@ -143,7 +143,7 @@ The notebook demonstrates:
 This demo was tested with:
 
 - Python 3.11;
-- `qdsv-bridge` 0.6.1;
+- `qdsv-bridge` 0.6.2;
 - Amazon Braket SDK;
 - Amazon Braket `LocalSimulator`.
 

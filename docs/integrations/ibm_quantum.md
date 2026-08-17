@@ -1,6 +1,6 @@
 # QDSV Bridge for IBM/Qiskit Workflows
 
-Status: public developer preview.
+Status: Public Preview.
 
 QDSV Bridge is a problem-first specification layer for quantum-oriented workflows. It helps users declare a controlled semantic problem specification before exporting inspectable artifacts for circuit ecosystems such as Qiskit.
 

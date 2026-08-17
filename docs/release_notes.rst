@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+0.6.2
+-----
+
+* Moves the public lifecycle designation from Developer Preview to Public
+  Preview while retaining explicit pre-``1.0``, resource and SLA boundaries.
+* Leads with a business-defined Quickstart and moves the detailed SDK contract
+  into versioned reference documentation.
+* Adds regression coverage that executes the README Quickstart and verifies
+  stable circuit identity separately from the business reference.
+
 0.6.1
 -----
 

@@ -4,7 +4,7 @@ from .compat import to_braket_openqasm
 from .exceptions import QDSVBridgeAPIError, QDSVBridgeError, QDSVBridgeHTTPError
 from .predicate_specs import PredicateSpecError, build_predicate_spec
 
-__version__ = "0.6.1"
+__version__ = "0.6.2"
 
 __all__ = [
     "QDSVBridgeClient",

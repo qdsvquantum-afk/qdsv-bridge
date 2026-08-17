@@ -1,6 +1,6 @@
 # QDSV Bridge Roadmap
 
-QDSV Bridge is in Developer Preview. The SDK is a public client; the private runtime and internal compilation rules are not included.
+QDSV Bridge is in Public Preview for bounded real-world validation. The SDK is a public client; the private runtime and internal compilation rules are not included. The Public Preview does not imply a stable `1.0` contract or an SLA.
 
 ## Current
 

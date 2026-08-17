@@ -2,7 +2,7 @@ QDSV Bridge Documentation
 =========================
 
 QDSV Bridge is a Python SDK for moving from controlled problem-first semantic
-specifications to executable quantum circuit artifacts. Version 0.6.1 delivers
+specifications to executable quantum circuit artifacts. Version 0.6.2 delivers
 an immutable canonical logical artifact and, when its exact validation and
 no-regression policy pass, an optional optimized logical child artifact.
 
@@ -21,6 +21,7 @@ resources and validation evidence inspectable.
    Getting Started <getting_started>
    Tutorials <tutorials/index>
    How-to Guides <how_to/index>
+   Public Contract Reference <reference/index>
    API Reference <apidocs/index>
    Explanations <explanations/index>
    Release Notes <release_notes>
@@ -30,7 +31,7 @@ Start Here
 ----------
 
 * Install the SDK from PyPI: ``pip install qdsv-bridge``.
-* Use ``QDSVBridgeClient()`` for the public developer preview.
+* Use ``QDSVBridgeClient()`` for the Public Preview.
 * Start with ``client.generate(spec)`` when you want a completed logical
   circuit without designing the circuit manually.
 * Use ``select_recommended_artifact(result)`` to receive the accepted optimized
@@ -56,7 +57,7 @@ mitigation or QPU execution.
 Current Public Role
 -------------------
 
-Bridge is a developer-preview interoperability layer. It publicly exposes the
+Bridge is a Public Preview interoperability layer. It publicly exposes the
 versioned logical-optimization profile, declared public pass sequence, artifact
 roles, before/after resources, validation status and lineage needed to audit its
 output. It does not expose private compiler implementation rules, backend

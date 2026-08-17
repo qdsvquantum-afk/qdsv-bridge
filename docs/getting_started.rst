@@ -20,11 +20,15 @@ The Qiskit extra is version-capped to the current supported major series
 (``qiskit>=2,<3``) to preserve compatibility with the currently tested Qiskit
 major version.
 
-Create a client for the public developer preview:
+Create a client for the Public Preview:
 
 .. code-block:: python
 
-   from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
+   from qdsv_bridge import (
+       QDSVBridgeClient,
+       build_predicate_spec,
+       select_recommended_artifact,
+   )
 
    client = QDSVBridgeClient()
 
@@ -34,51 +38,50 @@ Use a private/local Docker node only when you are running QDSV privately:
 
    client = QDSVBridgeClient.local()
 
-First Artifact
---------------
+First Business-Defined Artifact
+-------------------------------
 
-Use ``generate`` for the simplest delivery mode:
+Start with prepared candidates and a supported functional rule. The user does
+not design gates, registers, ancillas or reversible cleanup:
 
 .. code-block:: python
 
-   spec = {
-       "state_space": {
-           "kind": "finite_candidates",
-           "candidate_count": 2,
-           "candidate_id": "candidate",
-       },
-       "signals": ["eligibility_score"],
-       "prepared_candidates": [
-           {"eligibility_score": 0},
-           {"eligibility_score": 1},
+   suppliers = [
+       {"candidate_index": 0, "supplier_id": 101, "quality": 820, "compliance": 1},
+       {"candidate_index": 1, "supplier_id": 102, "quality": 680, "compliance": 1},
+       {"candidate_index": 2, "supplier_id": 103, "quality": 760, "compliance": 0},
+   ]
+
+   business_rule = {
+       "op": "and",
+       "args": [
+           {
+               "op": "gte",
+               "left": {"op": "field", "name": "quality"},
+               "right": {"op": "const", "value": 700},
+           },
+           {
+               "op": "eq",
+               "left": {"op": "field", "name": "compliance"},
+               "right": {"op": "const", "value": 1},
+           },
        ],
-       "goal": {
-           "kind": "marking",
-           "threshold": 1,
-           "criteria": [
-               {"signal": "eligibility_score", "importance": 1, "priority": 1}
-           ],
-       },
-       "target": {
-           "format": "qasm3",
-           "backend_family": "qiskit",
-       },
-       "limits": {
-           "max_qubits": 8,
-           "max_depth": 160,
-       },
    }
 
+   spec = build_predicate_spec(rows=suppliers, predicate=business_rule)
    result = client.generate(spec)
    canonical = result["artifact"]
    recommended = select_recommended_artifact(result)
 
    print(result["status"])
-   print(result["bridge_mode"])
    print(canonical["role"])
    print(result["recommended_artifact_role"])
    print(recommended["format"])
    print(result["construction_verification"])
+
+``candidate_index`` is the stable circuit-domain identity. ``supplier_id`` is
+preserved as the organization's business reference. The helper normalizes the
+rule without evaluating it or adding expected answers.
 
 Canonical and Recommended Artifacts
 -----------------------------------
@@ -104,6 +107,8 @@ error rather than inventing inline circuit content.
 The public optimization profile does not select a backend or apply layout,
 routing, scheduling, approximation, mitigation or noise handling. See
 :doc:`how_to/logical_artifacts` for reproducible configuration and audit steps.
+The complete delivery, outcome, privacy and compatibility contract is in
+:doc:`reference/public_contract`.
 
 Delivery Modes
 --------------
