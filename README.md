@@ -6,20 +6,23 @@
 [![Status](https://img.shields.io/badge/status-public%20preview-0ea5e9.svg)](#current-availability-and-operational-boundaries)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Source/package version: `0.6.2`. See the PyPI badge for publication status.
+Source/package version: `0.6.3`. See the PyPI badge for publication status.
 
 ## From Business Meaning To Quantum Artifacts
 
-QDSV Bridge transforms supported business rules, prepared data and functional
+QDSV Bridge transforms bounded business rules, prepared data and functional
 objectives into semantically validated and optimized logical quantum artifacts.
 It is QDSV's interoperability layer for today's circuit-based quantum
 ecosystem: the semantic problem remains primary, and logical circuits are
 derived when the destination requires a circuit artifact.
 
-For supported problem families, users do not need to design gates, quantum
-registers, ancillas, reversible cleanup or a framework-specific quantum model.
-The user describes what the problem means; Bridge derives and verifies its
-quantum realization.
+QDSV Bridge is domain-agnostic within its certified semantic operation set. It
+does not choose a circuit from a fixed catalog of industry templates. It
+compiles bounded semantic programs assembled from composable numeric and
+logical operations, including general predicates and ScoreModel v2. Users do
+not need to design gates, quantum registers, ancillas, reversible cleanup or a
+framework-specific quantum model. The user describes what the problem means;
+Bridge derives and verifies its quantum realization.
 
 > **The circuit is a delivery format, not the source of truth.**
 
@@ -122,15 +125,16 @@ responsibility:
 | Starting point | An explicit Qmod quantum model, written manually or with AI assistance | Prepared business data and a supported semantic rule |
 | User thinks about | Quantum functions, variables, model behavior and synthesis | Candidates, values, criteria, thresholds, priorities and outcomes |
 | Canonical source | The explicit quantum model | The semantic problem specification |
-| Quantum-specific user work | Define or review the quantum model | No quantum program design for supported problem families |
+| Quantum-specific user work | Define or review the quantum model | No quantum program design for bounded programs expressible through the certified semantic operation set |
 | Reversible realization | Synthesized from the Qmod model | Derived from the semantic rule and linked to semantic digests |
 | Optimization | Broad synthesis, including hardware-aware options | Exact target-independent logical optimization with replay and no-regression acceptance |
 | Execution | Integrated simulator and provider workflows | Deliberately separated through Qiskit, Qruba or QDSV Runtime/HSP |
 | Primary strength | Broad quantum-engineering and execution platform | Higher problem-level abstraction and less explicit quantum engineering |
 
 Classiq provides a high-level environment for designing and synthesizing
-quantum programs. For supported problem families, QDSV Bridge removes
-quantum-program design from the end-user workflow.
+quantum programs. For bounded semantic programs expressible through Bridge's
+certified composable operation graph, QDSV Bridge removes quantum-program
+design from the end-user workflow.
 
 Classiq provides a broader integrated quantum-development environment. Bridge
 provides an earlier entry point for organizations that want to begin with the
@@ -160,12 +164,18 @@ API key.
 
 ## Current Availability And Operational Boundaries
 
-QDSV Bridge `0.6.2` is publicly available through PyPI and the Qiskit Ecosystem
-for bounded real-world validation. Its supported capability catalog and
-deployment options continue to expand under the Public Preview contract.
+QDSV Bridge is publicly available through PyPI and the Qiskit Ecosystem for
+bounded real-world validation. Its certified semantic operations and deployment
+options continue to expand under the Public Preview contract.
 
-- Bridge supports bounded problem families and explicit resource limits; it
-  does not accept every arbitrary business or quantum program.
+- Bridge supports bounded compositions of certified semantic operations, not a
+  fixed catalog of industries or use cases. Public paths include general
+  predicates and ScoreModel v2.
+- Practical limits are determined by certified reversible lowering and
+  materialized resource limits, not by a fixed catalog of industries or use
+  cases. Relevant resources include candidate count, numeric precision,
+  expression complexity, qubits, ancillas, circuit depth and artifact size.
+  Bridge does not accept every arbitrary business or quantum program.
 - The public service is provided without an SLA and may change or be
   temporarily unavailable before `1.0`.
 - Bridge does not execute on a simulator or QPU, select a provider, manage

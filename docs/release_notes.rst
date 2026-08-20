@@ -1,6 +1,15 @@
 Release Notes
 =============
 
+0.6.3
+-----
+
+* Clarifies that Bridge is domain-agnostic within its certified semantic
+  operation set rather than limited to industry-specific templates.
+* Documents general predicates and ScoreModel v2 as composable public paths.
+* Defines practical limits through verified reversible coverage and materialized
+  resources without expanding the compiler contract or exposing private rules.
+
 0.6.2
 -----
 

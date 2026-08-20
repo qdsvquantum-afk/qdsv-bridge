@@ -17,6 +17,22 @@ checks every required operation and only declares a circuit ready when the
 complete supported construction path succeeds. Otherwise Bridge returns public
 construction inputs and the exact missing capabilities.
 
+Composable Semantic Scope
+-------------------------
+
+QDSV Bridge is domain-agnostic within its certified semantic operation set.
+It compiles bounded semantic programs assembled from composable numeric and
+logical operations, including general predicates and ScoreModel v2. Domain
+labels can describe a use case, but they do not choose the implementation and
+do not constrain Bridge to a fixed catalog of industries or use cases.
+
+Generality remains contractual rather than unlimited. Bridge only emits a
+completed circuit when every operation in the composed program has a verified
+reversible realization and the materialized artifact remains within declared
+resource limits. Unsupported operations and resource exhaustion are reported
+explicitly instead of being replaced by a classical answer or a partial
+circuit.
+
 Public SDK, Private Runtime
 ---------------------------
 

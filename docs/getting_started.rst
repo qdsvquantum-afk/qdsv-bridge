@@ -41,8 +41,9 @@ Use a private/local Docker node only when you are running QDSV privately:
 First Business-Defined Artifact
 -------------------------------
 
-Start with prepared candidates and a supported functional rule. The user does
-not design gates, registers, ancillas or reversible cleanup:
+Start with prepared candidates and a functional rule composed from certified
+semantic operations. The user does not design gates, registers, ancillas or
+reversible cleanup:
 
 .. code-block:: python
 
@@ -127,8 +128,8 @@ Bridge has one SDK with four delivery modes:
 replace the semantic oracle with a placeholder scaffold.
 
 Materialization is capability-driven. The optional legacy ``family`` field is
-only a descriptive compatibility label. Use ``client.capabilities()`` to inspect
-the operation-level compiler boundary.
+only a descriptive compatibility label; it does not select a circuit template.
+Use ``client.capabilities()`` to inspect the operation-level compiler boundary.
 
 Construction verification
 -------------------------

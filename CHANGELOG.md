@@ -2,6 +2,12 @@
 
 Notable public changes to QDSV Bridge are documented here. The project is a Public Preview and has not reached a stable `1.0` contract or an SLA.
 
+## 0.6.3
+
+- Clarifies that Bridge is domain-agnostic within its certified semantic operation set rather than limited to a fixed catalog of industries or business templates.
+- Documents general predicates and ScoreModel v2 as composable public paths while preserving explicit operation-coverage and no-bypass requirements.
+- Reframes practical limits around certified reversible lowering and materialized resources without expanding the public compiler contract or exposing private implementation rules.
+
 ## 0.6.2
 
 - Moves QDSV Bridge from Developer Preview to Public Preview for bounded real-world validation while preserving explicit pre-`1.0`, resource and SLA boundaries.
