@@ -4,9 +4,15 @@ Notable public changes to QDSV Bridge are documented here. The project is a Publ
 
 ## Unreleased
 
+## 0.6.4
+
 - Canonicalizes process-local OpenQASM gate identifiers before artifact hashing so repeated builds preserve byte-identical QASM and stable lineage digests.
 - Separates `semantic_oracle_digest` from the transport-linked `oracle_digest` while keeping both traceable to the same canonical construction.
 - Adds external regression coverage for repeated canonical and optimized builds, exact truth tables, candidate identity and clean work ancillas.
+- Fixes unary public-expression normalization so logical, null and rounding operations use the canonical single-operand contract.
+- Adds outcome-blind builders for numeric threshold expressions and flat or hierarchical ScoreModel v2 inputs.
+- Defines an unambiguous public `weighted_sum` shape and exposes per-operation construction routes through capabilities.
+- Keeps semantically valid but oversized realizations classified as resource dependent rather than input-contract failures.
 
 ## 0.6.3
 

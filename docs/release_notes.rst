@@ -1,6 +1,16 @@
 Release Notes
 =============
 
+0.6.4
+-----
+
+* Fixes canonical unary-expression normalization for logical, null and
+  rounding operations.
+* Adds public outcome-blind helpers for numeric threshold expressions and flat
+  or hierarchical ScoreModel v2 specifications.
+* Publishes unambiguous weighted-sum and per-operation construction contracts
+  while keeping every materialization resource checked.
+
 0.6.3
 -----
 

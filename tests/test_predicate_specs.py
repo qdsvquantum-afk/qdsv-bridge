@@ -4,7 +4,12 @@ from copy import deepcopy
 
 import pytest
 
-from qdsv_bridge import PredicateSpecError, build_predicate_spec
+from qdsv_bridge import (
+    PredicateSpecError,
+    build_predicate_spec,
+    build_score_expression_spec,
+    build_score_model_spec,
+)
 
 
 def field(name: str) -> dict:
@@ -87,6 +92,75 @@ def test_freezes_explicit_logical_optimization_contract() -> None:
     assert spec["target"]["logical_optimization"] == contract
     contract["mode"] = "off"
     assert spec["target"]["logical_optimization"]["mode"] == "auto"
+
+
+@pytest.mark.parametrize("operation", ["not", "is_null", "not_null", "floor", "ceil", "round"])
+def test_unary_operations_use_the_canonical_value_operand(operation: str) -> None:
+    spec = build_predicate_spec(
+        rows=[{"candidate_index": 0, "value": 1}],
+        predicate={"op": operation, "arg": field("value")},
+    )
+
+    predicate = spec["problem_spec"]["predicate"]
+    assert predicate["op"] == operation
+    assert predicate["value"]["op"] == "field"
+    assert "args" not in predicate
+
+
+def test_weighted_sum_has_an_unambiguous_vector_contract() -> None:
+    spec = build_score_expression_spec(
+        rows=[{"a": 2, "b": 3}],
+        expression={
+            "op": "weighted_sum",
+            "values": [field("a"), field("b")],
+            "weights": [2, 3],
+        },
+        threshold=10,
+        output_scale=100,
+    )
+
+    expression = spec["problem_spec"]["model"]["score"]["terms"][0]["value"]
+    assert expression["op"] == "weighted_sum"
+    assert [item["op"] for item in expression["args"]] == ["vector", "vector"]
+    assert expression["args"][1]["args"] == [2, 3]
+    assert "expected" not in repr(spec).lower()
+
+
+def test_builds_public_hierarchical_score_model_without_answers() -> None:
+    spec = build_score_model_spec(
+        rows=[{"quality": 8, "risk": 2}, {"quality": 4, "risk": 7}],
+        threshold=5,
+        blocks=[
+            {
+                "name": "performance",
+                "importance": 2,
+                "priority": 1,
+                "terms": [{"name": "quality", "value": field("quality")}],
+            },
+            {
+                "name": "exposure",
+                "importance": 1,
+                "priority": 2,
+                "terms": [{"name": "risk", "value": field("risk")}],
+            },
+        ],
+        output_scale=10,
+    )
+
+    model = spec["problem_spec"]["model"]
+    assert model["version"] == "2.0"
+    assert [block["name"] for block in model["score"]["blocks"]] == [
+        "performance",
+        "exposure",
+    ]
+    assert model["score"]["blocks"][0]["terms"][0]["value"]["column"] == "quality"
+    assert "expected" not in repr(spec).lower()
+    assert "answer" not in repr(spec).lower()
+
+
+def test_score_model_requires_exactly_one_structure() -> None:
+    with pytest.raises(PredicateSpecError, match="Exactly one"):
+        build_score_model_spec(rows=[{"x": 1}], threshold=1)
 
 
 @pytest.mark.parametrize(

@@ -2,9 +2,14 @@ from .client import QDSVBridgeClient
 from .artifacts import select_recommended_artifact
 from .compat import to_braket_openqasm
 from .exceptions import QDSVBridgeAPIError, QDSVBridgeError, QDSVBridgeHTTPError
-from .predicate_specs import PredicateSpecError, build_predicate_spec
+from .predicate_specs import (
+    PredicateSpecError,
+    build_predicate_spec,
+    build_score_expression_spec,
+    build_score_model_spec,
+)
 
-__version__ = "0.6.3"
+__version__ = "0.6.4"
 
 __all__ = [
     "QDSVBridgeClient",
@@ -13,6 +18,8 @@ __all__ = [
     "QDSVBridgeHTTPError",
     "PredicateSpecError",
     "build_predicate_spec",
+    "build_score_expression_spec",
+    "build_score_model_spec",
     "select_recommended_artifact",
     "to_braket_openqasm",
     "__version__",

@@ -141,7 +141,37 @@ API errors.
        print(f"Bridge service unavailable: {error}")
 
 Use ``client.capabilities()`` for the current operation catalog and deployment
-limits.
+limits. Each operation includes a ``public_construction`` entry identifying
+the SDK builder, operand form and resource-dependent materialization status.
+
+Public Construction Helpers
+---------------------------
+
+Bridge exposes three outcome-blind constructors. They normalize user input but
+do not evaluate the requested rule or add expected answers.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 65
+
+   * - Helper
+     - Public semantic input
+   * - ``build_predicate_spec()``
+     - A bounded Boolean predicate over prepared rows.
+   * - ``build_score_expression_spec()``
+     - A bounded numeric expression, decision operator and threshold.
+   * - ``build_score_model_spec()``
+     - Flat terms or hierarchical blocks under the public ScoreModel v2
+       vocabulary.
+
+Unary expressions use one canonical operand. The SDK accepts ``arg``,
+``value``, ``operand`` or a one-item ``args`` list. ``weighted_sum`` accepts
+explicit ``values`` and a same-length ``weights`` list. These public forms do
+not expose ScoreModel aggregation or compiler-lowering internals.
+
+Semantic support does not waive resource checks. A valid expression may be
+reported as resource limited when its candidate count, precision, reversible
+workspace, depth or artifact size exceeds the active deployment contract.
 
 Logical And Physical Handoff
 ----------------------------

@@ -19,6 +19,10 @@ Predicate Specifications
 
 .. autofunction:: qdsv_bridge.build_predicate_spec
 
+.. autofunction:: qdsv_bridge.build_score_expression_spec
+
+.. autofunction:: qdsv_bridge.build_score_model_spec
+
 .. autoclass:: qdsv_bridge.PredicateSpecError
    :members:
 

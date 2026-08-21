@@ -2,7 +2,7 @@ QDSV Bridge Documentation
 =========================
 
 QDSV Bridge is a Python SDK for moving from controlled problem-first semantic
-specifications to executable quantum circuit artifacts. Version 0.6.3 delivers
+specifications to executable quantum circuit artifacts. Version 0.6.4 delivers
 an immutable canonical logical artifact and, when its exact validation and
 no-regression policy pass, an optional optimized logical child artifact.
 

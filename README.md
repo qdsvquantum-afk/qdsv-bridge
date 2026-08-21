@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-public%20preview-0ea5e9.svg)](#current-availability-and-operational-boundaries)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Source/package version: `0.6.3`. See the PyPI badge for publication status.
+Source/package version: `0.6.4`. See the PyPI badge for publication status.
 
 ## From Business Meaning To Quantum Artifacts
 
@@ -195,10 +195,28 @@ the [changelog](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/CHANGEL
 ## Technical Workflows
 
 Use `build_predicate_spec()` for explicit public predicates with nested boolean
-composition and field-to-field comparisons. Use the lower-level specification
-contract when you need to freeze artifact format, backend family, evidence or
-resource limits. In either path, do not include labels, expected decisions or
-precomputed predicate results in the input rows.
+composition and field-to-field comparisons. Use
+`build_score_expression_spec()` when a numeric expression must be compared
+with a declared threshold, and `build_score_model_spec()` for flat or
+hierarchical ScoreModel v2 decisions. These helpers normalize public semantic
+inputs without calculating scores, decisions or expected answers.
+
+| Public input | SDK constructor | Examples |
+|---|---|---|
+| Boolean rule | `build_predicate_spec()` | comparisons, `and`, `or`, `xor`, `not`, null checks |
+| Numeric expression plus cutoff | `build_score_expression_spec()` | rounding, sums, means, weighted sums |
+| Multi-criteria decision | `build_score_model_spec()` | flat terms or hierarchical blocks |
+
+`weighted_sum` accepts explicit `values` and same-length `weights`. Unary
+operations accept `arg`, `value`, `operand` or a one-item `args` list and are
+canonicalized to one stable operand form. Every request remains bounded and
+resource checked; a valid semantic program can still be rejected if its
+materialized artifact exceeds the active limits.
+
+Use the lower-level specification contract only when you need to freeze
+artifact format, backend family, evidence or resource limits. In every path,
+do not include labels, expected decisions or precomputed predicate results in
+the input rows.
 
 When materialization succeeds, `generate()` returns the canonical circuit and
 loading guidance. Bridge attempts the public `qiskit_structural_exact_v1`
