@@ -82,6 +82,21 @@ Reproducible workflows can freeze the public logical profile:
 routing and approximation settings are outside the Bridge contract. See
 :doc:`../how_to/logical_artifacts` for the complete audit workflow.
 
+Digest Reproducibility
+----------------------
+
+For a frozen Bridge compiler, Qiskit version and optimization profile, the
+same normalized specification produces byte-identical canonical OpenQASM and
+stable artifact digests. Bridge canonicalizes process-local names introduced
+by circuit serialization before it computes those digests.
+
+``semantic_oracle_digest`` identifies the oracle contract without transport
+serialization. ``oracle_digest`` additionally links that contract to the
+canonical materialized QASM. ``canonical_qasm_digest``, ``artifact_digest``
+and ``recommended_artifact_digest`` identify their corresponding delivered
+artifacts. This separation lets an auditor distinguish semantic stability
+from transport stability without exposing private compiler rules.
+
 Artifact Targets
 ----------------
 

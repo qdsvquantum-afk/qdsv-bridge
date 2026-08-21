@@ -2,6 +2,12 @@
 
 Notable public changes to QDSV Bridge are documented here. The project is a Public Preview and has not reached a stable `1.0` contract or an SLA.
 
+## Unreleased
+
+- Canonicalizes process-local OpenQASM gate identifiers before artifact hashing so repeated builds preserve byte-identical QASM and stable lineage digests.
+- Separates `semantic_oracle_digest` from the transport-linked `oracle_digest` while keeping both traceable to the same canonical construction.
+- Adds external regression coverage for repeated canonical and optimized builds, exact truth tables, candidate identity and clean work ancillas.
+
 ## 0.6.3
 
 - Clarifies that Bridge is domain-agnostic within its certified semantic operation set rather than limited to a fixed catalog of industries or business templates.
