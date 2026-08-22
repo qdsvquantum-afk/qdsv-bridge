@@ -1,0 +1,15 @@
+{
+  "fixture_version": "qdsv_bridge_expected_outputs.v0.1",
+  "separation_contract": "This file is loaded only by the independent auditor and is never included in a Bridge request.",
+  "cases": {
+    "compound_predicate_power2": {"decisions": [1, 1, 0, 0]},
+    "compound_predicate_data_variant": {"decisions": [0, 1, 0, 1]},
+    "non_power_of_two_domain": {"decisions": [0, 1, 1], "invalid_states": {"decision": 0}},
+    "sum_fields_affine": {"decisions": [0, 1]},
+    "weighted_sum_affine": {"decisions": [0, 1]},
+    "hierarchical_score_contractual": {"contractual_only": true},
+    "invalid_candidate_identity": {"outcome": "INVALID_SPEC"},
+    "unsupported_operation": {"outcome": "UNSUPPORTED"},
+    "resource_guardrail": {"outcome": "RESOURCE_LIMITED"}
+  }
+}

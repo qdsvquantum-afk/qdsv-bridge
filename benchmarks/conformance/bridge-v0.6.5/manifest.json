@@ -1,0 +1,115 @@
+{
+  "schema_version": "qdsv_bridge_public_conformance_manifest.v0.1",
+  "sdk_version": "0.6.5",
+  "release_commit": "f747c1a9068aef1ef57f9092ad4602c4864d3722",
+  "conformance_run_id": "20260822T022921Z_bridge_conformance_v01_sdk065",
+  "generated_at_utc": "2026-08-22T18:10:06.2716024Z",
+  "file_count": 21,
+  "files": [
+    {
+      "path": "benchmarks/benchmark-policy-v0.1.json",
+      "bytes": 1138,
+      "sha256": "9ca76b457540cf5c9ca452308e72d17cdb0dc7421b0449c7bc0b6c933e302097"
+    },
+    {
+      "path": "benchmarks/evidence_manifest_verification.json",
+      "bytes": 720,
+      "sha256": "01cef6f54e84224b3cde09b3ddc8ffc1c4a2d2e733d5a16e872e26428ad32771"
+    },
+    {
+      "path": "benchmarks/evidence_manifest.json",
+      "bytes": 1516,
+      "sha256": "fb961baf98941bc71f24c7968b127a2b51ce0f38a78b925faa85ff2b00934247"
+    },
+    {
+      "path": "benchmarks/README.md",
+      "bytes": 2884,
+      "sha256": "f5ace2d6345552ea1d57184bdba4055190003211b0d4a1b71e0087b6eb7f9ea1"
+    },
+    {
+      "path": "DERIVATION.md",
+      "bytes": 666,
+      "sha256": "98ff543a23a6820634f20fabc4ce22c901b75eebb415baf2c81d2e63f44aaab2"
+    },
+    {
+      "path": "evidence/conformance_report.json",
+      "bytes": 36121,
+      "sha256": "33f007c1a0d62befa7835e4823e4b56c71b0a845758d2e317ac279fe2993f799"
+    },
+    {
+      "path": "evidence/REPORT.md",
+      "bytes": 1707,
+      "sha256": "d3dcd65fffffd7b63101efd8b4c45bd5e81f3b5a375c7bfb173be8a92b4345b7"
+    },
+    {
+      "path": "evidence/run_manifest.json",
+      "bytes": 4296,
+      "sha256": "52c55e85f57fbdcc87e78d3ebdb3e416f4e11fd4c0082b147b3bd9d7aaec37ee"
+    },
+    {
+      "path": "fixtures/expected_outputs.json",
+      "bytes": 766,
+      "sha256": "fbe3dd12c8626c9a6a25e099f6a4baf1fbdef13739f57fe917b66b87f30cf8d9"
+    },
+    {
+      "path": "fixtures/public_inputs.json",
+      "bytes": 5171,
+      "sha256": "cdfdf37554f0ef772e87006031d398a76a6fb25b4b94b847923fd8c1ad21f309"
+    },
+    {
+      "path": "METHODOLOGY.md",
+      "bytes": 1524,
+      "sha256": "58c3577d474dc8ebdfedd87a7f3b547f63adf5906425fea64e2070d82b779a24"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2831,
+      "sha256": "25513bedf647e2550c83266abe2633e02aa8f5b8cf28a60db8b0ac77def855bb"
+    },
+    {
+      "path": "RESULTS_SUMMARY.md",
+      "bytes": 1771,
+      "sha256": "d5c774f57d669f26af1d444b9689ba823a73545493075c5de6906efd927d1c04"
+    },
+    {
+      "path": "schema/run-manifest.schema.json",
+      "bytes": 926,
+      "sha256": "0d10ee418ab3fcef46bab079f077a6390e2bbcdeb999ccd10fbd8f20cae68a84"
+    },
+    {
+      "path": "schema/suite-report.schema.json",
+      "bytes": 1874,
+      "sha256": "a860fc6aefd407f5ca05c07a5f52774849e8f2825f87b04d0fbddde8606d665e"
+    },
+    {
+      "path": "schema/transversal-report.schema.json",
+      "bytes": 1290,
+      "sha256": "70f41e66c51c35a7df4f4b7e2e5b92b049f8bf6fa16cdfa3bcbaa85e1e25633e"
+    },
+    {
+      "path": "spec/bridge-normative-minimum-v0.1.md",
+      "bytes": 4489,
+      "sha256": "5f065d6a258d4b115378e228533ce5478cabfc6c3bd96c6e97b153e0b7a2846e"
+    },
+    {
+      "path": "spec/conformance-profiles-v0.1.json",
+      "bytes": 2607,
+      "sha256": "1f2d609041faf9f4d1ad3d3ad1f2aed6ba82db3d69aa8ce1ed955f902059ade1"
+    },
+    {
+      "path": "suite/requirements.lock",
+      "bytes": 101,
+      "sha256": "857975cf6741d7ff0d09ed4cda1a1ec5a5227ff22ea00486cf8b6943636bfbe1"
+    },
+    {
+      "path": "suite/run_conformance.py",
+      "bytes": 35833,
+      "sha256": "56f174d164538d175dd9c953e5f2391d3fe7e6f64f093ecf089065f94e2396c0"
+    },
+    {
+      "path": "suite/run_transversal_conformance.py",
+      "bytes": 22502,
+      "sha256": "05c40f6d0761ee53d9e94575fc06069af82bade411771ce0534cc8c3624b5031"
+    }
+  ]
+}

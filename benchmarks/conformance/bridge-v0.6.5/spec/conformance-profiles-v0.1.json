@@ -1,0 +1,84 @@
+{
+  "schema_version": "qdsv_conformance_profiles.v0.1",
+  "profiles": {
+    "semantic_compile": {
+      "description": "Normalized semantics and compiler-v2 program are available.",
+      "requires": [
+        "compiler_authority_v2",
+        "semantic_program_ready",
+        "stable_semantic_digests",
+        "answer_not_precomputed",
+        "fail_closed"
+      ]
+    },
+    "reversible_materialization": {
+      "description": "A canonical reversible circuit is materialized.",
+      "inherits": ["semantic_compile"],
+      "requires": [
+        "canonical_artifact_available",
+        "candidate_input_preserved",
+        "declared_result_correct",
+        "work_ancillas_zero",
+        "invalid_domain_safe"
+      ]
+    },
+    "canonical_artifact": {
+      "description": "Canonical artifact identity and deterministic serialization.",
+      "inherits": ["semantic_compile"],
+      "requires": [
+        "canonical_role_explicit",
+        "artifact_format_explicit",
+        "canonical_digest_valid",
+        "deterministic_repeated_build",
+        "construction_verification_passed"
+      ]
+    },
+    "optimized_logical_artifact": {
+      "description": "Optional exact logical child with canonical lineage.",
+      "inherits": ["canonical_artifact"],
+      "requires": [
+        "parent_digest_linked",
+        "semantic_equivalence_passed",
+        "no_regression_policy_passed",
+        "recommended_role_consistent"
+      ]
+    },
+    "independent_replay": {
+      "description": "External exact replay of the canonical artifact.",
+      "inherits": ["reversible_materialization"],
+      "requires": [
+        "expected_results_separate_from_request",
+        "basis_state_replay_exact",
+        "candidate_input_preserved",
+        "work_ancillas_zero"
+      ]
+    },
+    "specialized_runtime": {
+      "description": "OperationProgram v2 delegates to a registered specialized realizer.",
+      "requires": [
+        "compiler_authority_v2",
+        "specialized_strategy_declared",
+        "registered_realizer_declared",
+        "program_digest_present",
+        "answer_not_precomputed",
+        "fail_closed"
+      ]
+    },
+    "hardware_handoff": {
+      "description": "Logical artifact is traceably handed to downstream physical execution.",
+      "inherits": ["canonical_artifact"],
+      "requires": [
+        "logical_digest_preserved",
+        "backend_explicit",
+        "execution_class_explicit",
+        "physical_evidence_separate"
+      ]
+    }
+  },
+  "capability_states": [
+    "compiler_v2_ready",
+    "compile_only",
+    "specialized_runtime",
+    "not_materialized"
+  ]
+}

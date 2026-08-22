@@ -1,0 +1,1157 @@
+{
+  "capability_preflight": {
+    "bridge_contract_v2": true,
+    "compiler_authority_v2": true,
+    "status_success": true
+  },
+  "cases": [
+    {
+      "assertions": {
+        "answer_precomputed_true": false,
+        "canonical_replay": {
+          "basis_states": [
+            {
+              "candidate": 0,
+              "clean_ancilla_probability": 0.9999999999999871,
+              "decision_distribution": {
+                "1": 0.9999999999999871
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 0.9999999999999871,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 1,
+              "clean_ancilla_probability": 0.9999999999999849,
+              "decision_distribution": {
+                "1": 0.9999999999999849
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 0.9999999999999849,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 2,
+              "clean_ancilla_probability": 0.9999999999999871,
+              "decision_distribution": {
+                "0": 0.9999999999999871
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 0.9999999999999871,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 3,
+              "clean_ancilla_probability": 0.999999999999988,
+              "decision_distribution": {
+                "0": 0.999999999999988
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 0.999999999999988,
+              "valid_candidate": true
+            }
+          ],
+          "depth": 37,
+          "layout": {
+            "all_registers": {
+              "qdsv_input": [
+                0,
+                1
+              ],
+              "qdsv_result": [
+                7
+              ],
+              "qdsv_work": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            "input_qubits": [
+              0,
+              1
+            ],
+            "input_register": "qdsv_input",
+            "result_qubits": [
+              7
+            ],
+            "result_register": "qdsv_result",
+            "work_qubits": [
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "work_registers": [
+              "qdsv_work"
+            ]
+          },
+          "operations": 50,
+          "qubits": 8,
+          "status": "passed"
+        },
+        "construction_verification": "passed",
+        "contract_digest_count": 7,
+        "contractual_semantic_replay_status": "passed",
+        "optimized_logical_artifact": {
+          "independent_replay": {
+            "basis_states": [
+              {
+                "candidate": 0,
+                "clean_ancilla_probability": 0.9999999999999871,
+                "decision_distribution": {
+                  "1": 0.9999999999999871
+                },
+                "expected_decision": 1,
+                "input_preservation_probability": 0.9999999999999871,
+                "valid_candidate": true
+              },
+              {
+                "candidate": 1,
+                "clean_ancilla_probability": 0.9999999999999849,
+                "decision_distribution": {
+                  "1": 0.9999999999999849
+                },
+                "expected_decision": 1,
+                "input_preservation_probability": 0.9999999999999849,
+                "valid_candidate": true
+              },
+              {
+                "candidate": 2,
+                "clean_ancilla_probability": 0.9999999999999871,
+                "decision_distribution": {
+                  "0": 0.9999999999999871
+                },
+                "expected_decision": 0,
+                "input_preservation_probability": 0.9999999999999871,
+                "valid_candidate": true
+              },
+              {
+                "candidate": 3,
+                "clean_ancilla_probability": 0.999999999999988,
+                "decision_distribution": {
+                  "0": 0.999999999999988
+                },
+                "expected_decision": 0,
+                "input_preservation_probability": 0.999999999999988,
+                "valid_candidate": true
+              }
+            ],
+            "depth": 23,
+            "layout": {
+              "all_registers": {
+                "qdsv_input": [
+                  0,
+                  1
+                ],
+                "qdsv_result": [
+                  7
+                ],
+                "qdsv_work": [
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ]
+              },
+              "input_qubits": [
+                0,
+                1
+              ],
+              "input_register": "qdsv_input",
+              "result_qubits": [
+                7
+              ],
+              "result_register": "qdsv_result",
+              "work_qubits": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "work_registers": [
+                "qdsv_work"
+              ]
+            },
+            "operations": 34,
+            "qubits": 8,
+            "status": "passed"
+          },
+          "no_regression_policy_passed": true,
+          "parent_digest_linked": true,
+          "recommended_role_consistent": true,
+          "semantic_validation_passed": true
+        },
+        "request_contains_expected_answers": false
+      },
+      "case_id": "compound_predicate_power2",
+      "conformance_status": "PASS",
+      "evidence_level": "INDEPENDENT_REPLAY",
+      "kind": "predicate",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "depth": 37,
+            "operations": 50,
+            "qubits": 8,
+            "status": "MEASURED"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "depth": 23,
+            "operations": 34,
+            "qubits": 8,
+            "status": "MEASURED"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": "exact_basis_state_replay",
+          "reason": null,
+          "status": "MEASURED"
+        }
+      },
+      "outcome": "SUCCESS",
+      "profiles": [
+        "semantic_compile",
+        "reversible_materialization",
+        "canonical_artifact",
+        "optimized_logical_artifact",
+        "independent_replay"
+      ]
+    },
+    {
+      "assertions": {
+        "answer_precomputed_true": false,
+        "canonical_replay": {
+          "basis_states": [
+            {
+              "candidate": 0,
+              "clean_ancilla_probability": 0.999999999999988,
+              "decision_distribution": {
+                "0": 0.999999999999988
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 0.999999999999988,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 1,
+              "clean_ancilla_probability": 0.9999999999999849,
+              "decision_distribution": {
+                "1": 0.9999999999999849
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 0.9999999999999849,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 2,
+              "clean_ancilla_probability": 0.9999999999999849,
+              "decision_distribution": {
+                "0": 0.9999999999999849
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 0.9999999999999849,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 3,
+              "clean_ancilla_probability": 0.9999999999999871,
+              "decision_distribution": {
+                "1": 0.9999999999999871
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 0.9999999999999871,
+              "valid_candidate": true
+            }
+          ],
+          "depth": 49,
+          "layout": {
+            "all_registers": {
+              "qdsv_input": [
+                0,
+                1
+              ],
+              "qdsv_result": [
+                7
+              ],
+              "qdsv_work": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            "input_qubits": [
+              0,
+              1
+            ],
+            "input_register": "qdsv_input",
+            "result_qubits": [
+              7
+            ],
+            "result_register": "qdsv_result",
+            "work_qubits": [
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "work_registers": [
+              "qdsv_work"
+            ]
+          },
+          "operations": 66,
+          "qubits": 8,
+          "status": "passed"
+        },
+        "construction_verification": "passed",
+        "contract_digest_count": 7,
+        "contractual_semantic_replay_status": "passed",
+        "request_contains_expected_answers": false
+      },
+      "case_id": "compound_predicate_data_variant",
+      "conformance_status": "PASS",
+      "evidence_level": "INDEPENDENT_REPLAY",
+      "kind": "predicate",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "depth": 49,
+            "operations": 66,
+            "qubits": 8,
+            "status": "MEASURED"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "optimized_profile_not_required_for_case",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": "exact_basis_state_replay",
+          "reason": null,
+          "status": "MEASURED"
+        }
+      },
+      "outcome": "SUCCESS",
+      "profiles": [
+        "semantic_compile",
+        "reversible_materialization",
+        "canonical_artifact",
+        "independent_replay"
+      ]
+    },
+    {
+      "assertions": {
+        "answer_precomputed_true": false,
+        "canonical_replay": {
+          "basis_states": [
+            {
+              "candidate": 0,
+              "clean_ancilla_probability": 1.0,
+              "decision_distribution": {
+                "0": 1.0
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 1.0,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 1,
+              "clean_ancilla_probability": 1.0,
+              "decision_distribution": {
+                "1": 1.0
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 1.0,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 2,
+              "clean_ancilla_probability": 1.0,
+              "decision_distribution": {
+                "1": 1.0
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 1.0,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 3,
+              "clean_ancilla_probability": 1.0,
+              "decision_distribution": {
+                "0": 1.0
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 1.0,
+              "valid_candidate": false
+            }
+          ],
+          "depth": 63,
+          "layout": {
+            "all_registers": {
+              "qdsv_input": [
+                0,
+                1
+              ],
+              "qdsv_result": [
+                6
+              ],
+              "qdsv_work": [
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "input_qubits": [
+              0,
+              1
+            ],
+            "input_register": "qdsv_input",
+            "result_qubits": [
+              6
+            ],
+            "result_register": "qdsv_result",
+            "work_qubits": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "work_registers": [
+              "qdsv_work"
+            ]
+          },
+          "operations": 88,
+          "qubits": 7,
+          "status": "passed"
+        },
+        "construction_verification": "passed",
+        "contract_digest_count": 7,
+        "contractual_semantic_replay_status": "passed",
+        "request_contains_expected_answers": false
+      },
+      "case_id": "non_power_of_two_domain",
+      "conformance_status": "PASS",
+      "evidence_level": "INDEPENDENT_REPLAY",
+      "kind": "predicate",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "depth": 63,
+            "operations": 88,
+            "qubits": 7,
+            "status": "MEASURED"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "optimized_profile_not_required_for_case",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": "exact_basis_state_replay",
+          "reason": null,
+          "status": "MEASURED"
+        }
+      },
+      "outcome": "SUCCESS",
+      "profiles": [
+        "semantic_compile",
+        "reversible_materialization",
+        "canonical_artifact",
+        "independent_replay"
+      ]
+    },
+    {
+      "assertions": {
+        "answer_precomputed_true": false,
+        "canonical_replay": {
+          "basis_states": [
+            {
+              "candidate": 0,
+              "clean_ancilla_probability": 0.9999999999999978,
+              "decision_distribution": {
+                "0": 0.9999999999999978
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 0.9999999999999978,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 1,
+              "clean_ancilla_probability": 0.9999999999999978,
+              "decision_distribution": {
+                "1": 0.9999999999999978
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 0.9999999999999978,
+              "valid_candidate": true
+            }
+          ],
+          "depth": 116,
+          "layout": {
+            "all_registers": {
+              "candidate": [
+                0
+              ],
+              "decision": [
+                7
+              ],
+              "score_accept": [
+                4
+              ],
+              "score_compare_work": [
+                5,
+                6
+              ],
+              "score_sum": [
+                1,
+                2,
+                3
+              ]
+            },
+            "input_qubits": [
+              0
+            ],
+            "input_register": "candidate",
+            "result_qubits": [
+              7
+            ],
+            "result_register": "decision",
+            "work_qubits": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "work_registers": [
+              "score_sum",
+              "score_accept",
+              "score_compare_work"
+            ]
+          },
+          "operations": 200,
+          "qubits": 8,
+          "status": "passed"
+        },
+        "construction_verification": "passed",
+        "contract_digest_count": 7,
+        "contractual_semantic_replay_status": "passed",
+        "request_contains_expected_answers": false
+      },
+      "case_id": "sum_fields_affine",
+      "conformance_status": "PASS",
+      "evidence_level": "INDEPENDENT_REPLAY",
+      "kind": "score_expression",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "depth": 116,
+            "operations": 200,
+            "qubits": 8,
+            "status": "MEASURED"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "optimized_profile_not_required_for_case",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": "exact_basis_state_replay",
+          "reason": null,
+          "status": "MEASURED"
+        }
+      },
+      "outcome": "SUCCESS",
+      "profiles": [
+        "semantic_compile",
+        "reversible_materialization",
+        "canonical_artifact",
+        "independent_replay"
+      ]
+    },
+    {
+      "assertions": {
+        "answer_precomputed_true": false,
+        "canonical_replay": {
+          "basis_states": [
+            {
+              "candidate": 0,
+              "clean_ancilla_probability": 0.9999999999999933,
+              "decision_distribution": {
+                "0": 0.9999999999999933
+              },
+              "expected_decision": 0,
+              "input_preservation_probability": 0.9999999999999933,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 1,
+              "clean_ancilla_probability": 0.9999999999999931,
+              "decision_distribution": {
+                "1": 0.9999999999999931
+              },
+              "expected_decision": 1,
+              "input_preservation_probability": 0.9999999999999931,
+              "valid_candidate": true
+            }
+          ],
+          "depth": 171,
+          "layout": {
+            "all_registers": {
+              "candidate": [
+                0
+              ],
+              "decision": [
+                9
+              ],
+              "score_accept": [
+                5
+              ],
+              "score_compare_work": [
+                6,
+                7,
+                8
+              ],
+              "score_sum": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            "input_qubits": [
+              0
+            ],
+            "input_register": "candidate",
+            "result_qubits": [
+              9
+            ],
+            "result_register": "decision",
+            "work_qubits": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "work_registers": [
+              "score_sum",
+              "score_accept",
+              "score_compare_work"
+            ]
+          },
+          "operations": 318,
+          "qubits": 10,
+          "status": "passed"
+        },
+        "construction_verification": "passed",
+        "contract_digest_count": 7,
+        "contractual_semantic_replay_status": "passed",
+        "request_contains_expected_answers": false
+      },
+      "case_id": "weighted_sum_affine",
+      "conformance_status": "PASS",
+      "evidence_level": "INDEPENDENT_REPLAY",
+      "kind": "score_expression",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "depth": 171,
+            "operations": 318,
+            "qubits": 10,
+            "status": "MEASURED"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "optimized_profile_not_required_for_case",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": "exact_basis_state_replay",
+          "reason": null,
+          "status": "MEASURED"
+        }
+      },
+      "outcome": "SUCCESS",
+      "profiles": [
+        "semantic_compile",
+        "reversible_materialization",
+        "canonical_artifact",
+        "independent_replay"
+      ]
+    },
+    {
+      "assertions": {
+        "answer_precomputed_true": false,
+        "canonical_replay": {
+          "basis_states": [
+            {
+              "candidate": 0,
+              "clean_ancilla_probability": 0.999999999999992,
+              "decision_distribution": {
+                "1": 0.999999999999992
+              },
+              "expected_decision": null,
+              "input_preservation_probability": 0.999999999999992,
+              "valid_candidate": true
+            },
+            {
+              "candidate": 1,
+              "clean_ancilla_probability": 0.99999999999999,
+              "decision_distribution": {
+                "0": 0.99999999999999
+              },
+              "expected_decision": null,
+              "input_preservation_probability": 0.99999999999999,
+              "valid_candidate": true
+            }
+          ],
+          "depth": 222,
+          "layout": {
+            "all_registers": {
+              "candidate": [
+                0
+              ],
+              "decision": [
+                11
+              ],
+              "score_accept": [
+                6
+              ],
+              "score_compare_work": [
+                7,
+                8,
+                9,
+                10
+              ],
+              "score_sum": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "input_qubits": [
+              0
+            ],
+            "input_register": "candidate",
+            "result_qubits": [
+              11
+            ],
+            "result_register": "decision",
+            "work_qubits": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10
+            ],
+            "work_registers": [
+              "score_sum",
+              "score_accept",
+              "score_compare_work"
+            ]
+          },
+          "operations": 422,
+          "qubits": 12,
+          "status": "passed"
+        },
+        "construction_verification": "passed",
+        "contract_digest_count": 7,
+        "contractual_semantic_replay_status": "passed",
+        "request_contains_expected_answers": false
+      },
+      "case_id": "hierarchical_score_contractual",
+      "conformance_status": "PASS",
+      "evidence_level": "CONTRACTUAL",
+      "kind": "score_model",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "depth": 222,
+            "operations": 422,
+            "qubits": 12,
+            "status": "MEASURED"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "optimized_profile_not_required_for_case",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": "exact_basis_state_replay",
+          "reason": null,
+          "status": "MEASURED"
+        }
+      },
+      "outcome": "SUCCESS",
+      "profiles": [
+        "semantic_compile",
+        "reversible_materialization",
+        "canonical_artifact"
+      ]
+    },
+    {
+      "assertions": {
+        "client_rejected_before_transport": true
+      },
+      "case_id": "invalid_candidate_identity",
+      "conformance_status": "PASS",
+      "error": "rows[0].candidate_index must equal its stable row index 0.",
+      "evidence_level": "CONTRACTUAL",
+      "kind": "invalid_spec",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "reason": "case_did_not_materialize",
+            "status": "NOT_APPLICABLE"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "case_did_not_materialize",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": null,
+          "reason": "case_did_not_materialize",
+          "status": "NOT_APPLICABLE"
+        }
+      },
+      "outcome": "INVALID_SPEC",
+      "profiles": [
+        "semantic_compile"
+      ]
+    },
+    {
+      "assertions": {
+        "error_code": "E_BRIDGE_CANONICAL_MATERIALIZATION_REQUIRED",
+        "http_status": 400
+      },
+      "case_id": "unsupported_operation",
+      "conformance_status": "PASS",
+      "error": "QDSV Bridge API HTTP 400: {'detail': {'error_code': 'E_BRIDGE_CANONICAL_MATERIALIZATION_REQUIRED', 'message': 'Bridge exports circuits only from reversible semantic formulas without precomputed answers. Request expert_prepare/oracle_spec when certified lowering is unavailable.', 'detail': {'ready': False, 'reason': 'operation_compiler_rejected_problem', 'authority': 'qdsv_operation_compiler.v2', 'error': {'code': 'E_PROBLEM_IR_OP_UNSUPPORTED', 'message': \"E_PROBLEM_IR_OP_UNSUPPORTED: op no soportado en Problem IR: 'unregistered_public_operation'\", 'detail': {'allowed': ['abs', 'abs_diff', 'add', 'and', 'between', 'ceil', 'clip', 'coalesce', 'default_if_invalid', 'div', 'eq', 'field', 'floor', 'gt', 'gte', 'in_set', 'is_null', 'lt', 'lte', 'max', 'mean_fields', 'min', 'mod', 'mul', 'ne', 'not', 'not_null', 'or', 'outside', 'percent', 'ratio', 'round', 'safe_div', 'sign', 'similarity', 'squared_diff', 'sub', 'sum_fields', 'vector', 'vector_similarity', 'weighted_sum', 'within_tolerance', 'xor'], 'received': 'unregistered_public_operation'}}}}}",
+      "evidence_level": "CONTRACTUAL",
+      "kind": "unsupported",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "reason": "case_did_not_materialize",
+            "status": "NOT_APPLICABLE"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "case_did_not_materialize",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": null,
+          "reason": "case_did_not_materialize",
+          "status": "NOT_APPLICABLE"
+        }
+      },
+      "outcome": "UNSUPPORTED",
+      "profiles": [
+        "semantic_compile"
+      ]
+    },
+    {
+      "assertions": {
+        "error_code": "E_BRIDGE_QUBIT_LIMIT",
+        "http_status": 400
+      },
+      "case_id": "resource_guardrail",
+      "conformance_status": "PASS",
+      "error": "QDSV Bridge API HTTP 400: {'detail': {'error_code': 'E_BRIDGE_QUBIT_LIMIT', 'message': 'La familia puede representar el problema, pero el target supera el limite de qubits configurado.', 'detail': {'required_qubits': 2, 'max_qubits': 1}}}",
+      "evidence_level": "CONTRACTUAL",
+      "kind": "resource_guardrail",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "reason": "case_did_not_materialize",
+            "status": "NOT_APPLICABLE"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "case_did_not_materialize",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": null,
+          "reason": "case_did_not_materialize",
+          "status": "NOT_APPLICABLE"
+        }
+      },
+      "outcome": "RESOURCE_LIMITED",
+      "profiles": [
+        "reversible_materialization"
+      ]
+    },
+    {
+      "assertions": {
+        "build_count": 3,
+        "byte_identical_qasm": true,
+        "canonical_qasm_sha256": "4b8c2d0fdb1f8d7c66f3aec0959e067c76896f79d53d65d2b422705494b2e261",
+        "stable_digest_bundle": true
+      },
+      "case_id": "deterministic_repeated_build",
+      "conformance_status": "PASS",
+      "evidence_level": "INDEPENDENT_REPLAY",
+      "kind": "determinism",
+      "metrics": {
+        "logical": {
+          "canonical": {
+            "artifact_role": "canonical_ideal_artifact",
+            "reason": "determinism_case_reuses_source_artifact_metrics",
+            "status": "NOT_APPLICABLE"
+          },
+          "optimized": {
+            "artifact_role": "optimized_logical_artifact",
+            "reason": "determinism_case_reuses_source_artifact_metrics",
+            "status": "NOT_APPLICABLE"
+          }
+        },
+        "normalized": {
+          "reason": "common_external_normalization_is_a_separate_benchmark_track",
+          "status": "NOT_EVALUATED"
+        },
+        "physical": {
+          "reason": "bridge_conformance_is_target_independent_and_does_not_submit_hardware",
+          "status": "NOT_APPLICABLE"
+        },
+        "semantic": {
+          "method": null,
+          "reason": "determinism_case_reuses_source_artifact_metrics",
+          "status": "NOT_APPLICABLE"
+        }
+      },
+      "outcome": "SUCCESS",
+      "profiles": [
+        "canonical_artifact"
+      ]
+    }
+  ],
+  "created_at_utc": "2026-08-22T02:30:09.477856Z",
+  "environment": {
+    "numpy": "2.0.2",
+    "python": "3.12.10",
+    "qdsv-bridge": "0.6.5",
+    "qiskit": "2.4.1",
+    "qiskit-aer": "0.17.2",
+    "requests": "2.32.5"
+  },
+  "metric_layers": {
+    "logical": "Target-independent canonical and optimized circuit resources.",
+    "normalized": "Common transpilation track; intentionally separate from this suite.",
+    "physical": "Backend execution evidence; intentionally separate from Bridge conformance.",
+    "semantic": "Exact independent replay or explicit contractual evidence."
+  },
+  "omissions": [
+    {
+      "reason": "Bridge logical conformance does not invoke a specialized runtime.",
+      "scope": "specialized_runtime",
+      "status": "NOT_EVALUATED"
+    },
+    {
+      "reason": "Hardware submission is outside Bridge and requires a separate downstream profile.",
+      "scope": "hardware_handoff",
+      "status": "NOT_EVALUATED"
+    }
+  ],
+  "profile_coverage": {
+    "canonical_artifact": {
+      "case_count": 7,
+      "cases": [
+        "compound_predicate_power2",
+        "compound_predicate_data_variant",
+        "non_power_of_two_domain",
+        "sum_fields_affine",
+        "weighted_sum_affine",
+        "hierarchical_score_contractual",
+        "deterministic_repeated_build"
+      ],
+      "status": "PASS"
+    },
+    "hardware_handoff": {
+      "case_count": 0,
+      "cases": [],
+      "status": "NOT_EVALUATED"
+    },
+    "independent_replay": {
+      "case_count": 5,
+      "cases": [
+        "compound_predicate_power2",
+        "compound_predicate_data_variant",
+        "non_power_of_two_domain",
+        "sum_fields_affine",
+        "weighted_sum_affine"
+      ],
+      "status": "PASS"
+    },
+    "optimized_logical_artifact": {
+      "case_count": 1,
+      "cases": [
+        "compound_predicate_power2"
+      ],
+      "status": "PASS"
+    },
+    "reversible_materialization": {
+      "case_count": 7,
+      "cases": [
+        "compound_predicate_power2",
+        "compound_predicate_data_variant",
+        "non_power_of_two_domain",
+        "sum_fields_affine",
+        "weighted_sum_affine",
+        "hierarchical_score_contractual",
+        "resource_guardrail"
+      ],
+      "status": "PASS"
+    },
+    "semantic_compile": {
+      "case_count": 8,
+      "cases": [
+        "compound_predicate_power2",
+        "compound_predicate_data_variant",
+        "non_power_of_two_domain",
+        "sum_fields_affine",
+        "weighted_sum_affine",
+        "hierarchical_score_contractual",
+        "invalid_candidate_identity",
+        "unsupported_operation"
+      ],
+      "status": "PASS"
+    },
+    "specialized_runtime": {
+      "case_count": 0,
+      "cases": [],
+      "status": "NOT_EVALUATED"
+    }
+  },
+  "run_id": "20260822T022921Z_bridge_conformance_v01_sdk065",
+  "schema_version": "qdsv_bridge_conformance_report.v0.1",
+  "summary": {
+    "fail": 0,
+    "not_evaluated": 0,
+    "outcomes": {
+      "INVALID_SPEC": 1,
+      "RESOURCE_LIMITED": 1,
+      "SUCCESS": 7,
+      "UNSUPPORTED": 1
+    },
+    "pass": 10
+  },
+  "target": {
+    "api_url": "https://api.qdsv.cloud/api",
+    "authentication_present": true,
+    "sdk_name": "qdsv-bridge"
+  }
+}

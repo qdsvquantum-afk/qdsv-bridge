@@ -1,0 +1,41 @@
+{
+  "schema_version": "qdsv_benchmark_evidence_manifest.v0.1",
+  "source_run": {
+    "run_id": "20260820T222529Z_8a9d7c4c",
+    "bridge_sdk_version": "0.6.2",
+    "api_url": "https://api.qdsv.cloud/api",
+    "shots": 8192,
+    "seed_transpiler": 42,
+    "common_basis": ["rz", "sx", "x", "cx"],
+    "optimization_level": 3,
+    "historical_evidence_not_relabelled_as_0_6_4": true
+  },
+  "tracks": {
+    "kernel_semantic_and_resources": {
+      "cases": 36,
+      "passed": 36,
+      "independent_replay": true
+    },
+    "scoremodel_semantic_and_resources": {
+      "cases": 16,
+      "passed": 16,
+      "independent_replay": true
+    },
+    "manual_qiskit_common_case": {
+      "candidate_count": 8,
+      "semantic_accuracy": 1.0,
+      "scope": "single_controlled_case"
+    },
+    "hardware": {
+      "status": "NOT_INCLUDED",
+      "reason": "Hardware evidence is maintained in the separate thesis archive."
+    }
+  },
+  "files": {
+    "evidence/bridge_kernel_generalization.csv": "af2e840c28bbc32abc21049cea874bdfe1a8d3ddc82647d7ae43fc5585286013",
+    "evidence/bridge_scoremodel_generalization.csv": "8c8d252c32e07223943fbbca67424cbd6ad7cf922e7f0b8e516df2d648aa27bc",
+    "evidence/run_manifest.json": "48579f94cc2e2f0cdaa8a685ff71adb50f6452c498e256ff57106e695e6a997e",
+    "evidence/bridge_vs_best_manual_qiskit.csv": "63b4ff175acb8c72df90aa5f25ad77b3d7365593365d9b1cee358a6e6ad7d81f",
+    "evidence/bridge_improvement_retest_8c.csv": "aeebc1b983eafb8645e4cc4eaeb677bc8c55feb40c4d05bea1d6994c6162d575"
+  }
+}

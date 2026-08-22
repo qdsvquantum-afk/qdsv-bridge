@@ -5,6 +5,10 @@ dist/
 build/
 docs/_build/
 submissions/
-benchmarks/
+benchmarks/*
+!benchmarks/conformance/
+!benchmarks/conformance/**
+benchmarks/conformance/**/__pycache__/
+benchmarks/conformance/**/*.pyc
 *.egg-info/
 .env

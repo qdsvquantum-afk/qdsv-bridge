@@ -1,0 +1,13 @@
+{
+  "schema_version": "qdsv_benchmark_evidence_verification.v0.1",
+  "status": "PASS",
+  "checked_files": 5,
+  "mismatches": 0,
+  "files": {
+    "evidence/bridge_improvement_retest_8c.csv": "aeebc1b983eafb8645e4cc4eaeb677bc8c55feb40c4d05bea1d6994c6162d575",
+    "evidence/bridge_kernel_generalization.csv": "af2e840c28bbc32abc21049cea874bdfe1a8d3ddc82647d7ae43fc5585286013",
+    "evidence/bridge_scoremodel_generalization.csv": "8c8d252c32e07223943fbbca67424cbd6ad7cf922e7f0b8e516df2d648aa27bc",
+    "evidence/bridge_vs_best_manual_qiskit.csv": "63b4ff175acb8c72df90aa5f25ad77b3d7365593365d9b1cee358a6e6ad7d81f",
+    "evidence/run_manifest.json": "48579f94cc2e2f0cdaa8a685ff71adb50f6452c498e256ff57106e695e6a997e"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qdsv.example/schemas/conformance-suite-report-v0.1.json",
+  "title": "QDSV Bridge Conformance Report v0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "created_at_utc",
+    "summary",
+    "environment",
+    "target",
+    "capability_preflight",
+    "profile_coverage",
+    "metric_layers",
+    "omissions",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {"const": "qdsv_bridge_conformance_report.v0.1"},
+    "run_id": {"type": "string"},
+    "summary": {
+      "type": "object",
+      "required": ["pass", "fail", "not_evaluated", "outcomes"]
+    },
+    "metric_layers": {
+      "type": "object",
+      "required": ["semantic", "logical", "normalized", "physical"]
+    },
+    "omissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scope", "status", "reason"]
+      }
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["case_id", "conformance_status", "outcome", "evidence_level", "profiles", "metrics"],
+        "properties": {
+          "case_id": {"type": "string"},
+          "conformance_status": {"enum": ["PASS", "FAIL", "NOT_EVALUATED"]},
+          "outcome": {
+            "enum": ["SUCCESS", "SEMANTIC_FAIL", "CONTRACT_FAIL", "RESOURCE_LIMITED", "UNSUPPORTED", "INVALID_SPEC", "NOT_APPLICABLE", "TRANSPORT_ERROR"]
+          },
+          "evidence_level": {"enum": ["CONTRACTUAL", "INDEPENDENT_REPLAY", "HARDWARE_CONFIRMED"]},
+          "profiles": {"type": "array", "items": {"type": "string"}},
+          "metrics": {
+            "type": "object",
+            "required": ["semantic", "logical", "normalized", "physical"]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

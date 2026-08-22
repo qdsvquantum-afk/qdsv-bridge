@@ -45,6 +45,7 @@ request cannot be materialized.
 - [Documentation](https://qdsvquantum-afk.github.io/qdsv-bridge/)
 - [PyPI](https://pypi.org/project/qdsv-bridge/)
 - [Source](https://github.com/qdsvquantum-afk/qdsv-bridge)
+- [Conformance evidence](benchmarks/conformance/bridge-v0.6.5)
 
 ## Business-First Quickstart
 
@@ -109,6 +110,27 @@ The successful response can contain:
 
 The complete runnable version is
 [`examples/compound_business_predicate.py`](examples/compound_business_predicate.py).
+
+## Conformance And Evidence
+
+Bridge `0.6.5` includes a public conformance evidence package under
+[`benchmarks/conformance/bridge-v0.6.5`](benchmarks/conformance/bridge-v0.6.5).
+It publishes the reduced review layer for QDSV Bridge Conformance v0.1:
+normative contract, profiles, schemas, public fixtures, runner scripts,
+summarized evidence and benchmark manifests.
+
+The public package reports:
+
+- Bridge conformance: `10/10 PASS`;
+- general semantic kernel benchmark: `36/36 PASS`;
+- ScoreModel benchmark: `16/16 PASS`;
+- SDK unit tests: `41/41 PASS`;
+- clean wheel installation and Quickstart verification: `PASS`.
+
+The package does not include private compiler internals, formulas, production
+configuration, credentials, raw logs, notebooks or hardware evidence. Hardware
+execution and third-party attestation are separate downstream validation
+tracks.
 
 ## How Bridge Differs From Quantum Synthesis Platforms
 

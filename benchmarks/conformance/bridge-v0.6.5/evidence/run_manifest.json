@@ -1,0 +1,63 @@
+{
+  "created_at_utc": "2026-08-22T02:30:09.477856Z",
+  "fixtures": {
+    "expected_outputs": {
+      "path": "E:\\backupacer16-08-2026\\escritorio\\QDSV_Conformance_2026-08-21\\point11_release_0_6_5\\conformance_sdk_0_6_5\\fixtures\\expected_outputs.json",
+      "sha256": "fbe3dd12c8626c9a6a25e099f6a4baf1fbdef13739f57fe917b66b87f30cf8d9"
+    },
+    "expected_outputs_sent_to_bridge": false,
+    "public_inputs": {
+      "path": "E:\\backupacer16-08-2026\\escritorio\\QDSV_Conformance_2026-08-21\\point11_release_0_6_5\\conformance_sdk_0_6_5\\fixtures\\public_inputs.json",
+      "sha256": "cdfdf37554f0ef772e87006031d398a76a6fb25b4b94b847923fd8c1ad21f309"
+    }
+  },
+  "outputs": {
+    "conformance_report.json": "33f007c1a0d62befa7835e4823e4b56c71b0a845758d2e317ac279fe2993f799",
+    "raw/capabilities.json": "0381e5eab2e06c73a652c2d405432737368a0e46bf40b88efb5e227df7508c11",
+    "raw/compound_predicate_data_variant.request.json": "749d1cad8b286dec5451ddbcc06dce8c0a46613c15ee21444cb2bc78987f8b12",
+    "raw/compound_predicate_data_variant.response.json": "74a03dfdced8c95babd043f2e0ab984615fd6d9fd61a00dde72cf718ddddaae3",
+    "raw/compound_predicate_power2.request.json": "fee17e53b728deba197c1ef4cc95d36a513b15347cbee6a163ab75d46c02dc50",
+    "raw/compound_predicate_power2.response.json": "75418e6f02654276c5eec37e5e16f44db77e6900d70a9c7276c61d926ee5d5bb",
+    "raw/deterministic_repeated_build.1.response.json": "83ee0c738cff31b386366007ef7ec7d2201941a2c45dfd9f527b8ec3cf144d0b",
+    "raw/deterministic_repeated_build.2.response.json": "bf93de47cb2d529ae84191edcd1ac350501f39666fff2990c4c4889d37ebe457",
+    "raw/deterministic_repeated_build.3.response.json": "010ebbad43cb1377df0dadb8f7f7cf2d92ed8c9ae0a8ace6e25aa0f7b39ce7a0",
+    "raw/hierarchical_score_contractual.request.json": "c5d539da3b9c5956dd9377834fc485fc7328466b02570862176afc1821925b21",
+    "raw/hierarchical_score_contractual.response.json": "08aadea7fba049892991918482264dc8e499d97edbbcebab9c60f7db7ac9f021",
+    "raw/non_power_of_two_domain.request.json": "02d1d529de53b9996ace25d55a891669e4302bf50277122e9f1d363447fa6d23",
+    "raw/non_power_of_two_domain.response.json": "0cca02f4b57c6ed0a4b7954ba6ac27e702645b2efbd94267fbebccb9ec5ee81e",
+    "raw/resource_guardrail.http_error.json": "649f34051c025c9d80268a5b088c6ff14111a6634ceb4909bf0f7df9887a5b9b",
+    "raw/resource_guardrail.request.json": "caf7fda0b18bc01a4513c0fc3c35906cf1bfd19fa32198d9c6e65313deae0153",
+    "raw/sum_fields_affine.request.json": "4a5eb1b0aca14c68589df73c3b702dbe515af3d66473e8cd75b38e08ae40252f",
+    "raw/sum_fields_affine.response.json": "c2d92f9c474def046b71a7a557fb17161490783f8bbd309274db447e7f73bbfc",
+    "raw/unsupported_operation.http_error.json": "6a74b011cafc515114a88866c82783f8f216f32ed8f9f35a386bd3700b0bcc24",
+    "raw/unsupported_operation.request.json": "7b7c19bd4c8a1113b039b42e1aa799a14cb82b958f0326cb3eb5eeffc68f9661",
+    "raw/weighted_sum_affine.request.json": "76a28531d43f47378386708fc6f849923c33a837879e8dde2a57590c04125851",
+    "raw/weighted_sum_affine.response.json": "0ec0d71ed610af5d94f1fbd97f9f162b7193df5d1dfa36a30f6c4fa415eeef80"
+  },
+  "run_id": "20260822T022921Z_bridge_conformance_v01_sdk065",
+  "runner": {
+    "manifest_schema_sha256": "0d10ee418ab3fcef46bab079f077a6390e2bbcdeb999ccd10fbd8f20cae68a84",
+    "path": "E:\\backupacer16-08-2026\\escritorio\\QDSV_Conformance_2026-08-21\\point11_release_0_6_5\\conformance_sdk_0_6_5\\suite\\run_conformance.py",
+    "profile_contract_sha256": "1f2d609041faf9f4d1ad3d3ad1f2aed6ba82db3d69aa8ce1ed955f902059ade1",
+    "random_seed": null,
+    "replay_method": "exact_statevector_basis_state_replay",
+    "report_schema_sha256": "a860fc6aefd407f5ca05c07a5f52774849e8f2825f87b04d0fbddde8606d665e",
+    "sha256": "56f174d164538d175dd9c953e5f2391d3fe7e6f64f093ecf089065f94e2396c0",
+    "tolerance": 1e-09
+  },
+  "schema_version": "qdsv_conformance_run_manifest.v0.1",
+  "secrets_recorded": false,
+  "target": {
+    "api_url": "https://api.qdsv.cloud/api",
+    "authentication_present": true,
+    "sdk_name": "qdsv-bridge"
+  },
+  "versions": {
+    "numpy": "2.0.2",
+    "python": "3.12.10",
+    "qdsv-bridge": "0.6.5",
+    "qiskit": "2.4.1",
+    "qiskit-aer": "0.17.2",
+    "requests": "2.32.5"
+  }
+}

@@ -1,0 +1,6 @@
+qdsv-bridge==0.6.5
+qiskit==2.4.1
+qiskit-aer==0.17.2
+numpy==2.0.2
+requests==2.32.5
+jsonschema==4.25.1
