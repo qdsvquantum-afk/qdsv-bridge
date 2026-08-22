@@ -1,6 +1,6 @@
 # Changelog
 
-Notable public changes to QDSV Bridge are documented here. The project is a Public Preview and has not reached a stable `1.0` contract or an SLA.
+Notable public changes to QDSV Bridge are documented here. The project is a conformance-tested Public Preview and has not reached a stable `1.0` contract or an SLA.
 
 ## Unreleased
 

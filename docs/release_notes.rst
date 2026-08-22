@@ -4,6 +4,9 @@ Release Notes
 0.6.5
 -----
 
+* Updates the public positioning to "Public Preview: conformance-tested
+  semantic-to-quantum SDK" while retaining explicit pre-``1.0``, resource,
+  hardware and SLA boundaries.
 * Freezes the public ``qdsv_bridge_operation_compiler.v2`` and
   ``qdsv_operation_compiler.v2`` identities used by the validated logical
   materializer.

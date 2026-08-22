@@ -3,12 +3,15 @@
 [![PyPI](https://img.shields.io/pypi/v/qdsv-bridge.svg)](https://pypi.org/project/qdsv-bridge/)
 [![Python](https://img.shields.io/pypi/pyversions/qdsv-bridge.svg)](https://pypi.org/project/qdsv-bridge/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/qdsvquantum-afk/qdsv-bridge/blob/main/LICENSE)
-[![Status](https://img.shields.io/badge/status-public%20preview-0ea5e9.svg)](#current-availability-and-operational-boundaries)
+[![Status](https://img.shields.io/badge/status-public%20preview%20%7C%20conformance--tested-0ea5e9.svg)](#current-availability-and-operational-boundaries)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
 Source/package version: `0.6.5`. See the PyPI badge for publication status.
 
 ## From Business Meaning To Quantum Artifacts
+
+QDSV Bridge is a **Public Preview: conformance-tested semantic-to-quantum
+SDK**.
 
 QDSV Bridge transforms bounded business rules, prepared data and functional
 objectives into semantically validated and optimized logical quantum artifacts.
@@ -186,9 +189,10 @@ API key.
 
 ## Current Availability And Operational Boundaries
 
-QDSV Bridge is publicly available through PyPI and the Qiskit Ecosystem for
-bounded real-world validation. Its certified semantic operations and deployment
-options continue to expand under the Public Preview contract.
+QDSV Bridge is publicly available through PyPI and the Qiskit Ecosystem as a
+conformance-tested Public Preview SDK for bounded real-world validation. Its
+certified semantic operations and deployment options continue to expand under
+the Public Preview contract.
 
 - Bridge supports bounded compositions of certified semantic operations, not a
   fixed catalog of industries or use cases. Public paths include general

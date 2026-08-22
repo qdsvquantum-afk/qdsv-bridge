@@ -1,10 +1,11 @@
 QDSV Bridge Documentation
 =========================
 
-QDSV Bridge is a Python SDK for moving from controlled problem-first semantic
-specifications to executable quantum circuit artifacts. Version 0.6.5 delivers
-an immutable canonical logical artifact and, when its exact validation and
-no-regression policy pass, an optional optimized logical child artifact.
+QDSV Bridge is a Public Preview: conformance-tested semantic-to-quantum SDK
+for moving from controlled problem-first semantic specifications to executable
+quantum circuit artifacts. Version 0.6.5 delivers an immutable canonical
+logical artifact and, when its exact validation and no-regression policy pass,
+an optional optimized logical child artifact.
 
 Bridge is domain-agnostic within its certified semantic operation set. It
 composes bounded numeric and logical operations, including general predicates
@@ -64,12 +65,13 @@ mitigation or QPU execution.
 Current Public Role
 -------------------
 
-Bridge is a Public Preview interoperability layer. It publicly exposes the
-versioned logical-optimization profile, declared public pass sequence, artifact
-roles, before/after resources, validation status and lineage needed to audit its
-output. It does not expose private compiler implementation rules, backend
-adapters, secrets or production configuration, and it does not export
-placeholder oracle scaffolds as completed circuits.
+Bridge is a conformance-tested Public Preview interoperability layer. It
+publicly exposes the versioned logical-optimization profile, declared public
+pass sequence, artifact roles, before/after resources, validation status,
+lineage and conformance evidence needed to audit its output. It does not expose
+private compiler implementation rules, backend adapters, secrets or production
+configuration, and it does not export placeholder oracle scaffolds as completed
+circuits.
 
 Bridge stops at the portable logical-artifact boundary. Runtime/HSP or an
 equivalent user-controlled workflow remains responsible for backend selection,
