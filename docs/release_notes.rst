@@ -1,6 +1,15 @@
 Release Notes
 =============
 
+0.6.6
+-----
+
+* Aligns package metadata, README and documentation around the public
+  positioning "Public Preview: conformance-tested semantic-to-quantum SDK".
+* Keeps the functional conformance evidence linked to the frozen 0.6.5
+  conformance suite; no private compiler internals, hardware execution claims
+  or SLA guarantees are added.
+
 0.6.5
 -----
 

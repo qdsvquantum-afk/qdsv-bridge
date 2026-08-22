@@ -1,6 +1,6 @@
 {
   "schema_version": "qdsv_bridge_release_manifest.v1",
-  "sdk_version": "0.6.5",
+  "sdk_version": "0.6.6",
   "release_status": "public_preview",
   "contracts": {
     "bridge": "qdsv_bridge_operation_compiler.v2",
@@ -33,6 +33,8 @@
   "conformance": {
     "suite_contract": "qdsv_bridge_conformance.v0.1",
     "runner_sdk_version": "0.6.5",
+    "validated_functional_surface": "0.6.5",
+    "metadata_alignment_release": "0.6.6",
     "archive": "QDSV_Bridge_Conformance_v0.1_SDK_0.6.5.zip",
     "archive_sha256": "4232238f03ff68adac7711b4a523d2ff8e6109abdbad15211c40a33537dfd113",
     "bridge_cases": {"passed": 10, "total": 10},

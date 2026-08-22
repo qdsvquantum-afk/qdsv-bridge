@@ -4,6 +4,14 @@ Notable public changes to QDSV Bridge are documented here. The project is a conf
 
 ## Unreleased
 
+## 0.6.6
+
+- Aligns PyPI/package metadata, README and documentation around the public
+  positioning "Public Preview: conformance-tested semantic-to-quantum SDK".
+- Keeps the functional conformance evidence linked to the frozen 0.6.5
+  conformance suite; no private compiler internals, hardware execution claims
+  or SLA guarantees are added.
+
 ## 0.6.5
 
 - Freezes the public Bridge and operation-compiler v2 contract identities used by the post-0.6.4 logical materializer.

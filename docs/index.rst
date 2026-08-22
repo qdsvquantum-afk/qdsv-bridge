@@ -3,7 +3,7 @@ QDSV Bridge Documentation
 
 QDSV Bridge is a Public Preview: conformance-tested semantic-to-quantum SDK
 for moving from controlled problem-first semantic specifications to executable
-quantum circuit artifacts. Version 0.6.5 delivers an immutable canonical
+quantum circuit artifacts. Version 0.6.6 delivers an immutable canonical
 logical artifact and, when its exact validation and no-regression policy pass,
 an optional optimized logical child artifact.
 
@@ -81,7 +81,7 @@ evidence.
 Release Identity
 ----------------
 
-Version 0.6.5 packages a machine-readable release manifest containing its
+Version 0.6.6 packages a machine-readable release manifest containing its
 public contract identities, frozen conformance archive digest, bounded
 regression summary and the Docker/Cloud Run builds used during release
 validation. Use ``qdsv_bridge.get_release_manifest()`` to read it locally.
