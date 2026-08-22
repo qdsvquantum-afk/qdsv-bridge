@@ -2,7 +2,7 @@ QDSV Bridge Documentation
 =========================
 
 QDSV Bridge is a Python SDK for moving from controlled problem-first semantic
-specifications to executable quantum circuit artifacts. Version 0.6.4 delivers
+specifications to executable quantum circuit artifacts. Version 0.6.5 delivers
 an immutable canonical logical artifact and, when its exact validation and
 no-regression policy pass, an optional optimized logical child artifact.
 
@@ -28,6 +28,7 @@ resources and validation evidence inspectable.
    Tutorials <tutorials/index>
    How-to Guides <how_to/index>
    Public Contract Reference <reference/index>
+   Migration To 0.6.5 <migration_0_6_5>
    API Reference <apidocs/index>
    Explanations <explanations/index>
    Release Notes <release_notes>
@@ -74,3 +75,14 @@ Bridge stops at the portable logical-artifact boundary. Runtime/HSP or an
 equivalent user-controlled workflow remains responsible for backend selection,
 layout, routing, scheduling, calibration review, mitigation and hardware
 evidence.
+
+Release Identity
+----------------
+
+Version 0.6.5 packages a machine-readable release manifest containing its
+public contract identities, frozen conformance archive digest, bounded
+regression summary and the Docker/Cloud Run builds used during release
+validation. Use ``qdsv_bridge.get_release_manifest()`` to read it locally.
+
+Those deployment identities describe validated reference builds. They do not
+promise that a mutable public endpoint will always serve the same revision.

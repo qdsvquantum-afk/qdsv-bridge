@@ -8,8 +8,9 @@ from .predicate_specs import (
     build_score_expression_spec,
     build_score_model_spec,
 )
+from .release import get_release_manifest
 
-__version__ = "0.6.4"
+__version__ = "0.6.5"
 
 __all__ = [
     "QDSVBridgeClient",
@@ -20,6 +21,7 @@ __all__ = [
     "build_predicate_spec",
     "build_score_expression_spec",
     "build_score_model_spec",
+    "get_release_manifest",
     "select_recommended_artifact",
     "to_braket_openqasm",
     "__version__",

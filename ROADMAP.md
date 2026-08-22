@@ -12,6 +12,8 @@ QDSV Bridge is in Public Preview for bounded real-world validation. The SDK is a
 - Legacy family labels accepted as optional compatibility metadata only.
 - Resource limits and raw-data rejection.
 - Circuit-origin metadata: `qdsv_canonical_problem_ir_materializer`.
+- Frozen v2 public contract identities and a packaged release manifest.
+- Official Bridge Conformance v0.1 outcome model and reproducible evidence bundle.
 
 ## Next
 
@@ -22,6 +24,7 @@ QDSV Bridge is in Public Preview for bounded real-world validation. The SDK is a
 - More diagnostics for unsupported specs.
 - Notebooks that compare prebuilt-template workflows vs problem-derived Bridge outputs.
 - Recipes for supported operation combinations and explicit examples of unsupported capability requests.
+- Independent third-party conformance attestations and divergence reports.
 
 ## Later
 

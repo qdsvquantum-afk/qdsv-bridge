@@ -4,6 +4,15 @@ Notable public changes to QDSV Bridge are documented here. The project is a Publ
 
 ## Unreleased
 
+## 0.6.5
+
+- Freezes the public Bridge and operation-compiler v2 contract identities used by the post-0.6.4 logical materializer.
+- Packages a machine-readable release manifest with validated Docker and Cloud Run identities, protected runtime-file hashes and explicit product boundaries.
+- Publishes the matching conformance contract and evidence identity without placing the external test suite or private compiler in the SDK repository.
+- Records bounded regression evidence for 36 general-kernel configurations and 16 ScoreModel configurations, while keeping resource comparisons explicitly case-specific.
+- Adds a migration guide from 0.6.4 and distinguishes owner clean-room reproduction from independent third-party validation.
+- Preserves all 0.6.4 public builders and artifact-selection behavior; no supported call-site migration is required.
+
 ## 0.6.4
 
 - Canonicalizes process-local OpenQASM gate identifiers before artifact hashing so repeated builds preserve byte-identical QASM and stable lineage digests.

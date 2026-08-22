@@ -5,7 +5,7 @@ Status: public developer-preview positioning note.
 QDSV Bridge includes a public OpenQASM demo tested with the Amazon Braket
 `LocalSimulator` conversion workflow:
 
-Version 0.6.4 may hand this workflow either the canonical logical artifact or
+Version 0.6.5 may hand this workflow either the canonical logical artifact or
 an explicitly recommended exact optimized logical child. Bridge preserves both
 roles and their lineage before creating the Braket compatibility view; it does
 not perform AWS device selection, routing or managed execution.

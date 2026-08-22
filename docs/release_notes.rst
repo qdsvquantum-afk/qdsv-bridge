@@ -1,6 +1,22 @@
 Release Notes
 =============
 
+0.6.5
+-----
+
+* Freezes the public ``qdsv_bridge_operation_compiler.v2`` and
+  ``qdsv_operation_compiler.v2`` identities used by the validated logical
+  materializer.
+* Adds ``get_release_manifest()`` so an installed wheel exposes its exact
+  contract, conformance, runtime-validation and boundary metadata.
+* Links the normative conformance outcome model to a frozen external evidence
+  archive without packaging the suite or private compiler in this SDK.
+* Records 36/36 general-kernel and 16/16 ScoreModel bounded regression results;
+  these results demonstrate the evaluated configurations and are not claims of
+  unbounded scalability or universal resource superiority.
+* Adds a migration guide. Existing 0.6.4 builders, clients and artifact
+  selection behavior remain compatible.
+
 0.6.4
 -----
 

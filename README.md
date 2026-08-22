@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-public%20preview-0ea5e9.svg)](#current-availability-and-operational-boundaries)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Source/package version: `0.6.4`. See the PyPI badge for publication status.
+Source/package version: `0.6.5`. See the PyPI badge for publication status.
 
 ## From Business Meaning To Quantum Artifacts
 
@@ -240,10 +240,27 @@ ScoreModel aggregation or compiler rules.
 The detailed contracts remain versioned in the documentation:
 
 - [Public SDK contract](https://qdsvquantum-afk.github.io/qdsv-bridge/reference/public_contract.html): delivery modes, outputs, errors, limits, privacy, reports and compatibility.
+- [Conformance and release identity](https://qdsvquantum-afk.github.io/qdsv-bridge/reference/conformance.html): normative outcomes, validated runtime identities, suite evidence and reproducibility boundaries.
+- [Migration to 0.6.5](https://qdsvquantum-afk.github.io/qdsv-bridge/migration_0_6_5.html): compatibility, contract and evidence changes from 0.6.4.
 - [Problem-first and similarity boundaries](https://qdsvquantum-afk.github.io/qdsv-bridge/explanations/index.html): prepared metrics, declared operations and construction guarantees.
 - [Canonical and optimized artifacts](https://qdsvquantum-afk.github.io/qdsv-bridge/how_to/logical_artifacts.html): profiles, lineage, validation and recommendation.
 - [IBM/Qiskit handoff](https://qdsvquantum-afk.github.io/qdsv-bridge/integrations/ibm_quantum.html): the boundary between logical artifacts and physical execution.
 - [Examples and tutorials](https://qdsvquantum-afk.github.io/qdsv-bridge/tutorials/index.html): first workflow, ScoreModel and inspectable artifacts.
+
+Installed clients can inspect the exact public release identity without
+contacting the service:
+
+```python
+from qdsv_bridge import get_release_manifest
+
+manifest = get_release_manifest()
+print(manifest["contracts"])
+print(manifest["conformance"])
+```
+
+The manifest identifies the contract and the runtime builds used for release
+validation. It is evidence about those frozen builds, not a claim that a
+mutable public endpoint will always serve the same deployment.
 
 ## Support And Security
 

@@ -1,0 +1,55 @@
+{
+  "schema_version": "qdsv_bridge_release_manifest.v1",
+  "sdk_version": "0.6.5",
+  "release_status": "public_preview",
+  "contracts": {
+    "bridge": "qdsv_bridge_operation_compiler.v2",
+    "operation_compiler_authority": "qdsv_operation_compiler.v2",
+    "bundle_sha256": "2b59c827f69726adece3b5fec0477d0c35d66ed24270d08de61eef996e16b382",
+    "canonical_ir_operation_count": 43,
+    "core_operation_count": 48
+  },
+  "logical_optimization": {
+    "profile": "qiskit_structural_exact_v1",
+    "acceptance_policy": "pareto_no_regression_v1",
+    "scope": "exact_target_independent_logical_optimization"
+  },
+  "validated_runtime_identity": {
+    "meaning": "Reference identities used for release validation; they do not assert that a public endpoint will always serve the same deployment.",
+    "docker_image_id": "sha256:bf9b5917c1040f38d4e1c11416fc2cbc97b5d8e6ab83421e2a4eee8d0956bb56",
+    "cloud_run_revision": "qdsv-api-00442-slb",
+    "cloud_run_image": "us-central1-docker.pkg.dev/plataforma-qdsv/cloud-run-source-deploy/qdsv-api@sha256:c36166a05cd9bb8828b6eca275db1c6285dc3bd484394ce2d6c913320a79016e"
+  },
+  "runtime_file_sha256": {
+    "qdsv/adapters/coherent_score_qasm2.py": "e20ac1fb8b2f0358560dfe9329e821fa48fd61cc125745dfd23ed15703693b39",
+    "qdsv/bridge/canonical_materializer.py": "9b5a4b72754228a558ffb91b8ce7c9896e90e82efaab9656abe7f437ca15cbc5",
+    "qdsv/compiler/canonical_contracts.py": "589117fa7efba419fcb5a0a2fcc83f3898ebd0d89abda83638abb7b05781bb7e",
+    "qdsv/compiler/operation_compiler.py": "cd55d5844e58e49e7496768edacbfd59e02af39d32996a0fea8aff7064812b3b",
+    "qdsv/compiler/physical_optimization_plan.py": "16f7c07215149c875fb74a90383121e1d36ba45287eb796108bdbfb8cb438517",
+    "qdsv/compiler/reversible_plan_optimizer.py": "028807220ac5d7bed7580e97ae41b76c96922e48f22275bd4a9a05ae7497f0e1",
+    "qdsv/runtime/qintent_capability_registry.py": "08552961e4e0d497a4c1720de59612c940a88fe9cc695ad3867d32de8cfb7d86",
+    "qdsv/runtime/specialized_operation_program.py": "236dc5b8e7475ff0abf02b7ec8fde32ba7165ecaaad2009bf7744f8860a806bd"
+  },
+  "conformance": {
+    "suite_contract": "qdsv_bridge_conformance.v0.1",
+    "runner_sdk_version": "0.6.5",
+    "archive": "QDSV_Bridge_Conformance_v0.1_SDK_0.6.5.zip",
+    "archive_sha256": "4232238f03ff68adac7711b4a523d2ff8e6109abdbad15211c40a33537dfd113",
+    "bridge_cases": {"passed": 10, "total": 10},
+    "transversal_checks": {"passed": 10, "total": 10},
+    "owner_clean_room": {"passed": 10, "total": 10},
+    "independent_third_party_validation": "not_evaluated"
+  },
+  "bounded_regression_evidence": {
+    "general_kernel": {"passed": 36, "total": 36},
+    "score_model": {"passed": 16, "total": 16},
+    "resource_comparisons": "case_specific_not_universal"
+  },
+  "boundaries": {
+    "contains_private_compiler": false,
+    "executes_qpu": false,
+    "performs_physical_routing": false,
+    "performs_noise_mitigation": false,
+    "claims_independent_validation": false
+  }
+}
