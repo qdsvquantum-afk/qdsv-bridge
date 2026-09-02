@@ -126,6 +126,27 @@ def test_weighted_sum_has_an_unambiguous_vector_contract() -> None:
     assert "expected" not in repr(spec).lower()
 
 
+def test_select_if_preserves_boolean_condition_and_numeric_branches() -> None:
+    spec = build_score_expression_spec(
+        rows=[{"eligible": True, "preferred": 90, "fallback": 40}],
+        expression={
+            "op": "select_if",
+            "args": [field("eligible"), field("preferred"), field("fallback")],
+        },
+        threshold=80,
+        output_scale=100,
+    )
+
+    expression = spec["problem_spec"]["model"]["score"]["terms"][0]["value"]
+    assert expression["op"] == "select_if"
+    assert [item["column"] for item in expression["args"]] == [
+        "eligible",
+        "preferred",
+        "fallback",
+    ]
+    assert "expected" not in repr(spec).lower()
+
+
 def test_builds_public_hierarchical_score_model_without_answers() -> None:
     spec = build_score_model_spec(
         rows=[{"quality": 8, "risk": 2}, {"quality": 4, "risk": 7}],

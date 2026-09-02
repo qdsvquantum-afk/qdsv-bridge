@@ -1,13 +1,13 @@
 {
   "schema_version": "qdsv_bridge_release_manifest.v1",
-  "sdk_version": "0.6.6",
+  "sdk_version": "0.6.7",
   "release_status": "public_preview",
   "contracts": {
     "bridge": "qdsv_bridge_operation_compiler.v2",
     "operation_compiler_authority": "qdsv_operation_compiler.v2",
-    "bundle_sha256": "2b59c827f69726adece3b5fec0477d0c35d66ed24270d08de61eef996e16b382",
-    "canonical_ir_operation_count": 43,
-    "core_operation_count": 48
+    "bundle_sha256": "b4cb099ae2ae99d997b07200fda0ae5a0673ffe1fb1f66cbcbcec3facc6c3333",
+    "canonical_ir_operation_count": 45,
+    "core_operation_count": 50
   },
   "logical_optimization": {
     "profile": "qiskit_structural_exact_v1",
@@ -16,9 +16,9 @@
   },
   "validated_runtime_identity": {
     "meaning": "Reference identities used for release validation; they do not assert that a public endpoint will always serve the same deployment.",
-    "docker_image_id": "sha256:bf9b5917c1040f38d4e1c11416fc2cbc97b5d8e6ab83421e2a4eee8d0956bb56",
-    "cloud_run_revision": "qdsv-api-00442-slb",
-    "cloud_run_image": "us-central1-docker.pkg.dev/plataforma-qdsv/cloud-run-source-deploy/qdsv-api@sha256:c36166a05cd9bb8828b6eca275db1c6285dc3bd484394ce2d6c913320a79016e"
+    "docker_image_id": "sha256:ca16958a6379140963687bfed9f79cf8ab625fe1ca0a8616d96aed3c72993334",
+    "cloud_run_revision": "qdsv-api-00448-8xs",
+    "cloud_run_image": "us-central1-docker.pkg.dev/plataforma-qdsv/cloud-run-source-deploy/qdsv-api@sha256:3acd75b460de58a3f3b1c42e84597c68e35cb9027719736142f020688d2a5810"
   },
   "runtime_file_sha256": {
     "qdsv/adapters/coherent_score_qasm2.py": "e20ac1fb8b2f0358560dfe9329e821fa48fd61cc125745dfd23ed15703693b39",
@@ -34,7 +34,7 @@
     "suite_contract": "qdsv_bridge_conformance.v0.1",
     "runner_sdk_version": "0.6.5",
     "validated_functional_surface": "0.6.5",
-    "metadata_alignment_release": "0.6.6",
+    "metadata_alignment_release": "0.6.7",
     "archive": "QDSV_Bridge_Conformance_v0.1_SDK_0.6.5.zip",
     "archive_sha256": "4232238f03ff68adac7711b4a523d2ff8e6109abdbad15211c40a33537dfd113",
     "bridge_cases": {"passed": 10, "total": 10},
@@ -46,6 +46,14 @@
     "general_kernel": {"passed": 36, "total": 36},
     "score_model": {"passed": 16, "total": 16},
     "resource_comparisons": "case_specific_not_universal"
+  },
+  "release_delta": {
+    "select_if": {
+      "semantic_status": "supported",
+      "reversible_profile": "controlled_branch_value_xor",
+      "verified_scope": "bounded_finite_domains_operation_compiler_v2",
+      "independent_conformance_status": "not_evaluated"
+    }
   },
   "boundaries": {
     "contains_private_compiler": false,

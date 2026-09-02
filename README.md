@@ -6,7 +6,7 @@
 [![Status](https://img.shields.io/badge/status-public%20preview%20%7C%20conformance--tested-0ea5e9.svg)](#current-availability-and-operational-boundaries)
 [![Qiskit Ecosystem](https://qisk.it/e-e8734f93)](https://www.ibm.com/quantum/ecosystem)
 
-Source/package version: `0.6.6`. See the PyPI badge for publication status.
+Source/package version: `0.6.7`. See the PyPI badge for publication status.
 
 ## From Business Meaning To Quantum Artifacts
 
@@ -116,7 +116,7 @@ The complete runnable version is
 
 ## Conformance And Evidence
 
-Bridge `0.6.6` is aligned with the public conformance evidence package under
+Bridge `0.6.7` is aligned with the public conformance evidence package under
 [`benchmarks/conformance/bridge-v0.6.5`](benchmarks/conformance/bridge-v0.6.5).
 It publishes the reduced review layer for QDSV Bridge Conformance v0.1:
 normative contract, profiles, schemas, public fixtures, runner scripts,
@@ -238,6 +238,11 @@ operations accept `arg`, `value`, `operand` or a one-item `args` list and are
 canonicalized to one stable operand form. Every request remains bounded and
 resource checked; a valid semantic program can still be rejected if its
 materialized artifact exceeds the active limits.
+
+`select_if(predicate, value_if_true, value_if_false)` adds bounded conditional
+selection without requiring users to design a reversible multiplexer. The
+predicate must be boolean and both result branches must be numeric expressions;
+Bridge derives the controlled reversible realization and verifies cleanup.
 
 Use the lower-level specification contract only when you need to freeze
 artifact format, backend family, evidence or resource limits. In every path,

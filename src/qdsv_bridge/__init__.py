@@ -10,7 +10,7 @@ from .predicate_specs import (
 )
 from .release import get_release_manifest
 
-__version__ = "0.6.6"
+__version__ = "0.6.7"
 
 __all__ = [
     "QDSVBridgeClient",

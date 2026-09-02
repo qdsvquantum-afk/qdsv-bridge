@@ -1,6 +1,17 @@
 Release Notes
 =============
 
+0.6.7
+-----
+
+* Adds public bounded conditional selection through
+  ``select_if(predicate, value_if_true, value_if_false)``.
+* Keeps the condition boolean and the two branches bounded numeric
+  expressions; Bridge derives the controlled reversible realization.
+* Updates the public capability metadata to 45 canonical IR operations and
+  50 core operations/composites without extending the frozen 0.6.5
+  independent-conformance claim.
+
 0.6.6
 -----
 

@@ -20,10 +20,15 @@ def test_release_manifest_matches_package_and_public_contract() -> None:
     )
     assert manifest["boundaries"]["contains_private_compiler"] is False
     assert manifest["boundaries"]["executes_qpu"] is False
+    assert manifest["contracts"]["canonical_ir_operation_count"] == 45
+    assert manifest["contracts"]["core_operation_count"] == 50
+    assert manifest["release_delta"]["select_if"]["reversible_profile"] == (
+        "controlled_branch_value_xor"
+    )
 
 
 def test_release_manifest_is_returned_as_an_independent_value() -> None:
     first = qdsv_bridge.get_release_manifest()
     first["sdk_version"] = "modified"
 
-    assert qdsv_bridge.get_release_manifest()["sdk_version"] == "0.6.6"
+    assert qdsv_bridge.get_release_manifest()["sdk_version"] == "0.6.7"

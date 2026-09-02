@@ -4,6 +4,18 @@ Notable public changes to QDSV Bridge are documented here. The project is a conf
 
 ## Unreleased
 
+## 0.6.7
+
+- Adds the public bounded conditional selection contract
+  ``select_if(predicate, value_if_true, value_if_false)`` to the Bridge
+  construction surface.
+- Preserves the boolean-predicate and numeric-branch contract in public
+  specifications and verifies the operation-level canonical construction
+  without accepting expected outcomes.
+- Updates release metadata for the 45-operation canonical IR and 50-operation
+  core catalog. The frozen 0.6.5 conformance archive remains unchanged;
+  independent validation of this release delta is not claimed.
+
 ## 0.6.6
 
 - Aligns PyPI/package metadata, README and documentation around the public
