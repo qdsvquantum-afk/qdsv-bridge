@@ -127,13 +127,16 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
 
   release:
-    name: Publish signed GitHub release
+    name: Publish attested GitHub release
     if: github.event_name == 'push' && github.ref_type == 'tag'
     needs: [build, publish]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v7
+
       - name: Download Python distributions
         uses: actions/download-artifact@v8
         with:
