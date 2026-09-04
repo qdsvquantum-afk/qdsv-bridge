@@ -27,5 +27,5 @@ jobs:
       - run: python tools/verify_public_distribution.py --dist-dir dist --report distribution-conformance.json
       - uses: actions/upload-artifact@v4
         with:
-          name: distribution-conformance-py${{ matrix.python }}-qiskit${{ replace(matrix.qiskit, '*', 'x') }}
+          name: distribution-conformance-py${{ matrix.python }}-job${{ strategy.job-index }}
           path: distribution-conformance.json
