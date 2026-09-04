@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "qdsv-bridge"
-version = "0.6.7"
-description = "Public Preview conformance-tested semantic-to-quantum SDK for QDSV logical artifacts."
+version = "0.7.0"
+description = "Public domain-to-quantum SDK for portable QDSV Bridge artifacts."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "MIT"
 authors = [
   { name = "QDSV / Qruba" }
@@ -20,6 +20,10 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -29,7 +33,7 @@ dependencies = [
 
 [project.optional-dependencies]
 qiskit = [
-  "qiskit>=2,<3",
+  "qiskit>=2.3,<3",
   "qiskit-aer>=0.17,<0.18",
   "qiskit-qasm3-import>=0.5,<0.7",
 ]
@@ -54,11 +58,15 @@ qdsv-bridge = "qdsv_bridge.cli:main"
 packages = ["src/qdsv_bridge"]
 
 [tool.hatch.build.targets.sdist]
-exclude = [
-  "/submissions",
-  "/benchmarks",
-  "/docs/_build",
+include = [
+  "/src",
+  "/LICENSE",
+  "/README.md",
+  "/pyproject.toml",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+markers = [
+  "live_bridge: requires an explicitly configured QDSV Bridge HTTP endpoint",
+]

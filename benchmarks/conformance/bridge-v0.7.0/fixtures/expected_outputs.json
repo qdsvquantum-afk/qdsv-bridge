@@ -1,0 +1,9 @@
+{
+  "fixture_version": "qdsv_bridge_expected_outputs.v0.7",
+  "separation_contract": "This file belongs to the verifier. Its contents must never be included in a Bridge request.",
+  "cases": {
+    "predicate_power_two": {"decisions": [0, 0, 1, 1], "inactive_state_decision": 0},
+    "predicate_non_power_two": {"decisions": [0, 1, 1], "inactive_state_decision": 0},
+    "score_threshold": {"decisions": [0, 1], "inactive_state_decision": 0}
+  }
+}

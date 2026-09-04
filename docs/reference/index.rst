@@ -4,9 +4,8 @@ Public Contract Reference
 .. toctree::
    :maxdepth: 1
 
-   public_contract
+   public_boundary
    conformance
 
-This reference records the versioned public behavior of QDSV Bridge. It keeps
-the package landing page focused on the problem-first user journey while
-preserving the detailed delivery, validation and operational contracts.
+This reference records only the versioned 0.7 public boundary and its
+independently runnable conformance profile.

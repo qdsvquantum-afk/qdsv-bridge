@@ -1,85 +1,63 @@
-Conformance And Release Identity
-================================
+QDSV Bridge 0.7.0 Conformance
+==============================
 
-The QDSV Bridge Conformance Suite evaluates the observable public contract. It
-does not inspect or distribute private compiler implementation rules.
+The 0.7.0 conformance profile validates the frozen public boundary only:
+``qdsv_bridge_domain.v1`` requests and ``qdsv_bridge_public.v1`` responses.
+It does not inspect, import or distribute QDSV compiler internals.
 
-Normative Outcomes
-------------------
+The normative profile lives at
+``benchmarks/conformance/bridge-v0.7.0``. It contains separate public-input
+and verifier-only expected-output fixtures, the public-boundary declaration,
+an isolated Docker verifier and a runner using only Qiskit, Qiskit Aer and
+``requests``.
 
-Every evaluated case has one primary outcome:
+What is tested
+--------------
 
-``PASS``
-   The expected public contract and, when applicable, independent semantic
-   replay succeeded.
+* Exact public envelopes for ``compile``, ``export`` and ``report``.
+* Absence of private IR, lowering, materialization and diagnostic fields.
+* Generic public errors for malformed, unsupported and resource-limited input.
+* SHA-256 integrity for the delivered OpenQASM bytes, request identity and an
+  opaque compiler-build attestation.
+* Repeated-request reproducibility for the same compiler build.
+* OpenQASM 2 loading into ``QuantumCircuit``, Qiskit transpilation, Aer
+  execution, input preservation and clean work registers for bounded fixtures.
 
-``SEMANTIC_FAIL``
-   A materialized artifact disagreed with the declared valid-domain semantics.
+The expected function is held exclusively by the verifier and is never sent to
+Bridge. A third party can therefore run the same suite with access only to the
+public API and the published conformance package.
 
-``CONTRACT_FAIL``
-   The response violated a required public field, invariant, digest or lineage
-   rule.
+Run the released profile
+------------------------
 
-``RESOURCE_LIMITED``
-   The semantic input was admitted but the requested realization exceeded an
-   active resource limit. This is not a semantic failure.
+For external validation, download the separately published
+``qdsv-bridge-conformance-v0.7.0.tar.gz`` and its ``SHA256SUMS`` from the
+release associated with the SDK tag. Verify the archive and its internal
+manifest before sending any request:
 
-``UNSUPPORTED``
-   No certified public realization exists for the requested capability.
+.. code-block:: shell
 
-``INVALID_SPEC``
-   The input did not satisfy the public specification contract.
+   sha256sum -c SHA256SUMS
+   tar -xzf qdsv-bridge-conformance-v0.7.0.tar.gz
+   cd qdsv-bridge-conformance-v0.7.0
+   python suite/verify_manifest.py
+   python -m pip install -r requirements.lock
+   python suite/run_conformance.py \
+     --api-url https://your-bridge.example/api \
+     --output ./bridge-070-evidence
 
-``NOT_APPLICABLE``
-   The check does not apply to the selected method, artifact or operation.
+The released archive is byte-reproducible from the tag. Or build the isolated
+verifier image from its unpacked directory and pass the same arguments. The
+image contains no QDSV platform source.
 
-``NOT_EVALUATED``
-   Evidence was unavailable or the evaluator lacked the required independent
-   access. This is not a pass.
-
-Frozen 0.6.5 Evidence
+Scope and limitations
 ---------------------
 
-The release was validated with the v0.1 contract runner frozen specifically for
-SDK 0.6.5 in the archive
-``QDSV_Bridge_Conformance_v0.1_SDK_0.6.5.zip``. Its SHA-256 is:
+This profile supports claims about the listed bounded public cases and Qiskit
+interoperability. It does not establish unbounded scaling, hardware execution,
+hardware advantage, a forced production timeout or internal-service-failure
+path, nor independent third-party validation. Those claims require separate
+evidence.
 
-``4232238f03ff68adac7711b4a523d2ff8e6109abdbad15211c40a33537dfd113``
-
-The archive is distributed with the v0.6.5 GitHub release rather than stored
-inside the operational SDK repository. It contains the normative specification,
-fixtures, schemas and notebook-independent runner. The separate release
-evidence bundle contains reports and manifests. Generated virtual environments,
-caches, credentials and private compiler sources are excluded.
-
-Evaluated Results
------------------
-
-* Bridge conformance: 10/10 passed.
-* Transversal anti-bypass checks: 10/10 passed.
-* Owner clean-room installation and run: 10/10 passed.
-* General semantic kernel: 36/36 evaluated configurations passed.
-* ScoreModel: 16/16 evaluated configurations passed.
-* Independent third-party validation: ``NOT_EVALUATED``.
-
-The bounded regression results verify the listed fixtures and sizes. They do
-not establish unbounded scalability, hardware advantage or universal circuit
-resource superiority.
-
-Machine-Readable Identity
--------------------------
-
-Use the packaged manifest to bind an installed client to the evidence:
-
-.. code-block:: python
-
-   from qdsv_bridge import get_release_manifest
-
-   identity = get_release_manifest()
-   print(identity["contracts"])
-   print(identity["validated_runtime_identity"])
-   print(identity["conformance"])
-
-The Docker image and Cloud Run revision are validation references, not hidden
-requirements and not an availability guarantee. A future deployment must
-publish its own identity if it claims equivalence with this release baseline.
+Historical 0.6.5 material is archived and is not normative for 0.7.0 because
+the public surface and privacy boundary changed.

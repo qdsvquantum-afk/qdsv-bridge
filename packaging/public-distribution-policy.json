@@ -1,0 +1,46 @@
+{
+  "schema_version": "qdsv_bridge_public_distribution.v1",
+  "sdk_version": "0.7.0",
+  "allowed_package_files": [
+    "__init__.py",
+    "artifacts.py",
+    "cli.py",
+    "client.py",
+    "compat.py",
+    "domain.py",
+    "exceptions.py",
+    "predicate_specs.py",
+    "qiskit.py",
+    "release.py",
+    "release_manifest.json"
+  ],
+  "forbidden_module_stems": [
+    "compiler",
+    "lowering",
+    "intermediate",
+    "ir",
+    "oracle",
+    "qintent",
+    "qruba"
+  ],
+  "forbidden_content_markers": [
+    "semantic_ir",
+    "intermediate_ir",
+    "selected_lowering_rule",
+    "rejected_lowering_rules",
+    "candidate_constructions",
+    "optimization_search_path",
+    "internal_cost_function",
+    "oracle_construction_plan",
+    "materialization_plan",
+    "reversible_plan",
+    "compiler_stack_trace"
+  ],
+  "allowed_sdist_root_files": [
+    ".gitignore",
+    "LICENSE",
+    "PKG-INFO",
+    "README.md",
+    "pyproject.toml"
+  ]
+}

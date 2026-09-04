@@ -1,0 +1,58 @@
+{
+  "fixture_version": "qdsv_bridge_public_inputs.v0.7",
+  "separation_contract": "Expected answers are deliberately absent from this file and are never sent to Bridge.",
+  "cases": [
+    {
+      "case_id": "predicate_power_two",
+      "spec": {
+        "contract": "qdsv_bridge_domain.v1",
+        "problem": {
+          "kind": "bounded_predicate",
+          "candidates": [{"value": 0}, {"value": 1}, {"value": 2}, {"value": 3}],
+          "rule": {
+            "op": "gte",
+            "left": {"op": "field", "name": "value"},
+            "right": {"op": "const", "value": 2}
+          }
+        },
+        "delivery": {"format": "qasm2", "framework": "qiskit", "mode": "build"},
+        "evidence": {"shots": 128}
+      }
+    },
+    {
+      "case_id": "predicate_non_power_two",
+      "spec": {
+        "contract": "qdsv_bridge_domain.v1",
+        "problem": {
+          "kind": "bounded_predicate",
+          "candidates": [{"value": 1}, {"value": 5}, {"value": 7}],
+          "rule": {
+            "op": "gte",
+            "left": {"op": "field", "name": "value"},
+            "right": {"op": "const", "value": 5}
+          }
+        },
+        "delivery": {"format": "qasm2", "framework": "qiskit", "mode": "build"},
+        "evidence": {"shots": 128}
+      }
+    },
+    {
+      "case_id": "score_threshold",
+      "spec": {
+        "contract": "qdsv_bridge_domain.v1",
+        "problem": {
+          "kind": "bounded_score",
+          "candidates": [{"value": 1}, {"value": 3}],
+          "model": {
+            "decision": {"operator": "gte", "threshold": 2},
+            "criteria": [
+              {"name": "value", "value": {"op": "field", "name": "value"}}
+            ]
+          }
+        },
+        "delivery": {"format": "qasm2", "framework": "qiskit", "mode": "build"},
+        "evidence": {"shots": 128}
+      }
+    }
+  ]
+}

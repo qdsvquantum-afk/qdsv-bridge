@@ -3,6 +3,8 @@ __pycache__/
 .venv/
 dist/
 build/
+audit-dist/
+release-assets/
 docs/_build/
 submissions/
 benchmarks/*

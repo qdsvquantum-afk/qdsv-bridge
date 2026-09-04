@@ -1,28 +1,37 @@
 from .client import QDSVBridgeClient
 from .artifacts import select_recommended_artifact
 from .compat import to_braket_openqasm
-from .exceptions import QDSVBridgeAPIError, QDSVBridgeError, QDSVBridgeHTTPError
-from .predicate_specs import (
-    PredicateSpecError,
-    build_predicate_spec,
-    build_score_expression_spec,
-    build_score_model_spec,
+from .domain import (
+    PUBLIC_DOMAIN_CONTRACT,
+    DomainRequestError,
+    const,
+    field,
+    predicate_request,
+    score_request,
 )
+from .exceptions import QDSVBridgeAPIError, QDSVBridgeArtifactError, QDSVBridgeError, QDSVBridgeHTTPError
+from .qiskit import QDSVBridge, QDSVBridgeArtifact, to_quantum_circuit
 from .release import get_release_manifest
 
-__version__ = "0.6.7"
+__version__ = "0.7.0"
 
 __all__ = [
     "QDSVBridgeClient",
     "QDSVBridgeError",
     "QDSVBridgeAPIError",
+    "QDSVBridgeArtifactError",
     "QDSVBridgeHTTPError",
-    "PredicateSpecError",
-    "build_predicate_spec",
-    "build_score_expression_spec",
-    "build_score_model_spec",
+    "PUBLIC_DOMAIN_CONTRACT",
+    "DomainRequestError",
+    "const",
+    "field",
+    "predicate_request",
+    "score_request",
     "get_release_manifest",
     "select_recommended_artifact",
     "to_braket_openqasm",
+    "to_quantum_circuit",
+    "QDSVBridge",
+    "QDSVBridgeArtifact",
     "__version__",
 ]
