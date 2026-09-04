@@ -1,0 +1,68 @@
+{
+  "schema_version": "qdsv_bridge_public_boundary.v0.7",
+  "status": "PUBLIC_BOUNDARY_FROZEN_FOR_CONFORMANCE",
+  "domain_contract": "qdsv_bridge_domain.v1",
+  "response_contract": "qdsv_bridge_public.v1",
+  "sdk_version": "0.7.0",
+  "qiskit_profile": "qasm2_to_quantum_circuit_aer.v1",
+  "public_delivery": {
+    "compile": [
+      "status",
+      "product",
+      "contract",
+      "request_digest",
+      "readiness",
+      "resources",
+      "digests",
+      "warnings",
+      "limits"
+    ],
+    "export": [
+      "status",
+      "contract",
+      "artifact",
+      "verification",
+      "resources",
+      "digests",
+      "warnings",
+      "limits"
+    ],
+    "report": [
+      "status",
+      "contract_version",
+      "sdk_version",
+      "request_digest",
+      "artifact_digest",
+      "compiler_build_digest",
+      "verification",
+      "resources",
+      "warnings",
+      "limits"
+    ]
+  },
+  "privacy": {
+    "private_compiler_access": false,
+    "forbidden_response_keys": [
+      "problem_spec",
+      "oracle_spec",
+      "materialization_plan",
+      "semantic_preservation_report",
+      "operation_compiler",
+      "selected_lowering_rule",
+      "rejected_lowering_rules",
+      "candidate_constructions",
+      "optimization_search_path",
+      "internal_cost_function",
+      "rule_identifier",
+      "compiler_stack_trace",
+      "canonical_materializer",
+      "reversible_plan_optimizer",
+      "qintent_capability_registry",
+      "specialized_operation_program"
+    ]
+  },
+  "reproducibility": {
+    "same_request_same_compiler_build": "identical_request_digest_artifact_digest_and_compiler_build_digest",
+    "nearby_requests": "compiler_build_digest_must_remain_stable"
+  }
+}

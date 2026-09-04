@@ -1,0 +1,31 @@
+name: QDSV Bridge 0.7.0 distribution conformance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sdk:
+    name: Python ${{ matrix.python }} / Qiskit ${{ matrix.qiskit }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12"]
+        qiskit: ["2.3.*", "2.4.*", "2.5.*"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install --upgrade pip build pytest
+      - run: python -m pip install "." "qiskit==${{ matrix.qiskit }}" "qiskit-aer>=0.17,<0.18" "qiskit-qasm3-import>=0.5,<0.7"
+      - run: python -m pytest
+      - run: python -m build --outdir dist
+      - run: python tools/verify_public_distribution.py --dist-dir dist --report distribution-conformance.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distribution-conformance-py${{ matrix.python }}-qiskit${{ matrix.qiskit }}
+          path: distribution-conformance.json

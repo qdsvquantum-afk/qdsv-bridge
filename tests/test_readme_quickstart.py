@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from qdsv_bridge import QDSVBridgeClient
+from qdsv_bridge import QDSVBridge, QDSVBridgeArtifact
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,32 +28,29 @@ def test_readme_business_first_quickstart_is_executable(
 ) -> None:
     captured: dict = {}
 
-    def fake_generate(self, spec):
+    def fake_export(self, spec):
         captured["spec"] = spec
-        return {
-            "status": "SUCCESS",
-            "artifact": {
-                "role": "canonical_ideal_artifact",
-                "format": "qasm2",
-                "content": "OPENQASM 2.0;",
-            },
-            "recommended_artifact_role": "canonical_ideal_artifact",
-            "construction_verification": {"status": "passed"},
-        }
+        return QDSVBridgeArtifact(
+            content="OPENQASM 2.0;",
+            format="qasm2",
+            language="openqasm2",
+            request_digest="sha256:" + "1" * 64,
+            artifact_digest="sha256:" + "2" * 64,
+            compiler_build_digest="sha256:" + "3" * 64,
+            resources={},
+            warnings=(),
+        )
 
-    monkeypatch.setattr(QDSVBridgeClient, "generate", fake_generate)
+    monkeypatch.setattr(QDSVBridge, "export", fake_export)
     exec(compile(_readme_quickstart_code(), "README.md", "exec"), {})
 
     output = capsys.readouterr().out
-    assert "SUCCESS" in output
-    assert "canonical_ideal_artifact" in output
+    assert "qasm2" in output
+    assert "sha256:" in output
 
-    problem = captured["spec"]["problem_spec"]
-    dataset = problem["data_binding"]["datasets"][0]
-    rows = dataset["rows"]
-
-    assert dataset["index_field"] == "candidate_index"
-    assert [row["candidate_index"] for row in rows] == [0, 1, 2]
-    assert [row["supplier_id"] for row in rows] == [101, 102, 103]
-    assert "supplier_id" not in repr(problem["predicate"])
-    assert "expected" not in repr(captured["spec"]).lower()
+    request = captured["spec"]
+    assert request["contract"] == "qdsv_bridge_domain.v1"
+    assert [row["supplier_id"] for row in request["problem"]["candidates"]] == [101, 102, 103]
+    assert request["problem"]["candidate_id_field"] == "candidate_index"
+    assert "problem_spec" not in request
+    assert "expected" not in repr(request).lower()

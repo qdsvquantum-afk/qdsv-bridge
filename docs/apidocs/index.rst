@@ -9,22 +9,23 @@ Client
    :undoc-members:
    :show-inheritance:
 
-Artifact Selection
-------------------
+Domain Requests
+---------------
 
-.. autofunction:: qdsv_bridge.select_recommended_artifact
+.. autofunction:: qdsv_bridge.predicate_request
 
-Predicate Specifications
-------------------------
+.. autofunction:: qdsv_bridge.score_request
 
-.. autofunction:: qdsv_bridge.build_predicate_spec
+Qiskit Adapter
+--------------
 
-.. autofunction:: qdsv_bridge.build_score_expression_spec
-
-.. autofunction:: qdsv_bridge.build_score_model_spec
-
-.. autoclass:: qdsv_bridge.PredicateSpecError
+.. autoclass:: qdsv_bridge.QDSVBridge
    :members:
+
+.. autoclass:: qdsv_bridge.QDSVBridgeArtifact
+   :members:
+
+.. autofunction:: qdsv_bridge.to_quantum_circuit
 
 Compatibility Helpers
 ---------------------
@@ -38,6 +39,9 @@ Exceptions
    :members:
 
 .. autoclass:: qdsv_bridge.QDSVBridgeAPIError
+   :members:
+
+.. autoclass:: qdsv_bridge.QDSVBridgeArtifactError
    :members:
 
 .. autoclass:: qdsv_bridge.QDSVBridgeHTTPError

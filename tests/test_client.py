@@ -1,16 +1,27 @@
 from __future__ import annotations
 
+from hashlib import sha256
+
 import pytest
 import requests
 
 import qdsv_bridge
-from qdsv_bridge import QDSVBridgeClient, select_recommended_artifact
+from qdsv_bridge import (
+    QDSVBridge,
+    QDSVBridgeArtifact,
+    QDSVBridgeArtifactError,
+    QDSVBridgeClient,
+    const,
+    field,
+    predicate_request,
+    select_recommended_artifact,
+)
 from qdsv_bridge.client import SDK_VERSION
 from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.6.7"
+    assert qdsv_bridge.__version__ == "0.7.0"
     assert SDK_VERSION == qdsv_bridge.__version__
 
 
@@ -123,15 +134,19 @@ def test_export_posts_spec(monkeypatch: pytest.MonkeyPatch) -> None:
         return FakeResponse()
 
     monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
-    result = QDSVBridgeClient().export({"family": "semantic_signal_classification"})
+    request = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+    )
+    result = QDSVBridgeClient().export(request)
 
     assert result["artifact"]["format"] == "qasm3"
     assert calls["method"] == "POST"
     assert calls["url"].endswith("/bridge/export")
-    assert calls["kwargs"]["json"]["spec"]["family"] == "semantic_signal_classification"
+    assert calls["kwargs"]["json"]["spec"]["contract"] == "qdsv_bridge_domain.v1"
 
 
-def test_score_model_uses_public_importance_priority_vocabulary(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_build_keeps_the_public_domain_request_intact(monkeypatch: pytest.MonkeyPatch) -> None:
     calls = {}
 
     class FakeResponse:
@@ -147,31 +162,15 @@ def test_score_model_uses_public_importance_priority_vocabulary(monkeypatch: pyt
         return FakeResponse()
 
     monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
-    spec = {
-        "problem_spec": {
-            "model": {
-                "kind": "score_model",
-                "version": "2.0",
-                "score": {
-                    "terms": [
-                        {
-                            "value": 1,
-                            "importance": 2,
-                            "priority": 3,
-                        }
-                    ]
-                },
-            }
-        }
-    }
+    spec = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+    )
 
     QDSVBridgeClient().build(spec)
 
-    term = calls["spec"]["problem_spec"]["model"]["score"]["terms"][0]
-    assert term["importance"] == 2
-    assert term["priority"] == 3
-    assert "weight" not in term
-    assert "criticality" not in term
+    assert calls["spec"]["contract"] == "qdsv_bridge_domain.v1"
+    assert "problem_spec" not in calls["spec"]
 
 
 def test_api_key_is_sent_as_header_and_bearer(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -206,7 +205,7 @@ def test_private_node_transport_error_is_user_friendly(monkeypatch: pytest.Monke
     with pytest.raises(QDSVBridgeAPIError) as exc:
         QDSVBridgeClient.local().families()
 
-    assert "Private QDSV node temporarily unavailable" in str(exc.value)
+    assert str(exc.value) == "QDSV Bridge service is temporarily unavailable. Try again later."
 
 
 def test_http_error_is_not_hidden(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -227,6 +226,56 @@ def test_http_error_is_not_hidden(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert exc.value.status_code == 400
     assert exc.value.payload["detail"]["error_code"] == "E_BRIDGE_UNSUPPORTED_FAMILY"
+    assert "E_BRIDGE_UNSUPPORTED_FAMILY" in str(exc.value)
+
+
+def test_retries_retryable_public_service_responses(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = []
+
+    class RetryResponse:
+        ok = False
+        status_code = 503
+
+        @staticmethod
+        def json():
+            return {"detail": {"error_code": "E_BRIDGE_UNAVAILABLE"}}
+
+    class SuccessResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"status": "SUCCESS", "families": {}}
+
+    def fake_request(method, url, **kwargs):
+        calls.append((method, url, kwargs))
+        return RetryResponse() if len(calls) == 1 else SuccessResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+    monkeypatch.setattr("qdsv_bridge.client.time.sleep", lambda _delay: None)
+
+    assert QDSVBridgeClient(max_retries=1).families()["status"] == "SUCCESS"
+    assert len(calls) == 2
+
+
+def test_invalid_non_json_service_body_is_not_exposed(monkeypatch: pytest.MonkeyPatch) -> None:
+    class InvalidResponse:
+        ok = False
+        status_code = 500
+        text = "internal stack trace that must not reach callers"
+
+        @staticmethod
+        def json():
+            raise ValueError("not json")
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", lambda *args, **kwargs: InvalidResponse())
+
+    with pytest.raises(QDSVBridgeHTTPError) as exc:
+        QDSVBridgeClient(max_retries=0).families()
+
+    assert exc.value.payload["detail"]["error_code"] == "E_BRIDGE_INVALID_RESPONSE"
+    assert "stack trace" not in str(exc.value)
 
 
 
@@ -246,10 +295,14 @@ def test_export_accepts_mode_argument(monkeypatch: pytest.MonkeyPatch) -> None:
         return FakeResponse()
 
     monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
-    result = QDSVBridgeClient().export({"family": "semantic_signal_classification"}, mode="use")
+    request = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+    )
+    result = QDSVBridgeClient().export(request, mode="use")
 
     assert result["bridge_mode"] == "use"
-    assert calls["kwargs"]["json"]["spec"]["bridge_mode"] == "use"
+    assert calls["kwargs"]["json"]["spec"]["delivery"]["mode"] == "use"
 
 
 def test_report_posts_spec_format_and_mode(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -270,13 +323,17 @@ def test_report_posts_spec_format_and_mode(monkeypatch: pytest.MonkeyPatch) -> N
         return FakeResponse()
 
     monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
-    result = QDSVBridgeClient().report({"family": "semantic_signal_classification"}, mode="build", format="markdown")
+    request = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+    )
+    result = QDSVBridgeClient().report(request, mode="build", format="markdown")
 
     assert result["report_format"] == "markdown"
     assert calls["method"] == "POST"
     assert calls["url"].endswith("/bridge/report")
     assert calls["kwargs"]["json"]["format"] == "markdown"
-    assert calls["kwargs"]["json"]["spec"]["bridge_mode"] == "build"
+    assert calls["kwargs"]["json"]["spec"]["delivery"]["mode"] == "build"
 
 
 def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -292,17 +349,85 @@ def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPat
             return {"status": "SUCCESS"}
 
     def fake_request(method, url, **kwargs):
-        modes.append(kwargs["json"]["spec"]["bridge_mode"])
+        modes.append(kwargs["json"]["spec"]["delivery"]["mode"])
         requested_specs.append(kwargs["json"]["spec"])
         return FakeResponse()
 
     monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
     client = QDSVBridgeClient()
-    spec = {"family": "semantic_signal_classification"}
+    spec = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+    )
     client.generate(spec)
     client.build(spec)
-    client.prepare(spec)
-    client.evaluate(spec)
 
-    assert modes == ["use", "build", "expert_prepare", "expert_evaluate"]
-    assert requested_specs[2]["target"]["format"] == "oracle_spec"
+    assert modes == ["use", "build"]
+    assert all("problem_spec" not in requested for requested in requested_specs)
+
+
+def _public_export_response(content: str = "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\n") -> dict:
+    artifact_digest = "sha256:" + sha256(content.encode("utf-8")).hexdigest()
+    return {
+        "contract": "qdsv_bridge_public.v1",
+        "status": "SUCCESS",
+        "artifact": {
+            "format": "qasm2",
+            "language": "openqasm2",
+            "content": content,
+            "materialization_status": "complete",
+        },
+        "digests": {
+            "request_digest": "sha256:" + "1" * 64,
+            "artifact_digest": artifact_digest,
+            "compiler_build_digest": "sha256:" + "2" * 64,
+        },
+        "verification": {"status": "passed", "circuit_materialized": None, "artifact_verified": True},
+        "resources": {"logical_qubits": 1},
+        "warnings": [],
+    }
+
+
+def test_public_artifact_refuses_digest_mismatch() -> None:
+    response = _public_export_response()
+    response["digests"]["artifact_digest"] = "sha256:" + "0" * 64
+
+    with pytest.raises(QDSVBridgeArtifactError, match="does not match"):
+        QDSVBridgeArtifact.from_public_response(response)
+
+
+def test_qiskit_facade_only_accepts_domain_v1_and_exports_explicitly() -> None:
+    calls = []
+
+    class FakeClient:
+        def export(self, request, *, mode=None):
+            calls.append((request, mode))
+            return _public_export_response()
+
+    bridge = QDSVBridge(FakeClient())
+    request = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+    )
+
+    artifact = bridge.export(request, mode="use")
+
+    assert artifact.artifact_digest == _public_export_response()["digests"]["artifact_digest"]
+    assert calls == [(request, "use")]
+    with pytest.raises(QDSVBridgeArtifactError, match="domain.v1"):
+        bridge.export({"problem": {}})
+
+
+def test_verified_artifact_load_is_separate_from_network(monkeypatch: pytest.MonkeyPatch) -> None:
+    artifact = QDSVBridgeArtifact.from_public_response(_public_export_response())
+    captured = {}
+
+    def fake_loader(source, artifact_format):
+        captured["source"] = source
+        captured["format"] = artifact_format
+        return "quantum-circuit"
+
+    monkeypatch.setattr("qdsv_bridge.qiskit._load_openqasm", fake_loader)
+
+    assert artifact.to_quantum_circuit() == "quantum-circuit"
+    assert captured == {"source": artifact.content, "format": "qasm2"}

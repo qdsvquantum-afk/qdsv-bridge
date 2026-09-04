@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import time
 from typing import Any, Mapping
 
 import requests
@@ -9,12 +10,9 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.6.7"
-PRIVATE_NODE_UNAVAILABLE_MESSAGE = (
-    "Private QDSV node temporarily unavailable. It may be offline, reserved for "
-    "private processing, or busy. Try again later or use QDSVBridgeClient() for "
-    "public cloud examples."
-)
+SDK_VERSION = "0.7.0"
+SERVICE_UNAVAILABLE_MESSAGE = "QDSV Bridge service is temporarily unavailable. Try again later."
+_RETRYABLE_STATUS_CODES = frozenset({429, 502, 503, 504})
 
 
 class QDSVBridgeClient:
@@ -26,6 +24,8 @@ class QDSVBridgeClient:
         api_key: str | None = None,
         *,
         timeout: float = 30.0,
+        max_retries: int = 2,
+        retry_backoff: float = 0.25,
         license_key: str | None = None,
         sdk_name: str = "qdsv-bridge",
     ) -> None:
@@ -35,8 +35,13 @@ class QDSVBridgeClient:
         self.api_key = api_key or os.getenv("QDSV_BRIDGE_API_KEY") or os.getenv("QDSV_API_KEY")
         self.license_key = license_key or os.getenv("QDSV_LICENSE_KEY")
         self.timeout = timeout
+        if not isinstance(max_retries, int) or max_retries < 0:
+            raise ValueError("max_retries must be a non-negative integer.")
+        if retry_backoff < 0:
+            raise ValueError("retry_backoff must be non-negative.")
+        self.max_retries = max_retries
+        self.retry_backoff = retry_backoff
         self.sdk_name = sdk_name
-        self._private_node = self._looks_like_private_node(self.api_url)
 
     @classmethod
     def local(
@@ -45,9 +50,18 @@ class QDSVBridgeClient:
         api_url: str = "http://localhost:18080/api",
         api_key: str | None = None,
         timeout: float = 30.0,
+        max_retries: int = 2,
+        retry_backoff: float = 0.25,
         license_key: str | None = None,
     ) -> "QDSVBridgeClient":
-        return cls(api_url=api_url, api_key=api_key, timeout=timeout, license_key=license_key)
+        return cls(
+            api_url=api_url,
+            api_key=api_key,
+            timeout=timeout,
+            max_retries=max_retries,
+            retry_backoff=retry_backoff,
+            license_key=license_key,
+        )
 
     @staticmethod
     def _normalize_api_url(value: str) -> str:
@@ -55,11 +69,6 @@ class QDSVBridgeClient:
         if not clean:
             return DEFAULT_API_URL
         return clean if clean.lower().endswith("/api") else f"{clean}/api"
-
-    @staticmethod
-    def _looks_like_private_node(api_url: str) -> bool:
-        clean = str(api_url or "").lower()
-        return "localhost" in clean or "127.0.0.1" in clean or "qintent-local.qdsv.cloud" in clean or "qruba.site" in clean
 
     def _headers(self) -> dict[str, str]:
         headers = {
@@ -78,7 +87,12 @@ class QDSVBridgeClient:
     def _spec_with_mode(spec: Mapping[str, Any], mode: str | None = None) -> dict[str, Any]:
         payload = dict(spec)
         if mode:
-            payload["bridge_mode"] = mode
+            if payload.get("contract") == "qdsv_bridge_domain.v1":
+                delivery = dict(payload.get("delivery") or {})
+                delivery["mode"] = mode
+                payload["delivery"] = delivery
+            else:
+                payload["bridge_mode"] = mode
         return payload
 
     def _request(self, method: str, path: str, *, json: Mapping[str, Any] | None = None) -> dict[str, Any]:
@@ -86,21 +100,42 @@ class QDSVBridgeClient:
         kwargs: dict[str, Any] = {"headers": self._headers(), "timeout": self.timeout}
         if json is not None:
             kwargs["json"] = dict(json)
-        try:
-            response = requests.request(method, url, **kwargs)
-        except requests.RequestException as exc:
-            if self._private_node:
-                raise QDSVBridgeAPIError(PRIVATE_NODE_UNAVAILABLE_MESSAGE) from exc
-            raise QDSVBridgeAPIError(str(exc)) from exc
-        try:
-            payload = response.json()
-        except ValueError:
-            payload = {"status": "ERROR", "message": response.text}
-        if not response.ok:
-            raise QDSVBridgeHTTPError(response.status_code, payload)
-        if not isinstance(payload, dict):
-            raise QDSVBridgeAPIError(f"Unexpected API response type: {type(payload).__name__}")
-        return payload
+        attempts = self.max_retries + 1
+        last_transport_error: requests.RequestException | None = None
+        for attempt in range(attempts):
+            try:
+                response = requests.request(method, url, **kwargs)
+            except requests.RequestException as exc:
+                last_transport_error = exc
+                if attempt + 1 < attempts:
+                    self._wait_before_retry(attempt)
+                    continue
+                raise QDSVBridgeAPIError(SERVICE_UNAVAILABLE_MESSAGE) from exc
+
+            try:
+                payload = response.json()
+            except ValueError:
+                payload = {
+                    "detail": {
+                        "error_code": "E_BRIDGE_INVALID_RESPONSE",
+                        "message": "Bridge service returned an invalid public response.",
+                        "detail": {},
+                    }
+                }
+            if response.status_code in _RETRYABLE_STATUS_CODES and attempt + 1 < attempts:
+                self._wait_before_retry(attempt)
+                continue
+            if not response.ok:
+                raise QDSVBridgeHTTPError(response.status_code, payload)
+            if not isinstance(payload, dict):
+                raise QDSVBridgeAPIError("Bridge service returned an unexpected public response.")
+            return payload
+        raise QDSVBridgeAPIError(SERVICE_UNAVAILABLE_MESSAGE) from last_transport_error
+
+    def _wait_before_retry(self, attempt: int) -> None:
+        delay = self.retry_backoff * (2**attempt)
+        if delay:
+            time.sleep(delay)
 
     def families(self) -> dict[str, Any]:
         """Compatibility alias for the capability catalog endpoint."""
@@ -142,17 +177,3 @@ class QDSVBridgeClient:
         """Return logical artifacts, editable views, evidence and digests."""
 
         return self.export(spec, mode="build")
-
-    def prepare(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        """Expert-constructor mode: semantic inputs for designing a custom circuit."""
-
-        prepared_spec = dict(spec)
-        target = dict(prepared_spec.get("target") or {})
-        target["format"] = "oracle_spec"
-        prepared_spec["target"] = target
-        return self.export(prepared_spec, mode="expert_prepare")
-
-    def evaluate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
-        """Expert-evaluator mode: suggested QDSV materialization and variants."""
-
-        return self.export(spec, mode="expert_evaluate")

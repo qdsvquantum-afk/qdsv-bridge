@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qdsv.cloud/schemas/qdsv_bridge_conformance_report.v0.7.json",
+  "title": "QDSV Bridge 0.7.0 public conformance report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "created_at_utc",
+    "target",
+    "boundary",
+    "runner",
+    "summary",
+    "checks",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": "qdsv_bridge_conformance_report.v0.7"},
+    "run_id": {"type": "string", "minLength": 1},
+    "created_at_utc": {"type": "string", "format": "date-time"},
+    "target": {
+      "type": "object",
+      "required": ["api_url", "authentication_present", "private_compiler_access"],
+      "properties": {
+        "api_url": {"type": "string"},
+        "authentication_present": {"type": "boolean"},
+        "private_compiler_access": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": ["pass", "fail", "not_evaluated"],
+      "properties": {
+        "pass": {"type": "integer", "minimum": 0},
+        "fail": {"type": "integer", "minimum": 0},
+        "not_evaluated": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check_id", "category", "status"],
+        "properties": {
+          "check_id": {"type": "string"},
+          "category": {"type": "string"},
+          "status": {"enum": ["PASS", "FAIL", "NOT_EVALUATED"]}
+        }
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  }
+}
