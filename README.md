@@ -82,6 +82,44 @@ or QPU, or interpret execution results. Those remain under the user's Qiskit
 or provider workflow. The SDK has no local construction or circuit-generation
 fallback.
 
+## Semantic composition candidates
+
+The official Bridge backend can also report the status of QDSV's Semantic
+Composition Engine (SCE). SCE generates composite operation candidates from
+bounded structured expressions and only marks them `OFFICIAL_CANDIDATE` when
+the backend evidence includes both operation-program verification and semantic
+cross-check over the declared finite domain.
+
+```python
+from qdsv_bridge import QDSVBridgeClient
+
+client = QDSVBridgeClient()
+capabilities = client.composition_capabilities()
+
+candidate = client.generate_composition_candidate(
+    name="policy_gate_score_v1",
+    expression={
+        "op": "select_if",
+        "args": [
+            {"op": "gte", "args": [{"var": "risk"}, 5]},
+            {"op": "add", "args": [{"op": "mul", "args": [{"var": "risk"}, 2]}, {"var": "impact"}]},
+            {"var": "impact"},
+        ],
+    },
+    domains=[
+        {"type": "int_range", "variable": "risk", "start": 0, "end": 7},
+        {"type": "int_range", "variable": "impact", "start": 0, "end": 7},
+    ],
+)
+
+print(candidate["candidate"]["state"])
+print(candidate["evidence"]["semantic_cross_check"]["status"])
+```
+
+Reference outputs may be used by the backend to verify candidate semantics, but
+the evidence must report `reference_answers_used_for_materialization = false`.
+The SDK does not include the private compiler or operation synthesis internals.
+
 ## Public boundary
 
 The SDK's stable contracts are `qdsv_bridge_domain.v1` for requests and

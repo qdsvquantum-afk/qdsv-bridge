@@ -5,6 +5,8 @@
   "contracts": {
     "domain_request": "qdsv_bridge_domain.v1",
     "service_response": "qdsv_bridge_public.v1",
+    "semantic_composition_capabilities": "qdsv_semantic_composition_engine.v1",
+    "semantic_composition_candidate": "qdsv_composite_operation_candidate.v1",
     "portable_artifacts": ["qasm2", "qasm3", "qiskit_blueprint"]
   },
   "qiskit_integration": {
@@ -21,6 +23,7 @@
   "boundaries": {
     "contains_private_compiler": false,
     "contains_internal_intermediate_representation": false,
+    "contains_private_operation_synthesis_rules": false,
     "contains_nonpublic_execution_plans": false,
     "executes_qpu": false,
     "performs_physical_routing": false,

@@ -147,6 +147,50 @@ class QDSVBridgeClient:
 
         return self._request("GET", "/bridge/capabilities")
 
+    def composition_capabilities(self) -> dict[str, Any]:
+        """Return Semantic Composition Engine publication and evidence policy.
+
+        The SCE lives in the Bridge service. The SDK only requests public
+        capabilities and candidate packages; it does not contain or run the
+        private compiler.
+        """
+
+        return self._request("GET", "/product/composition/capabilities")
+
+    def generate_composition_candidate(
+        self,
+        *,
+        name: str,
+        expression: Mapping[str, Any],
+        domains: list[Mapping[str, Any]] | None = None,
+        description: str | None = None,
+        source: str | None = None,
+        publication_target: str = "internal_candidate",
+        semantic_cross_check_max_cases: int | None = None,
+    ) -> dict[str, Any]:
+        """Generate a composite operation candidate through the Bridge backend.
+
+        ``OFFICIAL_CANDIDATE`` requires server-side operation-program
+        verification plus semantic cross-check over the declared finite domain.
+        Reference outputs may be used for verification evidence, but not for
+        materialization.
+        """
+
+        payload: dict[str, Any] = {
+            "name": name,
+            "expression": dict(expression),
+            "publication_target": publication_target,
+        }
+        if domains is not None:
+            payload["domains"] = [dict(domain) for domain in domains]
+        if description is not None:
+            payload["description"] = description
+        if source is not None:
+            payload["source"] = source
+        if semantic_cross_check_max_cases is not None:
+            payload["semantic_cross_check_max_cases"] = int(semantic_cross_check_max_cases)
+        return self._request("POST", "/product/composition/generate", json=payload)
+
     def validate(self, spec: Mapping[str, Any], *, mode: str | None = None) -> dict[str, Any]:
         return self._request("POST", "/bridge/validate", json={"spec": self._spec_with_mode(spec, mode)})
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Adds public SDK accessors for the Bridge backend Semantic Composition Engine:
+  `composition_capabilities()` and `generate_composition_candidate()`.
+- Documents the SCE evidence gate for generated operations: operation-program
+  verification plus semantic cross-check over the declared finite domain before
+  an operation can be marked `OFFICIAL_CANDIDATE`.
+- Keeps the compiler, private operation synthesis rules and runtime deployment
+  material outside the SDK distribution; reference outputs are allowed for
+  semantic verification evidence, not materialization.
+
 ## 0.7.0 — Public boundary release
 
 - Replaces the former request surface with the stable

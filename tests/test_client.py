@@ -116,6 +116,99 @@ def test_capabilities_uses_primary_operation_catalog_endpoint(monkeypatch: pytes
     assert calls["url"].endswith("/bridge/capabilities")
 
 
+def test_composition_capabilities_uses_public_sce_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = {}
+
+    class FakeResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {
+                "status": "SUCCESS",
+                "semantic_composition_engine": {
+                    "version": "qdsv_semantic_composition_engine.v1",
+                    "bridge_publication_policy": {"EXPERIMENTAL": False},
+                },
+            }
+
+    def fake_request(method, url, **kwargs):
+        calls["method"] = method
+        calls["url"] = url
+        calls["kwargs"] = kwargs
+        return FakeResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+    result = QDSVBridgeClient().composition_capabilities()
+
+    assert result["semantic_composition_engine"]["version"] == "qdsv_semantic_composition_engine.v1"
+    assert calls["method"] == "GET"
+    assert calls["url"].endswith("/product/composition/capabilities")
+    assert "json" not in calls["kwargs"]
+
+
+def test_generate_composition_candidate_posts_public_candidate_request(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = {}
+
+    class FakeResponse:
+        ok = True
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {
+                "status": "SUCCESS",
+                "candidate": {
+                    "operation": "policy_gate_score_v1",
+                    "state": "OFFICIAL_CANDIDATE",
+                    "publication": {"bridge_public": True, "official_without_human_review": False},
+                },
+                "evidence": {
+                    "operation_program_verification": {"status": "passed"},
+                    "semantic_cross_check": {"status": "passed", "case_count": 64, "failure_count": 0},
+                    "reference_answers_used_for_materialization": False,
+                    "reference_answers_used_for_semantic_verification": True,
+                },
+            }
+
+    def fake_request(method, url, **kwargs):
+        calls["method"] = method
+        calls["url"] = url
+        calls["kwargs"] = kwargs
+        return FakeResponse()
+
+    monkeypatch.setattr("qdsv_bridge.client.requests.request", fake_request)
+    result = QDSVBridgeClient().generate_composition_candidate(
+        name="policy_gate_score_v1",
+        description="Select an adjusted score when a threshold predicate is satisfied.",
+        expression={
+            "op": "select_if",
+            "args": [
+                {"op": "gte", "args": [{"var": "risk"}, 5]},
+                {"op": "add", "args": [{"op": "mul", "args": [{"var": "risk"}, 2]}, {"var": "impact"}]},
+                {"var": "impact"},
+            ],
+        },
+        domains=[
+            {"type": "int_range", "variable": "risk", "start": 0, "end": 7},
+            {"type": "int_range", "variable": "impact", "start": 0, "end": 7},
+        ],
+        semantic_cross_check_max_cases=128,
+    )
+
+    payload = calls["kwargs"]["json"]
+    assert result["candidate"]["state"] == "OFFICIAL_CANDIDATE"
+    assert result["evidence"]["semantic_cross_check"]["status"] == "passed"
+    assert result["evidence"]["reference_answers_used_for_materialization"] is False
+    assert calls["method"] == "POST"
+    assert calls["url"].endswith("/product/composition/generate")
+    assert payload["name"] == "policy_gate_score_v1"
+    assert payload["publication_target"] == "internal_candidate"
+    assert payload["semantic_cross_check_max_cases"] == 128
+    assert payload["domains"][0]["variable"] == "risk"
+
+
 def test_export_posts_spec(monkeypatch: pytest.MonkeyPatch) -> None:
     calls = {}
 
