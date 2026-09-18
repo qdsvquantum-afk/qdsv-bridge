@@ -13,7 +13,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeArtifactError, QDSVBridgeE
 from .qiskit import QDSVBridge, QDSVBridgeArtifact, to_quantum_circuit
 from .release import get_release_manifest
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"
 
 __all__ = [
     "QDSVBridgeClient",

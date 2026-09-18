@@ -5,7 +5,7 @@ workflows. Applications submit a bounded decision request and receive a
 portable OpenQASM or Qiskit-ready artifact when the request is within the
 service's supported scope.
 
-Version `0.7.0` introduces a deliberately narrow public boundary. The SDK
+Version `0.7.x` uses a deliberately narrow public boundary. The SDK
 contains domain request builders, an HTTP client and artifact adapters. The
 QDSV translation and implementation that derive an artifact run only in the
 Bridge service.
@@ -137,7 +137,7 @@ present.
 
 ## Migration from 0.6.x
 
-Release `0.7.0` is intentionally breaking. Replace legacy request builders
+Release `0.7.0` was intentionally breaking. Replace legacy request builders
 with `predicate_request()` or `score_request()`, and receive a verified public
 artifact through `QDSVBridge().export(request)`. See the 0.7 migration guide
 in the documentation before upgrading an existing integration.

@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.7.1 — Semantic Composition Engine access
 
 - Adds public SDK accessors for the Bridge backend Semantic Composition Engine:
   `composition_capabilities()` and `generate_composition_candidate()`.

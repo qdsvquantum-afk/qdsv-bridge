@@ -1,6 +1,6 @@
 {
   "schema_version": "qdsv_bridge_release_manifest.v2",
-  "sdk_version": "0.7.0",
+  "sdk_version": "0.7.1",
   "release_status": "public_release",
   "contracts": {
     "domain_request": "qdsv_bridge_domain.v1",
