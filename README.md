@@ -119,6 +119,11 @@ print(candidate["evidence"]["semantic_cross_check"]["status"])
 Reference outputs may be used by the backend to verify candidate semantics, but
 the evidence must report `reference_answers_used_for_materialization = false`.
 The SDK does not include the private compiler or operation synthesis internals.
+SCE is available to Bridge as a generation/query capability for composite
+operation candidates. It does not change Bridge's product boundary: Bridge
+continues to return verified circuit artifacts/OpenQASM/Qiskit-ready outputs;
+catalog governance, QPU evidence attachment and OFFICIAL promotion belong to
+the Qruba/API governance surface.
 
 ## Public boundary
 

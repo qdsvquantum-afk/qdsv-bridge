@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.2 — Bridge/SCE boundary clarification
+
+- Clarifies that SCE is available to Bridge as a generation/query capability
+  for composite operation candidates.
+- Keeps Bridge's product scope narrow: verified circuit artifacts, OpenQASM and
+  Qiskit-ready outputs.
+- Documents that catalog governance, QPU evidence attachment and OFFICIAL
+  promotion belong to the Qruba/API governance surface, not the Bridge SDK.
+
 ## 0.7.1 — Semantic Composition Engine access
 
 - Adds public SDK accessors for the Bridge backend Semantic Composition Engine:

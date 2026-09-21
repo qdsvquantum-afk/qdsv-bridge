@@ -1,6 +1,6 @@
 {
   "schema_version": "qdsv_bridge_public_distribution.v1",
-  "sdk_version": "0.7.1",
+  "sdk_version": "0.7.2",
   "allowed_package_files": [
     "__init__.py",
     "artifacts.py",

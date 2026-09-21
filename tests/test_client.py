@@ -21,7 +21,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.7.1"
+    assert qdsv_bridge.__version__ == "0.7.2"
     assert SDK_VERSION == qdsv_bridge.__version__
 
 
