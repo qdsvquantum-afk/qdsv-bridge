@@ -90,10 +90,13 @@ bounded structured expressions and only marks them `OFFICIAL_CANDIDATE` when
 the backend evidence includes both operation-program verification and semantic
 cross-check over the declared finite domain.
 
+The public capability endpoint only returns a summary. Candidate generation and
+evidence packages require an authenticated Qruba/Bridge governance context.
+
 ```python
 from qdsv_bridge import QDSVBridgeClient
 
-client = QDSVBridgeClient()
+client = QDSVBridgeClient(api_key="...")
 capabilities = client.composition_capabilities()
 
 candidate = client.generate_composition_candidate(
@@ -132,8 +135,9 @@ The SDK's stable contracts are `qdsv_bridge_domain.v1` for requests and
 `qasm3` artifacts.
 
 The public service does not return internal intermediate representations,
-lowering plans, private build identities, or compilation diagnostics. Do not
-send confidential, regulated or secret data to a public endpoint.
+lowering plans, private build identities, exact operational limits, SCE
+certification topology or compilation diagnostics. Do not send confidential,
+regulated or secret data to a public endpoint.
 
 The distributable wheel and source package are checked before release against
 the 0.7 public-distribution policy. The check fails when an unexpected module,

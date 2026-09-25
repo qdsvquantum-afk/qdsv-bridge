@@ -10,7 +10,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.7.2"
+SDK_VERSION = "0.7.3"
 SERVICE_UNAVAILABLE_MESSAGE = "QDSV Bridge service is temporarily unavailable. Try again later."
 _RETRYABLE_STATUS_CODES = frozenset({429, 502, 503, 504})
 

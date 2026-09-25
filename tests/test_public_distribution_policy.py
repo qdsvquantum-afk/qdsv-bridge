@@ -11,7 +11,7 @@ def test_public_distribution_policy_matches_current_sdk() -> None:
     policy = json.loads((ROOT / "packaging" / "public-distribution-policy.json").read_text(encoding="utf-8"))
 
     assert policy["schema_version"] == "qdsv_bridge_public_distribution.v1"
-    assert policy["sdk_version"] == "0.7.2"
+    assert policy["sdk_version"] == "0.7.3"
     assert {"domain.py", "qiskit.py", "release_manifest.json"}.issubset(policy["allowed_package_files"])
     assert {"compiler", "lowering", "intermediate", "ir"}.issubset(policy["forbidden_module_stems"])
     assert "semantic_ir" in policy["forbidden_content_markers"]

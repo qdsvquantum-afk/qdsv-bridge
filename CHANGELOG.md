@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.3 — Hardened public boundary
+
+- Removes `qiskit_blueprint` from the unauthenticated public delivery formats.
+- Keeps Qiskit interoperability through verified QASM2/QASM3 artifacts and
+  local `QuantumCircuit` loading.
+- Stops publishing build identity, exact service limits and detailed SCE
+  certification topology through public responses.
+- Requires the stable `qdsv_bridge_domain.v1` request envelope for public
+  Bridge endpoints.
+
 ## 0.7.2 — Bridge/SCE boundary clarification
 
 - Clarifies that SCE is available to Bridge as a generation/query capability
@@ -25,8 +35,7 @@
 - Replaces the former request surface with the stable
   `qdsv_bridge_domain.v1` public domain contract.
 - Freezes `qdsv_bridge_public.v1` as the public response boundary.
-- Delivers one verified public artifact with `request_digest`,
-  `artifact_digest`, and opaque `compiler_build_digest` attestations.
+- Delivers one verified public artifact with request and artifact digests.
 - Adds the explicit Qiskit adapter: public export, byte-level artifact-digest
   verification, then local QASM2/QASM3 loading into `QuantumCircuit`.
 - Adds bounded retry handling that never surfaces raw non-public service bodies.

@@ -12,7 +12,7 @@ from typing import Any, Mapping, Sequence
 
 
 PUBLIC_DOMAIN_CONTRACT = "qdsv_bridge_domain.v1"
-_DELIVERY_FORMATS = {"qasm2", "qasm3", "qiskit_blueprint"}
+_DELIVERY_FORMATS = {"qasm2", "qasm3"}
 
 
 class DomainRequestError(ValueError):

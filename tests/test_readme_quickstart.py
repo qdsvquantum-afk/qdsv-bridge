@@ -36,7 +36,6 @@ def test_readme_business_first_quickstart_is_executable(
             language="openqasm2",
             request_digest="sha256:" + "1" * 64,
             artifact_digest="sha256:" + "2" * 64,
-            compiler_build_digest="sha256:" + "3" * 64,
             resources={},
             warnings=(),
         )

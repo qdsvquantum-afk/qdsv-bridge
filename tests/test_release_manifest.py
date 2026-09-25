@@ -22,4 +22,4 @@ def test_release_manifest_is_returned_as_an_independent_value() -> None:
     first = qdsv_bridge.get_release_manifest()
     first["sdk_version"] = "modified"
 
-    assert qdsv_bridge.get_release_manifest()["sdk_version"] == "0.7.2"
+    assert qdsv_bridge.get_release_manifest()["sdk_version"] == "0.7.3"

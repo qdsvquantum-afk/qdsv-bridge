@@ -40,7 +40,7 @@ def test_score_request_keeps_decision_data_without_exposing_a_circuit_model() ->
     assert "execution_strategy" not in request
 
 
-@pytest.mark.parametrize("format", ["ir", "oracle_spec", "problem_spec"])
+@pytest.mark.parametrize("format", ["ir", "oracle_spec", "problem_spec", "qiskit_blueprint"])
 def test_rejects_nonportable_delivery_formats(format: str) -> None:
     with pytest.raises(DomainRequestError):
         predicate_request(

@@ -21,7 +21,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.7.2"
+    assert qdsv_bridge.__version__ == "0.7.3"
     assert SDK_VERSION == qdsv_bridge.__version__
 
 
@@ -129,7 +129,7 @@ def test_composition_capabilities_uses_public_sce_endpoint(monkeypatch: pytest.M
                 "status": "SUCCESS",
                 "semantic_composition_engine": {
                     "version": "qdsv_semantic_composition_engine.v1",
-                    "bridge_publication_policy": {"EXPERIMENTAL": False},
+                    "public_generation_requires_auth": True,
                 },
             }
 
@@ -473,7 +473,6 @@ def _public_export_response(content: str = "OPENQASM 2.0;\ninclude \"qelib1.inc\
         "digests": {
             "request_digest": "sha256:" + "1" * 64,
             "artifact_digest": artifact_digest,
-            "compiler_build_digest": "sha256:" + "2" * 64,
         },
         "verification": {"status": "passed", "circuit_materialized": None, "artifact_verified": True},
         "resources": {"logical_qubits": 1},

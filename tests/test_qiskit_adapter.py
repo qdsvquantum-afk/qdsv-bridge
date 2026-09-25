@@ -24,7 +24,6 @@ def _response(source: str, artifact_format: str) -> dict:
         "digests": {
             "request_digest": "sha256:" + "a" * 64,
             "artifact_digest": "sha256:" + sha256(source.encode("utf-8")).hexdigest(),
-            "compiler_build_digest": "sha256:" + "b" * 64,
         },
         "verification": {"status": "passed", "circuit_materialized": None, "artifact_verified": True},
         "resources": {"logical_qubits": 1},

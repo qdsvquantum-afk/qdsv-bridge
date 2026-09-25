@@ -37,7 +37,6 @@ class QDSVBridgeArtifact:
     language: str
     request_digest: str
     artifact_digest: str
-    compiler_build_digest: str
     resources: Mapping[str, Any]
     warnings: tuple[str, ...]
 
@@ -71,9 +70,6 @@ class QDSVBridgeArtifact:
 
         request_digest = _require_digest(digests.get("request_digest"), "request_digest")
         artifact_digest = _require_digest(digests.get("artifact_digest"), "artifact_digest")
-        compiler_build_digest = _require_digest(
-            digests.get("compiler_build_digest"), "compiler_build_digest"
-        )
         delivered_digest = "sha256:" + sha256(content.encode("utf-8")).hexdigest()
         if artifact_digest != delivered_digest:
             raise QDSVBridgeArtifactError(
@@ -91,7 +87,6 @@ class QDSVBridgeArtifact:
             language=str(artifact.get("language") or ""),
             request_digest=request_digest,
             artifact_digest=artifact_digest,
-            compiler_build_digest=compiler_build_digest,
             resources=dict(resources),
             warnings=tuple(warnings),
         )

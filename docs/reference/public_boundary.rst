@@ -18,10 +18,10 @@ Service-only work
 The service is the sole place that turns a valid public request into an
 artifact. The SDK does not have a second local path to produce a circuit.
 
-Public responses carry a request digest, an artifact digest and an opaque
-``compiler_build_digest``. The public report is limited to contract identity,
-verification, resources, warnings, limits and status. It is not a diagnostic
-trace.
+Public responses carry a request digest, an artifact digest for delivered
+artifacts, verification status, warnings and basic resource metrics. Build
+identity, exact operational limits and compiler diagnostics are not part of
+the unauthenticated public boundary. It is not a diagnostic trace.
 
 Distribution guard
 ------------------

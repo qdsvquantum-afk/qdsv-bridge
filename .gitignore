@@ -5,6 +5,9 @@ dist/
 build/
 audit-dist/
 release-assets/
+dist-*-verify/
+dist-*-check/
+distribution-conformance-*.json
 docs/_build/
 submissions/
 benchmarks/*

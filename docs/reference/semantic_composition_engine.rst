@@ -11,12 +11,13 @@ Public Endpoints
 ----------------
 
 ``GET /api/product/composition/capabilities``
-   Returns the SCE version, state model, publication policy and semantic
-   cross-check policy.
+   Returns only the public SCE availability summary. Detailed state models,
+   composition plans, primitive reference suites and evidence packages belong
+   to authenticated governance surfaces.
 
 ``POST /api/product/composition/generate``
    Requests a composite operation candidate from a bounded expression and
-   declared finite domains.
+   declared finite domains. This operation requires authentication.
 
 Candidate States
 ----------------
@@ -106,4 +107,3 @@ SDK Usage
 
    print(result["candidate"]["state"])
    print(result["evidence"]["semantic_cross_check"]["status"])
-
