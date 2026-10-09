@@ -1,5 +1,5 @@
-QDSV Bridge 0.7 public boundary
-================================
+QDSV Bridge Public Technical Preview boundary
+=============================================
 
 The stable request contract is ``qdsv_bridge_domain.v1``. The stable service
 response contract is ``qdsv_bridge_public.v1``.

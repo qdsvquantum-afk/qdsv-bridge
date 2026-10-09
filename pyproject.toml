@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "qdsv-bridge"
 version = "0.7.3"
-description = "Public domain-to-quantum SDK for portable QDSV Bridge artifacts."
+description = "Public Technical Preview SDK for portable QDSV Bridge artifacts."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"

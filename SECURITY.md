@@ -10,6 +10,6 @@ Please do not open public issues for sensitive security concerns.
 
 Use the contact form at https://qdsv.cloud/ or contact the project maintainers privately.
 
-## Public Preview Boundaries
+## Public Technical Preview Boundaries
 
-Bridge public endpoints are intended for bounded semantic specs and lightweight export experiments. They are not intended for sensitive records, production workloads, raw datasets or hardware execution.
+Bridge public endpoints are part of the QDSV Bridge Public Technical Preview. They are intended for bounded semantic specs and lightweight export workflows. They are not intended for sensitive records, production workloads, raw datasets or hardware execution.

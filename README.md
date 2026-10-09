@@ -1,11 +1,11 @@
-# QDSV Bridge
+# QDSV Bridge: Public Technical Preview
 
 QDSV Bridge is the QDSV interoperability service for circuit-based quantum
 workflows. Applications submit a bounded decision request and receive a
 portable OpenQASM or Qiskit-ready artifact when the request is within the
 service's supported scope.
 
-Version `0.7.x` uses a deliberately narrow public boundary. The SDK
+Version `0.7.x` is a Public Technical Preview with a deliberately narrow public boundary. The SDK
 contains domain request builders, an HTTP client and artifact adapters. The
 QDSV translation and implementation that derive an artifact run only in the
 Bridge service.
