@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.4 — User-mode contract alignment
+
+- Makes the four documented delivery modes valid across request builders,
+  client helpers and the public service boundary.
+- Returns the resolved mode and user profile in public responses.
+- Gives intermediate and expert users distinct public result envelopes while
+  preserving the private compiler boundary.
+- Routes expert construction preparation through ``QDSVBridgeClient.prepare``
+  because that mode returns semantic guidance instead of a circuit artifact.
+
 ## 0.7.3 — Hardened public boundary
 
 - Removes `qiskit_blueprint` from the unauthenticated public delivery formats.

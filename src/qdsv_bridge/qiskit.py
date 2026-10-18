@@ -119,6 +119,14 @@ class QDSVBridge:
             raise QDSVBridgeArtifactError(
                 "QDSVBridge accepts only qdsv_bridge_domain.v1 public requests."
             )
+        requested_mode = str(
+            mode or ((request.get("delivery") or {}).get("mode") if isinstance(request.get("delivery"), Mapping) else "")
+        ).strip().lower()
+        if requested_mode == "expert_prepare":
+            raise QDSVBridgeArtifactError(
+                "expert_prepare returns semantic construction guidance rather than a circuit; "
+                "use QDSVBridgeClient.prepare(request)."
+            )
         return QDSVBridgeArtifact.from_public_response(self.client.export(request, mode=mode))
 
     def materialize(self, request: Mapping[str, Any], *, mode: str | None = None) -> Any:

@@ -13,6 +13,8 @@ from typing import Any, Mapping, Sequence
 
 PUBLIC_DOMAIN_CONTRACT = "qdsv_bridge_domain.v1"
 _DELIVERY_FORMATS = {"qasm2", "qasm3"}
+PUBLIC_DELIVERY_MODES = ("use", "build", "expert_prepare", "expert_evaluate")
+_DELIVERY_MODES = frozenset(PUBLIC_DELIVERY_MODES)
 
 
 class DomainRequestError(ValueError):
@@ -135,8 +137,8 @@ def _base_request(
     delivery_format = str(format).strip().lower()
     if delivery_format not in _DELIVERY_FORMATS:
         raise DomainRequestError(f"format must be one of {sorted(_DELIVERY_FORMATS)}.")
-    if str(mode).strip().lower() not in {"use", "build"}:
-        raise DomainRequestError("mode must be use or build.")
+    if str(mode).strip().lower() not in _DELIVERY_MODES:
+        raise DomainRequestError(f"mode must be one of {sorted(_DELIVERY_MODES)}.")
     if int(shots) < 1:
         raise DomainRequestError("shots must be a positive integer.")
     guardrails = {
@@ -172,6 +174,7 @@ def _object_list(values: Sequence[Mapping[str, Any]], name: str) -> list[dict[st
 
 __all__ = [
     "PUBLIC_DOMAIN_CONTRACT",
+    "PUBLIC_DELIVERY_MODES",
     "DomainRequestError",
     "const",
     "field",

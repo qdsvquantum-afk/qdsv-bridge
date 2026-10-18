@@ -21,7 +21,7 @@ from qdsv_bridge.exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
 
 
 def test_package_version_is_current() -> None:
-    assert qdsv_bridge.__version__ == "0.7.3"
+    assert qdsv_bridge.__version__ == "0.7.4"
     assert SDK_VERSION == qdsv_bridge.__version__
 
 
@@ -454,8 +454,10 @@ def test_convenience_methods_select_expected_modes(monkeypatch: pytest.MonkeyPat
     )
     client.generate(spec)
     client.build(spec)
+    client.prepare(spec)
+    client.evaluate(spec)
 
-    assert modes == ["use", "build"]
+    assert modes == ["use", "build", "expert_prepare", "expert_evaluate"]
     assert all("problem_spec" not in requested for requested in requested_specs)
 
 
@@ -508,6 +510,21 @@ def test_qiskit_facade_only_accepts_domain_v1_and_exports_explicitly() -> None:
     assert calls == [(request, "use")]
     with pytest.raises(QDSVBridgeArtifactError, match="domain.v1"):
         bridge.export({"problem": {}})
+
+
+def test_qiskit_facade_directs_expert_prepare_to_the_public_client() -> None:
+    class FakeClient:
+        def export(self, request, *, mode=None):
+            raise AssertionError("expert_prepare must be rejected before the network call")
+
+    request = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+        mode="expert_prepare",
+    )
+
+    with pytest.raises(QDSVBridgeArtifactError, match="QDSVBridgeClient.prepare"):
+        QDSVBridge(FakeClient()).export(request)
 
 
 def test_verified_artifact_load_is_separate_from_network(monkeypatch: pytest.MonkeyPatch) -> None:

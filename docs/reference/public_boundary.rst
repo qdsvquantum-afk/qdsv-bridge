@@ -23,6 +23,22 @@ artifacts, verification status, warnings and basic resource metrics. Build
 identity, exact operational limits and compiler diagnostics are not part of
 the unauthenticated public boundary. It is not a diagnostic trace.
 
+Published user modes
+--------------------
+
+All four public modes use the same ``qdsv_bridge_domain.v1`` request:
+
+* ``use`` returns the ``basic_user`` artifact result.
+* ``build`` returns the ``intermediate_builder`` artifact and safe build details.
+* ``expert_prepare`` returns ``expert_constructor`` guidance, with no artifact.
+* ``expert_evaluate`` returns the ``expert_evaluator`` artifact and public
+  evaluation data.
+
+The response always includes ``mode`` and ``user_profile``. For
+``expert_prepare``, ``artifact`` and ``artifact_digest`` are ``None`` by
+contract; callers use ``QDSVBridgeClient.prepare()``. Circuit-bearing modes can
+be passed through the Qiskit adapter after digest verification.
+
 Distribution guard
 ------------------
 

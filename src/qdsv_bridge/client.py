@@ -7,10 +7,11 @@ from typing import Any, Mapping
 import requests
 
 from .exceptions import QDSVBridgeAPIError, QDSVBridgeHTTPError
+from .domain import DomainRequestError, PUBLIC_DELIVERY_MODES
 
 
 DEFAULT_API_URL = "https://api.qdsv.cloud/api"
-SDK_VERSION = "0.7.3"
+SDK_VERSION = "0.7.4"
 SERVICE_UNAVAILABLE_MESSAGE = "QDSV Bridge service is temporarily unavailable. Try again later."
 _RETRYABLE_STATUS_CODES = frozenset({429, 502, 503, 504})
 
@@ -87,12 +88,15 @@ class QDSVBridgeClient:
     def _spec_with_mode(spec: Mapping[str, Any], mode: str | None = None) -> dict[str, Any]:
         payload = dict(spec)
         if mode:
+            selected_mode = str(mode).strip().lower()
+            if selected_mode not in PUBLIC_DELIVERY_MODES:
+                raise DomainRequestError(f"mode must be one of {list(PUBLIC_DELIVERY_MODES)}.")
             if payload.get("contract") == "qdsv_bridge_domain.v1":
                 delivery = dict(payload.get("delivery") or {})
-                delivery["mode"] = mode
+                delivery["mode"] = selected_mode
                 payload["delivery"] = delivery
             else:
-                payload["bridge_mode"] = mode
+                payload["bridge_mode"] = selected_mode
         return payload
 
     def _request(self, method: str, path: str, *, json: Mapping[str, Any] | None = None) -> dict[str, Any]:
@@ -221,3 +225,13 @@ class QDSVBridgeClient:
         """Return logical artifacts, editable views, evidence and digests."""
 
         return self.export(spec, mode="build")
+
+    def prepare(self, spec: Mapping[str, Any]) -> dict[str, Any]:
+        """Return public semantic construction guidance for an expert."""
+
+        return self.export(spec, mode="expert_prepare")
+
+    def evaluate(self, spec: Mapping[str, Any]) -> dict[str, Any]:
+        """Return the circuit together with public expert evaluation evidence."""
+
+        return self.export(spec, mode="expert_evaluate")

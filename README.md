@@ -54,6 +54,36 @@ print(artifact.artifact_digest)
 The candidates keep their business identifiers. The SDK sends the bounded
 public request to Bridge; it does not construct a circuit locally.
 
+## User modes and exact public result
+
+The same public request can select how much result detail Bridge returns:
+
+| Mode | User profile | Public result |
+| --- | --- | --- |
+| `use` | `basic_user` | Verified portable artifact, resources and digests. |
+| `build` | `intermediate_builder` | The artifact plus safe build details. |
+| `expert_prepare` | `expert_constructor` | Semantic construction guidance; `artifact` and `artifact_digest` are `None`. |
+| `expert_evaluate` | `expert_evaluator` | The artifact plus public alternatives and comparison data. |
+
+Use the client helpers when you want the response dictionary for a specific
+profile:
+
+```python
+from qdsv_bridge import QDSVBridgeClient
+
+client = QDSVBridgeClient()
+basic_result = client.generate(request)
+intermediate_result = client.build(request)
+expert_inputs = client.prepare(request)
+expert_evaluation = client.evaluate(request)
+```
+
+Every response identifies its resolved `mode` and `user_profile`.
+`QDSVBridge().export(request)` remains the circuit adapter for the three modes
+that deliver an artifact. Use `QDSVBridgeClient.prepare(request)` for
+`expert_prepare`, whose result is guidance for expert construction rather than
+a finished circuit.
+
 ## Qiskit integration
 
 Install the optional adapter:

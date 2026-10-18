@@ -3,6 +3,7 @@ from .artifacts import select_recommended_artifact
 from .compat import to_braket_openqasm
 from .domain import (
     PUBLIC_DOMAIN_CONTRACT,
+    PUBLIC_DELIVERY_MODES,
     DomainRequestError,
     const,
     field,
@@ -13,7 +14,7 @@ from .exceptions import QDSVBridgeAPIError, QDSVBridgeArtifactError, QDSVBridgeE
 from .qiskit import QDSVBridge, QDSVBridgeArtifact, to_quantum_circuit
 from .release import get_release_manifest
 
-__version__ = "0.7.3"
+__version__ = "0.7.4"
 
 __all__ = [
     "QDSVBridgeClient",
@@ -22,6 +23,7 @@ __all__ = [
     "QDSVBridgeArtifactError",
     "QDSVBridgeHTTPError",
     "PUBLIC_DOMAIN_CONTRACT",
+    "PUBLIC_DELIVERY_MODES",
     "DomainRequestError",
     "const",
     "field",

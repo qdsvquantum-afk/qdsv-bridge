@@ -56,3 +56,23 @@ def test_rejects_ambiguous_score_structure() -> None:
             candidates=[{"value": 1}],
             decision={"operator": "gte", "threshold": 1},
         )
+
+
+@pytest.mark.parametrize("mode", ["use", "build", "expert_prepare", "expert_evaluate"])
+def test_accepts_every_published_user_mode(mode: str) -> None:
+    request = predicate_request(
+        candidates=[{"value": 1}],
+        rule={"op": "eq", "left": field("value"), "right": const(1)},
+        mode=mode,
+    )
+
+    assert request["delivery"]["mode"] == mode
+
+
+def test_rejects_unknown_user_mode() -> None:
+    with pytest.raises(DomainRequestError):
+        predicate_request(
+            candidates=[{"value": 1}],
+            rule={"op": "eq", "left": field("value"), "right": const(1)},
+            mode="unknown",
+        )
