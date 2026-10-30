@@ -36,6 +36,39 @@ The returned ``QuantumCircuit`` belongs to the user's Qiskit workflow. Choose
 a backend, transpile and execute it only under the user's own provider
 configuration.
 
+Candidate records and identifiers
+---------------------------------
+
+The same candidate rule applies to ``predicate_request()`` and
+``score_request()``. Submit a non-empty list of prepared records; the position
+of each record in that list is its computational index ``0..N-1``. The default
+``candidate_id_field`` is ``candidate_index``. You can omit that field and let
+the service assign it. If you provide it, its integer value must match the
+record's zero-based position. A custom ``candidate_id_field`` changes only
+the field name. A mismatch produces ``E_BRIDGE_PUBLIC_CANDIDATE_ID``.
+
+When sampling or reordering source data, assign new positional indices for
+the submitted list and keep the source identifiers in a separate lookup:
+
+.. code-block:: python
+
+   selected_rows = [
+       {"source_id": 47, "metric": 8},
+       {"source_id": 12, "metric": 3},
+   ]
+   source_by_candidate = {
+       index: row["source_id"] for index, row in enumerate(selected_rows)
+   }
+   candidates = [
+       {"candidate_index": index, "metric": row["metric"]}
+       for index, row in enumerate(selected_rows)
+   ]
+
+Pass ``candidates`` to either request builder. Use ``source_by_candidate`` to
+interpret the returned candidate indices against the original data. Keep
+reference labels and expected answers outside the request when they are only
+needed for later comparison.
+
 ScoreModel request
 ------------------
 

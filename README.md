@@ -51,8 +51,45 @@ print(artifact.format)
 print(artifact.artifact_digest)
 ```
 
-The candidates keep their business identifiers. The SDK sends the bounded
-public request to Bridge; it does not construct a circuit locally.
+The SDK sends the bounded public request to Bridge; it does not construct a
+circuit locally.
+
+## Prepare candidates for any supported problem
+
+Both `predicate_request()` and `score_request()` receive a non-empty list of
+prepared candidate records. Each record is one alternative that Bridge can
+evaluate using the fields named in the rule or score model. Choose a bounded
+set of candidates and prepare those fields before calling the SDK.
+
+The candidate's position in the submitted list is its computational index:
+`0, 1, ..., N-1`. The default `candidate_id_field` is `candidate_index`. You may
+omit that field and let the service assign the index. If you include it, its
+integer value **must equal the record's zero-based position in this request**.
+Changing `candidate_id_field` changes the field name, not this positional rule.
+Otherwise Bridge returns `E_BRIDGE_PUBLIC_CANDIDATE_ID`.
+
+For a sample or a reordered list, assign fresh positional indices and keep
+the original record identifiers in a separate lookup for interpreting results:
+
+```python
+selected_rows = [
+    {"source_id": 47, "metric": 8},
+    {"source_id": 12, "metric": 3},
+]
+source_by_candidate = {
+    index: row["source_id"] for index, row in enumerate(selected_rows)
+}
+candidates = [
+    {"candidate_index": index, "metric": row["metric"]}
+    for index, row in enumerate(selected_rows)
+]
+# candidates now have candidate_index 0 and 1; source_by_candidate keeps 47 and 12.
+```
+
+Use the prepared `candidates` in either request builder. Keep reference labels
+or expected answers outside the request when they are only for later
+comparison. A valid request can still be rejected by capability or resource
+checks; candidate indexing is only one part of the public input contract.
 
 ## ScoreModel request shape
 
