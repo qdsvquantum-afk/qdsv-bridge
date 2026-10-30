@@ -54,6 +54,35 @@ print(artifact.artifact_digest)
 The candidates keep their business identifiers. The SDK sends the bounded
 public request to Bridge; it does not construct a circuit locally.
 
+## ScoreModel request shape
+
+For a multi-criterion threshold decision, use `score_request()`. Each criterion
+needs a `value` expression that reads a prepared candidate field. `field` is
+not a substitute for the criterion's `value` key. The decision uses
+`operator` and `threshold`:
+
+```python
+from qdsv_bridge import QDSVBridge, field, score_request
+
+request = score_request(
+    candidates=[
+        {"candidate_index": 0, "readiness": 0},
+        {"candidate_index": 1, "readiness": 1},
+    ],
+    criteria=[
+        {"name": "readiness", "value": field("readiness"), "importance": 1, "priority": 1},
+    ],
+    decision={"operator": "gte", "threshold": 1},
+    format="qasm2",
+)
+artifact = QDSVBridge().export(request)
+```
+
+If a criterion omits `value`, the service rejects the request with
+`E_BRIDGE_PUBLIC_SCORE_VALUE` before it evaluates numeric scales or thresholds.
+`numeric_preferences` controls optional numeric configuration; it cannot
+replace a missing criterion value.
+
 ## User modes and exact public result
 
 The same public request can select how much result detail Bridge returns:

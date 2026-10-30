@@ -35,3 +35,32 @@ loads them. ``to_quantum_circuit()`` does not call a network service.
 The returned ``QuantumCircuit`` belongs to the user's Qiskit workflow. Choose
 a backend, transpile and execute it only under the user's own provider
 configuration.
+
+ScoreModel request
+------------------
+
+For a bounded score decision, each criterion must contain a ``value``
+expression. Refer to a prepared candidate field with ``field(...)``. The
+decision uses ``operator`` and ``threshold``:
+
+.. code-block:: python
+
+   from qdsv_bridge import QDSVBridge, field, score_request
+
+   request = score_request(
+       candidates=[
+           {"candidate_index": 0, "readiness": 0},
+           {"candidate_index": 1, "readiness": 1},
+       ],
+       criteria=[
+           {"name": "readiness", "value": field("readiness"), "importance": 1},
+       ],
+       decision={"operator": "gte", "threshold": 1},
+       format="qasm2",
+   )
+   artifact = QDSVBridge().export(request)
+
+Using ``field`` as a criterion key instead of ``value`` produces
+``E_BRIDGE_PUBLIC_SCORE_VALUE``. This error concerns the request structure;
+changing the score scale or ``numeric_preferences`` does not supply the
+missing value expression.
