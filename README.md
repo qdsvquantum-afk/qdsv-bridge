@@ -51,8 +51,7 @@ print(artifact.format)
 print(artifact.artifact_digest)
 ```
 
-The SDK sends the bounded public request to Bridge; it does not construct a
-circuit locally.
+The SDK sends the bounded public request to Bridge. It does not construct a circuit locally.
 
 ## Prepare candidates for any supported problem
 
