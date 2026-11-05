@@ -14,6 +14,21 @@ Bridge service.
 - [PyPI](https://pypi.org/project/qdsv-bridge/)
 - [Source](https://github.com/qdsvquantum-afk/qdsv-bridge)
 
+## Validation status
+
+Bridge has a tested public SDK and a bounded, remotely compiled service. The
+0.7.4 SDK passes the public CI matrix for Python 3.10–3.12 and Qiskit
+2.3–2.5. The separately released 0.7.0 black-box conformance profile passed
+five public checks against the service in September 2026; its forced timeout
+and service-failure paths were not evaluated. Three preregistered bounded
+artifacts from the 0.7.0 compiler build also passed the declared acceptance
+criteria on IBM `ibm_fez`. These results do not establish unbounded scaling,
+quantum advantage or production service fitness.
+
+See the [validation record](docs/reference/validation_evidence.rst), the
+[0.7.4 release and conformance package](https://github.com/qdsvquantum-afk/qdsv-bridge/releases/tag/v0.7.4),
+and the [current CI runs](https://github.com/qdsvquantum-afk/qdsv-bridge/actions/workflows/conformance-070.yml).
+
 ## Business-First Quickstart
 
 Describe the prepared candidates and decision rule; Bridge returns a portable

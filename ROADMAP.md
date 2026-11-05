@@ -1,16 +1,28 @@
 # QDSV Bridge roadmap
 
-## 0.7.0 release gate
+## Completed public evidence
 
-- Publish a reproducible SDK distribution and separate conformance package.
-- Make the public API boundary independently runnable from a clean environment.
-- Preserve implementation exclusively within the QDSV service.
+- Reproducible SDK distribution and separate 0.7.0 conformance package,
+  published with the 0.7.4 release.
+- Public API boundary runnable from a clean environment, without the private
+  compiler in the SDK or the verifier.
+- CI matrix for Python 3.10–3.12 and Qiskit 2.3–2.5.
+- Bounded Aer and IBM `ibm_fez` evidence from the 0.7.0 compiler campaign.
 
-## Next evidence milestones
+The results and their limits are recorded in
+`docs/reference/validation_evidence.rst`.
 
-- Clean-room PyPI reproduction against a controlled public endpoint.
-- Aer and IBM Quantum hardware evidence for preregistered bounded cases.
-- Independent third-party rerun using the published conformance package.
+## Next maturity milestones
+
+- Independent third-party rerun from PyPI and the published conformance
+  package, against the current public service and 0.7.4 SDK.
+- Forced timeout and internal-service-failure checks, which the 0.7.0
+  black-box campaign did not evaluate.
+- Explicit support and compatibility policy for a stable SDK release,
+  together with documented service reliability and resource limits.
+- Re-evaluate the Qiskit Ecosystem maturity declaration when the supported
+  public workflow is stable and recommended for production use. The separate
+  `Early Project` status is based on repository age and changes automatically.
 
 ## Product boundaries
 
