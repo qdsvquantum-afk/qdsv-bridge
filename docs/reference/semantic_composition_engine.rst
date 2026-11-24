@@ -1,11 +1,16 @@
 Semantic Composition Engine
 ===========================
 
-QDSV Bridge can expose the public status of server-side composite operation
-generation through the Semantic Composition Engine (SCE). The SCE runs in the
+QDSV Bridge can expose the controlled status of server-side composite operation
+generation through the Semantic Composition Engine (SCE). SCE is an
+**experimental capability**, not a reclassification of Bridge itself. The SCE runs in the
 Bridge backend; the SDK submits structured requests and receives candidate
 evidence packages. The SDK does not contain the private compiler, private
 operation synthesis rules, deployment secrets, or backend runtime.
+
+The experimental capability uses the contract
+``qdsv_bridge_composition_experimental.v1``. Bridge's stable public contract
+and response envelopes remain versioned separately.
 
 Public Endpoints
 ----------------
