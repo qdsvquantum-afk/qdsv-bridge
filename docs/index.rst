@@ -1,11 +1,11 @@
-QDSV Bridge: Public Technical Preview
-=====================================
+QDSV Bridge
+===========
 
 QDSV Bridge accepts bounded public domain requests and returns verified,
 portable OpenQASM artifacts. The SDK contains request builders, a network
 client and framework adapters; the service performs the remote transformation.
 
-The 0.7.x **Public Technical Preview** has a versioned public contract,
+The 0.7.x public release has a versioned public contract,
 capability discovery, published guardrails and digest-bound artifact delivery.
 A consumer can inspect the delivered circuit, its digest and public resource
 data, but the package has no local fallback that derives a circuit from a

@@ -3,7 +3,7 @@
 ## Unreleased — production-oriented public surface
 
 - Aligns the SDK messaging with the public QDSV Bridge contract and the
-  `Public Technical Preview` product position.
+  public product position.
 - Documents capabilities discovery, service guardrails, digest-bound artifacts
   and the separation between Bridge artifact delivery and provider execution.
 - Keeps the private QDSV compiler, lowering rules, infrastructure identities

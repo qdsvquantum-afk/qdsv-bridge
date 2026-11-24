@@ -1,8 +1,8 @@
 Validation evidence and maturity
 ================================
 
-This page separates tested behavior from the maturity of the public service.
-The current 0.7.x release is a Public Technical Preview for bounded requests.
+This page separates tested behavior from the scope of the public service.
+The current 0.7.x release is a public product for bounded requests.
 The SDK sends the request to a remote compiler and does not generate circuits
 locally.
 
@@ -43,17 +43,16 @@ Score threshold          87.94%
 These were 0.7.0 compiler-build results. They do not validate every later
 service build, every input size or the full 0.7.4 user-mode surface. The QPU
 campaign was not a controlled hardware comparison and is not evidence of
-quantum advantage or production fitness. The full campaign artifacts have
+quantum advantage or provider-level SLA. The full campaign artifacts have
 not been independently rerun from this repository.
 
-Maturity declaration
---------------------
+Scope declaration
+------------------
 
-The Qiskit Ecosystem's ``experimental`` maturity is a project declaration
-about stability and support, not a test score. Its ``Early Project`` status
-is assigned separately from repository age. A production-ready declaration
-would also mean the supported public workflow is stable and recommended for
-production. That claim is not made for the current Public Technical Preview.
+Bridge is a public product for the bounded workflows listed in its capability
+contract. This declaration does not imply unrestricted scaling, quantum
+advantage or provider-level service guarantees. New operation families and
+larger workloads are added through versioned capability releases.
 
 See the `Qiskit Ecosystem classification rules
 <https://qiskit.github.io/ecosystem/classifications/>`_ and the

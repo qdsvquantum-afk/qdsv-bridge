@@ -1,11 +1,11 @@
-# QDSV Bridge: Public Technical Preview
+# QDSV Bridge
 
 QDSV Bridge is the QDSV interoperability service for circuit-based quantum
 workflows. Applications submit a bounded decision request and receive a
 portable OpenQASM or Qiskit-ready artifact when the request is within the
 service's supported scope.
 
-Version `0.7.x` is the **QDSV Bridge: Public Technical Preview**. It has a
+Version `0.7.x` is the public QDSV Bridge SDK. It has a
 versioned public contract, bounded request admission, operational guardrails,
 artifact digests and Qiskit adapters. The SDK contains domain request
 builders, an HTTP client and artifact adapters. The QDSV translation and
@@ -24,7 +24,7 @@ five public checks against the service in September 2026; its forced timeout
 and service-failure paths were not evaluated. Three preregistered bounded
 artifacts from the 0.7.0 compiler build also passed the declared acceptance
 criteria on IBM `ibm_fez`. These results do not establish unbounded scaling,
-quantum advantage or production service fitness.
+quantum advantage or provider-level SLA.
 
 See the [validation record](docs/reference/validation_evidence.rst), the
 [0.7.4 release and conformance package](https://github.com/qdsvquantum-afk/qdsv-bridge/releases/tag/v0.7.4),
@@ -43,9 +43,10 @@ infrastructure identities or provider credentials. Simulator and QPU execution
 remain separate consumer or Qruba workflows; Bridge delivers the portable
 artifact and evidence needed for those workflows.
 
-This posture supports technical adoption and commercial evaluation while the
-supported operation catalog continues to grow. It is not a claim of unlimited
-capacity, quantum advantage or provider-level SLA.
+This posture supports technical adoption and commercial use within the
+published capability and resource limits. The supported operation catalog
+continues to grow through versioned releases; capacity and provider execution
+remain governed by the selected service and backend.
 
 ## Business-First Quickstart
 

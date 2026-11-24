@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "qdsv-bridge"
 version = "0.7.4"
-description = "Public Technical Preview SDK for portable QDSV Bridge artifacts."
+description = "Production-oriented SDK for portable QDSV Bridge artifacts."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -14,7 +14,7 @@ authors = [
 ]
 keywords = ["qdsv", "semantic-computation", "quantum", "circuit", "qasm", "sdk", "conformance"]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Intended Audience :: Science/Research",
   "License :: OSI Approved :: MIT License",

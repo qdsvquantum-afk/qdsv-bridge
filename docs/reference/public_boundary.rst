@@ -1,12 +1,12 @@
-QDSV Bridge Public Technical Preview boundary
-=============================================
+QDSV Bridge public boundary
+===========================
 
 The stable request contract is ``qdsv_bridge_domain.v1``. The stable service
 response contract is ``qdsv_bridge_public.v1``.
 
-The Public Technical Preview is a public, versioned integration surface. It is
-not a copy of the private QDSV compiler and it is not an unrestricted provider
-execution service.
+Bridge is a public, versioned integration surface. It is not a copy of the
+private QDSV compiler and it is not an unrestricted provider execution
+service.
 
 Public SDK contents
 -------------------
