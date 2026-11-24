@@ -51,6 +51,7 @@ Public service posture
 
 The running service exposes ``/api/bridge/capabilities`` so integrations can
 discover the contract version, supported modes, formats, endpoints, limits and
-execution boundary before submitting a request. Bridge is suitable for
-technical adoption and controlled commercial evaluation; it does not claim
-unlimited capacity, quantum advantage or a provider-level SLA.
+execution boundary before submitting a request. Bridge is available for
+technical adoption and commercial use within its published capabilities and
+limits; it does not claim unlimited capacity, quantum advantage or a
+provider-level SLA.
