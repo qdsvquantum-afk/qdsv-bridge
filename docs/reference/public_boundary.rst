@@ -4,6 +4,10 @@ QDSV Bridge Public Technical Preview boundary
 The stable request contract is ``qdsv_bridge_domain.v1``. The stable service
 response contract is ``qdsv_bridge_public.v1``.
 
+The Public Technical Preview is a public, versioned integration surface. It is
+not a copy of the private QDSV compiler and it is not an unrestricted provider
+execution service.
+
 Public SDK contents
 -------------------
 
@@ -19,9 +23,19 @@ The service is the sole place that turns a valid public request into an
 artifact. The SDK does not have a second local path to produce a circuit.
 
 Public responses carry a request digest, an artifact digest for delivered
-artifacts, verification status, warnings and basic resource metrics. Build
-identity, exact operational limits and compiler diagnostics are not part of
-the unauthenticated public boundary. It is not a diagnostic trace.
+artifacts, verification status, warnings and basic resource metrics. The
+capabilities response also publishes supported operations, public guardrails
+and the execution boundary. Build identity, private compiler diagnostics and
+infrastructure details are not part of the unauthenticated public boundary.
+It is not a diagnostic trace.
+
+Execution boundary
+------------------
+
+Bridge generates and verifies portable artifacts. Simulator execution,
+transpilation, provider selection and QPU execution belong to the consumer or
+to an authorized Qruba/QDSV workflow. This separation keeps the SDK contract
+stable while the QDSV engine and backend integrations evolve.
 
 Published user modes
 --------------------

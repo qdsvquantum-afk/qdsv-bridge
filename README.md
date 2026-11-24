@@ -5,10 +5,11 @@ workflows. Applications submit a bounded decision request and receive a
 portable OpenQASM or Qiskit-ready artifact when the request is within the
 service's supported scope.
 
-Version `0.7.x` is a Public Technical Preview with a deliberately narrow public boundary. The SDK
-contains domain request builders, an HTTP client and artifact adapters. The
-QDSV translation and implementation that derive an artifact run only in the
-Bridge service.
+Version `0.7.x` is the **QDSV Bridge: Public Technical Preview**. It has a
+versioned public contract, bounded request admission, operational guardrails,
+artifact digests and Qiskit adapters. The SDK contains domain request
+builders, an HTTP client and artifact adapters. The QDSV translation and
+implementation that derive an artifact run only in the Bridge service.
 
 - [Documentation](https://qdsvquantum-afk.github.io/qdsv-bridge/)
 - [PyPI](https://pypi.org/project/qdsv-bridge/)
@@ -28,6 +29,23 @@ quantum advantage or production service fitness.
 See the [validation record](docs/reference/validation_evidence.rst), the
 [0.7.4 release and conformance package](https://github.com/qdsvquantum-afk/qdsv-bridge/releases/tag/v0.7.4),
 and the [current CI runs](https://github.com/qdsvquantum-afk/qdsv-bridge/actions/workflows/conformance-070.yml).
+
+## Production-oriented public contract
+
+Bridge is designed as a public integration surface rather than as a local
+copy of the QDSV compiler. Clients can discover the active contract through
+`/api/bridge/capabilities` and can rely on the documented request, response,
+digest and error envelopes within `qdsv_bridge_public.v1`.
+
+The public service exposes supported capabilities and limits before a client
+submits a compilation request. It does not expose private lowering rules,
+infrastructure identities or provider credentials. Simulator and QPU execution
+remain separate consumer or Qruba workflows; Bridge delivers the portable
+artifact and evidence needed for those workflows.
+
+This posture supports technical adoption and commercial evaluation while the
+supported operation catalog continues to grow. It is not a claim of unlimited
+capacity, quantum advantage or provider-level SLA.
 
 ## Business-First Quickstart
 

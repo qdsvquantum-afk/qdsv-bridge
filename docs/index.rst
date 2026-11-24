@@ -5,9 +5,11 @@ QDSV Bridge accepts bounded public domain requests and returns verified,
 portable OpenQASM artifacts. The SDK contains request builders, a network
 client and framework adapters; the service performs the remote transformation.
 
-The 0.7.x Public Technical Preview boundary is intentionally narrow. A consumer can inspect the
-delivered circuit, its digest and public resource data, but the package has no
-local fallback that derives a circuit from a domain request.
+The 0.7.x **Public Technical Preview** has a versioned public contract,
+capability discovery, published guardrails and digest-bound artifact delivery.
+A consumer can inspect the delivered circuit, its digest and public resource
+data, but the package has no local fallback that derives a circuit from a
+domain request.
 
 .. toctree::
    :hidden:
@@ -43,3 +45,12 @@ responses that contain a circuit artifact.
 
 Bridge does not select hardware, transpile for a device, execute a simulator or
 QPU, or interpret execution results.
+
+Public service posture
+----------------------
+
+The running service exposes ``/api/bridge/capabilities`` so integrations can
+discover the contract version, supported modes, formats, endpoints, limits and
+execution boundary before submitting a request. Bridge is suitable for
+technical adoption and controlled commercial evaluation; it does not claim
+unlimited capacity, quantum advantage or a provider-level SLA.

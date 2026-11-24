@@ -10,7 +10,8 @@ def test_public_documentation_describes_the_070_boundary() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
 
     assert "interoperability service for circuit-based quantum" in readme
-    assert "deliberately narrow public boundary" in readme
+    assert "versioned public contract" in readme
+    assert "operational guardrails" in readme
     assert "does not construct a circuit locally" in readme
 
 

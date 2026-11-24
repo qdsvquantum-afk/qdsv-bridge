@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — production-oriented public surface
+
+- Aligns the SDK messaging with the public QDSV Bridge contract and the
+  `Public Technical Preview` product position.
+- Documents capabilities discovery, service guardrails, digest-bound artifacts
+  and the separation between Bridge artifact delivery and provider execution.
+- Keeps the private QDSV compiler, lowering rules, infrastructure identities
+  and provider credentials outside the SDK boundary.
+
 ## 0.7.4 — User-mode contract alignment
 
 - Makes the four documented delivery modes valid across request builders,
