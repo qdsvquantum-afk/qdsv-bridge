@@ -5,6 +5,8 @@ from copy import deepcopy
 from importlib.resources import files
 from typing import Any
 
+SCE_EXPERIMENTAL_CONTRACT = "qdsv_bridge_composition_experimental.v1"
+
 
 def get_release_manifest() -> dict[str, Any]:
     """Return the packaged public identity and validation record for this release."""

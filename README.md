@@ -214,10 +214,16 @@ fallback.
 ## Semantic composition candidates
 
 The official Bridge backend can also report the status of QDSV's Semantic
-Composition Engine (SCE). SCE generates composite operation candidates from
+Composition Engine (SCE). SCE is an **experimental capability separate from
+the stable Bridge product**. It generates composite operation candidates from
 bounded structured expressions and only marks them `OFFICIAL_CANDIDATE` when
 the backend evidence includes both operation-program verification and semantic
 cross-check over the declared finite domain.
+
+SCE capability and candidate responses identify the experimental contract
+`qdsv_bridge_composition_experimental.v1`. This does not change the stable
+Bridge response contract `qdsv_bridge_public.v1`, and an `EXPERIMENTAL`
+candidate is not a public Bridge operation or an automatic promotion.
 
 The public capability endpoint only returns a summary. Candidate generation and
 evidence packages require an authenticated Qruba/Bridge governance context.

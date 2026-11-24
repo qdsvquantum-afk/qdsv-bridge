@@ -12,7 +12,7 @@ from .domain import (
 )
 from .exceptions import QDSVBridgeAPIError, QDSVBridgeArtifactError, QDSVBridgeError, QDSVBridgeHTTPError
 from .qiskit import QDSVBridge, QDSVBridgeArtifact, to_quantum_circuit
-from .release import get_release_manifest
+from .release import SCE_EXPERIMENTAL_CONTRACT, get_release_manifest
 
 __version__ = "0.7.4"
 
@@ -30,6 +30,7 @@ __all__ = [
     "predicate_request",
     "score_request",
     "get_release_manifest",
+    "SCE_EXPERIMENTAL_CONTRACT",
     "select_recommended_artifact",
     "to_braket_openqasm",
     "to_quantum_circuit",

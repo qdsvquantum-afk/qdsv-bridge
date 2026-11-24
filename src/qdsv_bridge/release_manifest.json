@@ -7,6 +7,7 @@
     "service_response": "qdsv_bridge_public.v1",
     "semantic_composition_capabilities": "qdsv_semantic_composition_engine.v1",
     "semantic_composition_candidate": "qdsv_composite_operation_candidate.v1",
+    "semantic_composition_experimental": "qdsv_bridge_composition_experimental.v1",
     "portable_artifacts": ["qasm2", "qasm3"]
   },
   "qiskit_integration": {
